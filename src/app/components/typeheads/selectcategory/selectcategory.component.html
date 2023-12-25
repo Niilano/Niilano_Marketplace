@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="fs-6" slot="start">{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon size="medium" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="animate__animated animate__fadeInLeft" *ngIf="!selectedCategory">
+    <ion-item class="ion-no-padding mb-3" lines="none">
+      <ion-searchbar
+        slot="start"
+        class="p-0 m-0"
+        (ionInput)="filterCategories($event)"
+        style="--background:#fff;color:grey;"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-item
+      lines="full"
+      button
+      detail="true"
+      *ngFor="let category of filteredCategories"
+      (click)="selectCategory(category.id)"
+    >
+      <ion-thumbnail class="rounded" slot="start">
+        <img alt="Category Image" class="rounded" [src]="modifyImageUrl(category.image.url)" />
+      </ion-thumbnail>
+      <ion-label>{{ category.name }}</ion-label>
+    </ion-item>
+  </div>
+
+  <div class="animate__animated animate__fadeInRight" *ngIf="selectedCategory">
+    <ion-item class="ion-no-padding mb-2" lines="none">
+      <button
+        (click)="backSelection()"
+        class="d-flex align-items-center btn btn-danger"
+      >
+        <ion-icon name="arrow-undo-outline" class="me-2"></ion-icon>
+        {{ categorySelected.name }}
+      </button>
+    </ion-item>
+    <ion-item class="ion-no-padding mb-3" lines="none">
+      <ion-searchbar
+      style="--background:#fff;color:grey;"
+        class="p-0 m-0"
+        (ionInput)="filterSubCategories($event)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-radio-group [(ngModel)]="selectedSubCategory">
+    <ion-item lines="full" *ngFor="let subcategory of filteredSubCategories">
+      <ion-thumbnail class="rounded" slot="start">
+        <img
+          alt="Sub Category Image"
+          class="rounded"
+          [src]="modifyImageUrl(subcategory.image.url)"
+        />
+      </ion-thumbnail>
+      <ion-label> {{ subcategory.name }} </ion-label>
+    <ion-radio slot="end" color="success" [value]="subcategory.id"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+  </div>
+
+  <div class="p-5"></div>
+
+  <ion-fab
+    class="animate__animated animate__fadeInRight"
+    *ngIf="selectedSubCategory"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button color="success" (click)="done()">
+      <ion-icon name="checkmark-sharp"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

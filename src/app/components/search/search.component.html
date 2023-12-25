@@ -1,0 +1,148 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons> -->
+   
+    <ion-searchbar [debounce]="1000" (ionChange)="handleChange($event)" placeholder="Search for products or sellers" #searchBar style="--background: #f2f2f2; color: #1A4640;" ></ion-searchbar>
+    
+    <ion-buttons (click)="dismissModal()" slot="end">
+      <ion-button>
+        <ion-icon class="text-light" size="large" slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+
+  <ion-toolbar>
+
+    <ion-segment (ionChange)="onSegmentChange()" [(ngModel)]="segment">
+      <ion-segment-button [ngClass]="{'active-tab': segment === 'all'}" value="all">
+        All
+      </ion-segment-button>
+      <ion-segment-button [ngClass]="{'active-tab': segment === 'products'}" value="products">
+        Products
+      </ion-segment-button>
+      <ion-segment-button [ngClass]="{'active-tab': segment === 'sellers'}" value="sellers">
+        Sellers
+      </ion-segment-button>
+    </ion-segment>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding" >
+
+  <div [ngSwitch]="segment">
+
+    <div *ngSwitchCase="'all'">
+
+      <div class="text-center" *ngIf="searchResults.length <1">
+        <strong> Search for products or sellers </strong>
+      </div>
+
+      <ion-list *ngIf="searchResults?.products?.length > 0">
+        <ion-list-header>
+          <ion-label>Products</ion-label>
+        </ion-list-header>
+        <ng-container>
+          <ion-item (click)="dismissModal()" lines="none" *ngFor="let product of searchResults?.products">
+            <ion-thumbnail slot="start">
+              <img class="h-100" src="{{product.image.url}}" alt="{{ product.name }} image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ product.name }}</h2>
+              <p>{{ product.description }}</p>
+              <p *ngIf="!product.discount_percent">{{ product.price | currency : 'GH₵' }}</p>
+              <p *ngIf="product.discount_percent" class="text-decoration-line-through">{{ product.price | currency : 'GH₵'
+                }}</p>
+                <p *ngIf="product.discount_percent">{{ product.discount_price | currency : 'GH₵' }}</p>
+            </ion-label>
+    
+            <ion-button [routerLink]="['/product-details']" [queryParams]="{ product: product.id }"  style="--background:#1A4640; --color:#f2f2f2;" slot="end">
+              view
+            </ion-button>
+    
+          </ion-item>
+        </ng-container>
+      </ion-list>
+
+      <ion-list *ngIf="searchResults?.sellers?.length > 0">
+        <ion-list-header>
+          <ion-label>Sellers</ion-label>
+        </ion-list-header>
+        <ng-container>
+          <ion-item button detail="false" (click)="dismissModal()" [routerLink]="['/@', seller.username]" class="mt-2" lines="none" *ngFor="let seller of searchResults?.sellers">
+            <ion-thumbnail slot="start">
+              <img class="h-100" src="{{seller.user_profile.url}}" alt="{{ seller.name }} image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ seller.first_name }} {{seller.last_name}}</h2>
+              <p>@{{ seller.username }}</p>
+            </ion-label>
+    
+            <!-- <ion-button [routerLink]="['/product-details']" [queryParams]="{ product: product.id }"  style="--background:#1A4640; --color:#f2f2f2;" slot="end">
+              view
+            </ion-button> -->
+    
+          </ion-item>
+        </ng-container>
+      </ion-list>
+
+    </div>
+
+    <div *ngSwitchCase="'products'">
+
+      <div class="text-center" *ngIf="searchResults.length <1">
+        <strong> Search for products </strong>
+      </div>
+
+          <ion-item (click)="dismissModal()" lines="none" *ngFor="let product of searchResults?.products">
+            <ion-thumbnail slot="start">
+              <img class="h-100" src="{{product.image.url}}" alt="{{ product.name }} image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ product.name }}</h2>
+              <p>{{ product.description }}</p>
+              <p *ngIf="!product.discount_percent">{{ product.price | currency : 'GH₵' }}</p>
+              <p *ngIf="product.discount_percent" class="text-decoration-line-through">{{ product.price | currency : 'GH₵'
+                }}</p>
+                <p *ngIf="product.discount_percent">{{ product.discount_price | currency : 'GH₵' }}</p>
+            </ion-label>
+    
+            <ion-button [routerLink]="['/product-details']" [queryParams]="{ product: product.id }"  style="--background:#1A4640; --color:#f2f2f2;" slot="end">
+              view
+            </ion-button>
+    
+          </ion-item>
+
+    </div>
+
+
+    <div *ngSwitchCase="'sellers'">
+
+      <div class="text-center" *ngIf="searchResults.length <1">
+        <strong> Search for sellers </strong>
+      </div>
+
+          <ion-item button detail="true" [routerLink]="['/@', seller.username]" (click)="dismissModal()" class="mt-2" lines="none" *ngFor="let seller of searchResults?.sellers">
+            <ion-thumbnail slot="start">
+              <img class="h-100" src="{{seller.user_profile.url}}" alt="{{ seller.name }} image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ seller.first_name }} {{seller.last_name}}</h2>
+              <p>@{{ seller.username }}</p>
+            </ion-label>
+    
+            <!-- <ion-button [routerLink]="['/product-details']" [queryParams]="{ product: product.id }"  style="--background:#1A4640; --color:#f2f2f2;" slot="end">
+              view
+            </ion-button> -->
+    
+          </ion-item>
+
+    </div>
+
+  </div>
+
+</ion-content>

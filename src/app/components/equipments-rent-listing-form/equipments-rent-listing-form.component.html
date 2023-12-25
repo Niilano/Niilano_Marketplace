@@ -1,0 +1,408 @@
+<div>
+  <h3
+    *ngIf="sectionTitle && currentSection === 1"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 2"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 3"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 4"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 5"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <ion-progress-bar
+    [value]="currentSection / totalSections"
+    color="primary"
+  ></ion-progress-bar>
+</div>
+
+<form (ngSubmit)="submitMachineryDetailsForm()" class="py-3 pb-5">
+  <!-- Section 1: Equipment Type -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 1"
+  >
+    <div class="mt-4">
+      <!-- Question 1 -->
+      <p class="m-0 text-dark">Select equipment/machinery type</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="equipmentDetailsFormModal.equipmentType"
+          name="equipmentType"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Equipment Type"
+        >
+          <ion-select-option
+            *ngFor="let equipmentType of equipmentTypes"
+            [value]="equipmentType"
+            >{{ equipmentType }}</ion-select-option
+          >
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 2 -->
+      <p class="m-0 mt-4 text-dark">Registration No. (if registered)</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="equipmentDetailsFormModal.regNo"
+          name="regNo"
+          placeholder="Enter registration number"
+        ></ion-input>
+        <ion-badge color="primary">Optional</ion-badge>
+      </ion-item>
+
+      <div class="text-end mt-4">
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Location and details -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 2"
+  >
+    <div class="mt-4">
+      <p class="m-0 text-dark">
+        Are you a machine and equipment rental company?
+      </p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="equipmentDetailsFormModal.rentalCompany"
+          name="rentalCompany"
+          interface="action-sheet"
+          placeholder="Choose an option"
+        >
+          <ion-select-option value="yes">Yes</ion-select-option>
+          <ion-select-option value="no">No</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 4 -->
+      <p class="m-0 mt-4 text-dark">
+        Regional location of machine or equipment?
+      </p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="equipmentDetailsFormModal.regionalLocation"
+          name="regionalLocation"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Select Region"
+        >
+          <ion-select-option value="Greater Accra"
+            >Greater Accra Region</ion-select-option
+          >
+          <ion-select-option value="Ashanti">Ashanti Region</ion-select-option>
+          <ion-select-option value="Central">Central Region</ion-select-option>
+          <ion-select-option value="Eastern">Eastern Region</ion-select-option>
+          <ion-select-option value="Western">Western Region</ion-select-option>
+          <ion-select-option value="Volta">Volta Region</ion-select-option>
+          <ion-select-option value="Northern"
+            >Northern Region</ion-select-option
+          >
+          <ion-select-option value="Upper East"
+            >Upper East Region</ion-select-option
+          >
+          <ion-select-option value="Upper West"
+            >Upper West Region</ion-select-option
+          >
+          <ion-select-option value="Bono">Bono Region</ion-select-option>
+          <ion-select-option value="Bono East"
+            >Bono East Region</ion-select-option
+          >
+          <ion-select-option value="Ahafo">Ahafo Region</ion-select-option>
+          <ion-select-option value="Oti">Oti Region</ion-select-option>
+          <ion-select-option value="Savannah"
+            >Savannah Region</ion-select-option
+          >
+          <ion-select-option value="North East"
+            >North East Region</ion-select-option
+          >
+          <ion-select-option value="Western North"
+            >Western North Region</ion-select-option
+          >
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 4 -->
+      <p class="m-0 mt-4 text-dark">Location of machine or equipment</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="equipmentDetailsFormModal.location"
+          name="location"
+          placeholder="Enter precise location in the selected region"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Pricing and Discounts -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 3"
+  >
+    <div class="mt-4">
+      <!-- Question 18: Price(s) per day -->
+      <h4 class="m-0 text-dark">Price(s) per day</h4>
+
+      <p class="m-0 mt-4 text-dark">Within the region:</p>
+      <ion-item>
+        <ion-input
+          type="number"
+          [(ngModel)]="equipmentDetailsFormModal.priceWithinRegion"
+          name="priceWithinRegion"
+          placeholder="Price within region"
+          clearInput
+        ></ion-input>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Regions around:</p>
+      <ion-item>
+        <ion-input
+          type="number"
+          [(ngModel)]="equipmentDetailsFormModal.priceRegionsAround"
+          name="priceRegionsAround"
+          placeholder="Price for regions around"
+          clearInput
+        ></ion-input>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Regions far away:</p>
+      <ion-item>
+        <ion-input
+          type="number"
+          [(ngModel)]="equipmentDetailsFormModal.priceRegionsFarAway"
+          name="priceRegionsFarAway"
+          placeholder="Price for regions far away"
+          clearInput
+        ></ion-input>
+      </ion-item>
+
+      <h4 class="m-0 mt-4 text-dark">Discounts</h4>
+      <p class="m-0 mt-4 text-dark">Enter percentage if available:</p>
+      <ion-item>
+        <ion-input
+          type="number"
+          [(ngModel)]="equipmentDetailsFormModal.discountPercentage"
+          name="discountPercentage"
+          placeholder="Discount percentage if available"
+          clearInput
+        ></ion-input>
+        <ion-note slot="helper">Optional</ion-note>
+      </ion-item>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <ion-button (click)="prevSection()">
+        <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+        Previous
+      </ion-button>
+      <ion-button (click)="nextSection()"
+        >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+      ></ion-button>
+    </div>
+  </div>
+
+  <!-- Section 4: Features and description -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 4"
+  >
+    <div class="mt-4">
+      <p class="m-0 mt-4 text-dark">Features of machinery/equipment</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="newFeature"
+          name="newFeature"
+          placeholder="Add a Feature"
+        ></ion-input>
+        <ion-button (click)="addFeature()">Add</ion-button>
+        <ion-note slot="helper">Optional</ion-note>
+      </ion-item>
+
+      <ion-item
+        *ngFor="
+          let feature of equipmentDetailsFormModal.equipmentFeatures;
+          let i = index
+        "
+      >
+        {{ feature }}
+        <ion-button fill="clear" (click)="removeFeature(i)" slot="end"
+          >Remove</ion-button
+        >
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Short description of machinery/equipment</p>
+      <ion-item>
+        <ion-textarea
+          [(ngModel)]="equipmentDetailsFormModal.description"
+          name="description"
+          placeholder="e.g Concrete mixer for rent"
+          rows="2"
+          maxlength="60"
+        ></ion-textarea>
+        <ion-note slot="helper"
+          >**This field is required
+          <!-- ({{
+        houseDetailsFormModal.houseDescription.length
+      }}/60) -->
+        </ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Mobile No.</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="equipmentDetailsFormModal.mobile"
+          name="mobile"
+          placeholder="Enter your 10 digits telephone number"
+          type="number"
+          maxlength="10"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <ion-button (click)="prevSection()">
+        <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+        Previous
+      </ion-button>
+      <ion-button (click)="nextSection()"
+        >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+      ></ion-button>
+    </div>
+  </div>
+
+  <!-- Section 5: Images -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 5"
+  >
+    <!-- Note for image sections -->
+    <ion-note class="note-section" slot="start">
+      Please upload original images of your machinery/equipments.
+    </ion-note>
+
+    <div class="mt-4">
+      <p class="m-0 text-dark">
+        Equipment main Image <small class="text-danger">**Required</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="mainImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="mainImage"
+          type="file"
+          class="d-none"
+          (change)="uploadMainImage($event)"
+        />
+        <ion-note slot="helper"
+          >Upload an image of the equipment/machinery</ion-note
+        >
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="equipmentDetailsFormModal.mainImagePreview"
+          *ngIf="equipmentDetailsFormModal.mainImagePreview"
+          alt="equipment main Image"
+        />
+      </div>
+
+      <!-- Question 16: Additional Image (e.g. Special Features) -->
+      <p class="m-0 mt-5 text-dark">
+        Additional Image (e.g. Special Features)
+        <small class="text-primary">Optional</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="additionalImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="additionalImage"
+          type="file"
+          class="d-none"
+          (change)="uploadAdditionalImage($event)"
+        />
+        <ion-note slot="helper">Upload an additional image</ion-note>
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="equipmentDetailsFormModal.additionalImagePreview"
+          *ngIf="equipmentDetailsFormModal.additionalImagePreview"
+          alt="Additional Image"
+        />
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <ion-button (click)="prevSection()">
+        <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+        Previous
+      </ion-button>
+    </div>
+
+    <!-- Submit button -->
+    <ion-button *ngIf="!editingListing" class="mt-3 w-100" type="submit">
+      <ion-icon class="me-1" name="cloud-upload-outline"></ion-icon>
+      Publish machinery
+    </ion-button>
+  </div>
+
+  <!-- Save Changes button -->
+  <ion-button
+    *ngIf="editingListing"
+    color="warning"
+    class="mt-5 w-100"
+    type="button"
+    (click)="submitEditListing()"
+  >
+    <ion-icon class="me-1" name="cloud-upload-outline"></ion-icon>
+    Save Changes
+  </ion-button>
+</form>

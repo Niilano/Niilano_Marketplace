@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Order Details
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <h3 class="mx-2 text-dark">Delivery Information:</h3>
+    <ion-item>
+      <ion-label position="floating">Full Name <small *ngIf="submitted && !name" class="text-danger fw-bold">***This field is required</small> </ion-label>
+      <ion-input [(ngModel)]="name" name="name"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Email <small *ngIf="submitted && !email" class="text-danger fw-bold">***This field is required</small></ion-label>
+      <ion-input [(ngModel)]="email" name="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Phone <small *ngIf="submitted && !phone" class="text-danger fw-bold">***This field is required</small></ion-label>
+      <ion-input [(ngModel)]="phone" name="phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Address <small *ngIf="submitted && !address" class="text-danger fw-bold">***This field is required</small></ion-label>
+      <ion-textarea [(ngModel)]="address" name="address"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Special Requests <ion-badge color="secondary">Optional</ion-badge> </ion-label>
+      <ion-textarea [(ngModel)]="specialRequests" name="specialRequests" rows="4" placeholder="Enter any special requests or product details to seller"></ion-textarea>
+    </ion-item>
+
+    <h1 class="text-center text-dark"> Your Order </h1>
+
+    <ion-item class="ion-text-center">
+      <ion-label>
+        <h3> Item </h3>
+        <p>{{selectedItem.name}}</p>
+      </ion-label>
+      <ion-label>
+        <h3> Qty </h3>
+        <p>{{ selectedItem.quantity }}</p>
+      </ion-label>
+      <ion-label>
+        <h3> Price </h3>
+        <p>{{selectedItem.price | currency : 'GH₵' }}</p>
+      </ion-label>
+    </ion-item>
+  
+    <ion-item class="ion-text-center fw-bolder text-dark">
+      <ion-label>Amount Payable:</ion-label>
+      <ion-label>
+        {{ amountPayable | currency : 'GH₵' }} </ion-label>
+    </ion-item>
+
+    <ion-item style="--background:#000; color: #f2f2f2;" class="my-2">
+      <ion-label text-wrap class="d-flex align-items-center justify-content-center">
+        <ion-icon class="me-2" size="large" name="lock-closed"></ion-icon>
+        Your payments are secured with us, choose your payment option.
+      </ion-label>
+    </ion-item>
+
+    <ion-item class="mt-3">
+      <ion-select class="w-100" [(ngModel)]="paymentOption" name="payments" interface="action-sheet" placeholder="Select Payment Method">
+        <ion-select-option value="Cash">Cash On Delivery</ion-select-option>
+        <ion-select-option value="Mobile">Mobile Money</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <small *ngIf="submitted && !paymentOption" class="text-danger ms-2 fw-bold">***Please select a payment method</small>
+
+    <ion-item class="mt-3">
+      <ion-label>
+        I agree to the <a href="https://example.com/terms">terms and services</a>
+      </ion-label>
+      <ion-checkbox style="--background:grey;" [(ngModel)]="terms" name="terms"></ion-checkbox>
+    </ion-item>
+    <small *ngIf="submitted && !terms" class="text-danger ms-2 fw-bold">***You must agree with our terms before proceeding</small>
+
+    <!-- <ion-button class="rounded-3 mt-3" style="--background : #1a4640;" expand="full" (click)="makePayment()">
+      
+    </ion-button> -->
+
+    <div>
+      
+    <button (click)="submitOrder()" style="background : #1a4640;" class="w-50 btn my-3 mx-auto text-light d-flex align-items-center justify-content-center">
+      <ion-icon class="me-2" size="large" name="bag-check"></ion-icon> Place Order
+    </button>
+
+    </div>
+
+    <!-- <div *ngIf="paymentOption=='Mobile'">
+      
+    <angular4-paystack
+    [email]="email"
+    [amount]="amount"
+    [ref]="reference"
+    [channels]="['mobile_money']"
+    [class]="'w-50 bg-warning paystack-button btn my-3 mx-auto text-dark d-flex align-items-center justify-content-center'"
+    (onClose)="paymentCancel()"
+    (callback)="paymentDone($event)"
+    currency="GHS"
+  >
+  <ion-icon class="me-2" size="large" name="bag-check"></ion-icon> Place Order
+  </angular4-paystack>
+0207126289
+  </div> -->
+
+  </form>
+</ion-content>

@@ -1,0 +1,33 @@
+.coming-soon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .coming-soon-container h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .coming-soon-container p {
+    font-size: 18px;
+    color: #999;
+  }
+  
+  .image-wrapper {
+    height: 100px; /* Set the fixed height you want */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Hide the overflow content if the image is larger */
+  
+  img {
+    object-fit: cover; /* This property maintains the aspect ratio while filling the container */
+    width: 100%;
+    height: 100%; /* Make the image cover the entire container */
+  }
+
+}
+  

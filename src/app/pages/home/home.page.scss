@@ -1,0 +1,80 @@
+.image-wrapper {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.image-wrapper::after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.593);
+  z-index: 0;
+}
+
+.image {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  filter: blur(10px); /* Apply initial blur effect */
+  transition: filter 0.5s ease-out;
+}
+
+.image.loaded {
+  filter: blur(0); /* Remove blur effect after image is loaded */
+}
+
+
+ion-fab-button[data-desc] {
+    position: relative;
+}
+
+ion-fab-button[data-desc]::after {
+    position: absolute;
+    content: attr(data-desc);
+    z-index: 1;
+    right: 45px;
+    bottom: 6px;
+    color: var(--ion-color-contrast, #000);
+    background-color: var(--ion-color-base, #f2f2f2);
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Without setting height the slides will take up the height of the slide's content */
+// ion-slides {
+//   height: ;
+//   position: relative;
+// }
+
+ion-slide{
+  margin-top: 0% !important;
+}
+
+.slides-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 999;
+}
+
+.slides-navigation ion-button {
+  font-size: 24px;
+  --background-color: transparent;
+  color: white;
+}

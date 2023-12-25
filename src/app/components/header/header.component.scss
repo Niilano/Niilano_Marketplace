@@ -1,0 +1,101 @@
+.search-btn {
+  margin-right: 12px;
+}
+
+/* Scoped components require higher specificity to customize */
+ion-searchbar.custom {
+  --background: #f2f2f2;
+  --color: #1a4640;
+  --placeholder-color: #1a4640;
+  --icon-color: #1a4640;
+  --clear-button-color: #1a4640;
+
+  --border-radius: 4px;
+}
+
+@media (max-width: 500px) {
+  /* Decrease font size for all segment buttons */
+  ion-segment-button {
+    font-size: 11px;
+  }
+}
+
+.desktop-segment {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .desktop-segment {
+    display: block;
+  }
+}
+
+ion-segment-button::part(indicator-background) {
+  background: #08a391;
+}
+
+/* Material Design styles */
+ion-segment-button.md::part(native) {
+  color: #fff;
+}
+
+.segment-button-checked.md::part(native) {
+  color: #08a391;
+}
+
+ion-segment-button.md::part(indicator-background) {
+  height: 4px;
+}
+
+/* iOS styles */
+ion-segment-button.ios::part(native) {
+  color: #08a391;
+}
+
+.segment-button-checked.ios::part(native) {
+  color: #fff;
+}
+
+ion-segment-button.ios::part(indicator-background) {
+  border-radius: 20px;
+}
+
+ion-searchbar.ios.custom {
+  --cancel-button-color: #f2f2f2;
+}
+
+ion-searchbar.md.custom {
+  --cancel-button-color: #1a4640;
+}
+
+@media (max-width: 530px) {
+  ion-toolbar {
+    padding: 0% !important;
+  }
+  .button-native,
+  .logo {
+    padding: 0% !important;
+  }
+
+  .logo {
+    width: 180px;
+  }
+}
+
+/* Styles for iOS devices */
+:host-context(.ios) {
+  /* your styles here */
+  // ion-toolbar{
+  //   // --padding-bottom:6%;
+  // }
+
+  ion-buttons {
+    margin-top: 3% !important;
+    margin-bottom: 3% !important;
+  }
+
+  ion-button#mobile-saved-icon {
+    --padding-start: 10px;
+    --padding-top: 5px;
+  }
+}

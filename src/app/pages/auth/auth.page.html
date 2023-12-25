@@ -1,0 +1,378 @@
+<!-- <app-header [segmentValue]="pageTitle"></app-header> -->
+<ion-content>
+  <!-- Login UI  -->
+  <div
+    id="login"
+    *ngIf="selectedTab==='login'"
+    class="d-flex align-items-center flex-column"
+  >
+    <div class="authCon shadow rounded mx-auto py-4">
+      <div class="text-center">
+        <img (click)="toHome()" src="../../../assets/images/logo.png" alt="" />
+      </div>
+
+      <h5 class="m-0 mt-2 text-dark text-center">Login into your account</h5>
+
+      <div class="container">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="login()"
+          class="mt-3 text-dark"
+        >
+          <div class="mb-3">
+            <label for="email" class="form-label"
+              >Email address
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')"
+              >
+                **Please enter your email
+              </small>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')"
+              >
+                **Please enter a valid email
+              </small>
+            </label>
+
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Enter your email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+          <div class="mb-3 m">
+            <label for="password" class="form-label"
+              >Password
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')"
+              >
+                **Please enter your password
+              </small></label
+            >
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+              <input
+                type="{{ showPassword ? 'text' : 'password' }}"
+                class="form-control"
+                id="password"
+                placeholder="Enter your password"
+                formControlName="password"
+              />
+            </div>
+          </div>
+          <div class="form-check d-flex justify-content-between mb-3" style="font-size: .8em;">
+            <div>
+              <input
+                type="checkbox"
+                (change)="showPassword = !showPassword"
+                class="form-check-input"
+                id="showPassword"
+              />
+              <label class="form-check-label" for="showPassword"
+                >Show Password</label
+              >
+            </div>
+            <a
+              (click)="presentForgetPasswordModal(false)"
+              class="text-decoration-none"
+              style="cursor: pointer"
+              >Forgot Password?</a
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="btn text-light w-100 m shadow-lg"
+            style="background-color: #1a4640"
+          >
+            Login
+          </button>
+          <div class="mt-3 m text-center">
+            <p class="text-danger fw-bold">
+              Not registered yet?
+              <button
+                type="button"
+                (click)="authPageChange('register')"
+                class="btn btn-dark"
+              >
+                Register here
+              </button>
+            </p>
+            <p>or</p>
+            <button
+              type="button"
+              (click)="googleSignIn()"
+              class="btn m-btn w-100 d-flex justify-content-center align-items-center"
+              style="border: 2px solid #1a4640"
+            >
+              <i class="fab fa-google text-primary me-1 fa-2x"></i> Sign in with
+              Google
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration UI -->
+
+  <div
+    id="register"
+    *ngIf="selectedTab==='register'"
+    class="d-flex align-items-center flex-column py-3"
+  >
+
+    <div class="authCon bg-light shadow rounded mx-auto py-4">
+      <div class="text-center">
+        <img (click)="toHome()" src="../../../assets/images/logo.png" alt="" />
+      </div>
+      <h4 class="text-dark border-dark text-center">Get Started for free</h4>
+      <div class="container">
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="presentTermsAndConditionsAlert()"
+          class="text-dark mt-4"
+        >
+          <div
+            class="animate__animated animate__bounceInLeft"
+            *ngIf="currentRegSection == 1"
+          >
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label for="firstName" class="form-label">First Name </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  placeholder="Enter your first name"
+                  formControlName="first_name"
+                />
+                <small
+                  class="text-danger fw-bolder p-2"
+                  *ngIf="registerForm.get('first_name')?.touched && registerForm.get('first_name')?.hasError('required')"
+                >
+                  **Please enter your first name
+                </small>
+              </div>
+              <div class="col-md-12 mt-3">
+                <label for="lastName" class="form-label">Last Name </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  placeholder="Enter your last name"
+                  formControlName="last_name"
+                />
+                <small
+                  class="text-danger fw-bolder p-2"
+                  *ngIf="registerForm.get('last_name')?.touched && registerForm.get('last_name')?.hasError('required')"
+                >
+                  **Please enter your last name
+                </small>
+              </div>
+            </div>
+
+            <div
+              class="container mt-3 d-flex align-items-center justify-content-end"
+            >
+              <button (click)="nextRegSection()" class="btn btn-dark">
+                Continue <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="animate__animated animate__bounceInRight"
+            *ngIf="currentRegSection == 2"
+          >
+            <div class="col-md-12">
+              <label for="email" class="form-label">Email address </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter your email address"
+                  formControlName="email"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')"
+              >
+                **Please enter your email
+              </small>
+
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')"
+              >
+                **The email entered is not valid
+              </small>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label for="mobile" class="form-label">Mobile Number </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-mobile"></i>
+                </span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="mobile"
+                  placeholder="Enter your mobile number"
+                  formControlName="mobile"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('mobile')?.touched && registerForm.get('mobile')?.hasError('required')"
+              >
+                **Enter your mobile number
+              </small>
+            </div>
+
+            <div
+              class="container mt-3 d-flex align-items-center justify-content-between"
+            >
+              <button (click)="prevRegSection()" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back
+              </button>
+              <button (click)="nextRegSection()" class="btn btn-dark">
+                Continue <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="animate__animated animate__bounceInRight"
+            *ngIf="currentRegSection == 3"
+          >
+            <div class="col-md-12">
+              <label for="password" class="form-label">Password </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input
+                  type="{{ showPassword ? 'text' : 'password' }}"
+                  class="form-control"
+                  id="password"
+                  placeholder="Create your password"
+                  formControlName="password"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
+              >
+                **Please enter your password
+              </small>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')"
+              >
+                **Password Length must at least be eight(8)
+              </small>
+            </div>
+            <div class="col-md-12 mt-3">
+              <label for="confirmPassword" class="form-label"
+                >Confirm Password</label
+              >
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input
+                  type="{{ showPassword ? 'text' : 'password' }}"
+                  class="form-control"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
+                  formControlName="confirmPassword"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
+              >
+                **Please confirm your password
+              </small>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('passwordMismatch')"
+              >
+                **Passwords do not match
+              </small>
+            </div>
+
+            <div class="mt-1">
+              <input
+                type="checkbox"
+                (change)="showPassword = !showPassword"
+                class="form-check-input"
+                id="showPassword"
+              />
+              <label class="form-check-label ms-1" for="showPassword"
+                >Show Password</label
+              >
+            </div>
+
+            <div
+              class="container mt-3 d-flex align-items-center justify-content-between"
+            >
+              <button (click)="prevRegSection()" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back
+              </button>
+              <button
+                type="submit"
+                class="btn text-light shadow-lg"
+                style="background-color: #1a4640"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex align-items-center justify-content-center">
+            <p class="m-0 me-2 text-dark">Already a user?</p>
+            <button (click)="authPageChange('login')" class="btn btn-info">
+              Sign in
+            </button>
+          </div>
+
+          <p class="text-center" style="font-family: cursive">OR</p>
+
+          <div class="text-center mt-3">
+            <button
+              type="button"
+              class="btn m-btn d-flex mx-auto justify-content-center align-items-center"
+              style="border: 2px solid #1a4640"
+              (click)="googleSignup()"
+            >
+              <i class="fab fa-google text-primary me-1 fa-2x"></i> Sign up with
+              Google
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,338 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons class="d-sm-block d-none" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Renting</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button style="color: #f2f2f2;"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+
+<app-header [segmentValue]="pageTitle"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-segment (ionChange)="handleSegmentChange($event)" mode="md" [scrollable]="true" [value]="selectedSegment">
+    <ion-segment-button value="housing">
+      <ion-label>Housing</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vehicles">
+      <ion-label>Vehicles</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="machinery">
+      <ion-label>Equipments & Machinery</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="events">
+      <ion-label>Events & Decor</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="emptyData" class="coming-soon-container text-dark">
+    <ion-icon name="alarm-outline" size="large"></ion-icon>
+    <h2>No Items Found</h2>
+    <p>Stay tuned for exciting updates!</p>
+    <ion-icon name="notifications-outline" size="large"></ion-icon>
+  </div>
+
+  <div *ngIf="selectedSegment === 'housing'">
+    <!-- Display houses for rent -->
+    <ion-row *ngIf="rentingHouses.length > 0">
+      <ion-col size="12" size-md="4" size-lg="3" class="p-0 mb-3" *ngFor="let house of rentingHouses">
+        <ion-card class="h-100" [routerLink]="['/rent-items-details']" [queryParams]="{ item: 'house', id: house.id }"
+          style="background-color: #ffffff">
+          <swiper-container slides-per-view="1.2" speed="500" loop="true" css-mode="true" space-between="5" pager="true"
+            class="slides-container">
+            <!-- Loop through all the images of the house -->
+            <swiper-slide class="pb-5" *ngFor="let image of houseImages(house)">
+              <div class="image-wrapper">
+                <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+                <div class="image-label" style="text-transform: uppercase">
+                  {{ image?.image }}
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <ion-card-content style="background-color: #ffffff">
+            <!-- Display the house details from the data -->
+            <ion-card-title class="fs-6" style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              ">
+              {{ house.houseRegionLocation }} region, {{ house.houseLocation }}
+            </ion-card-title>
+            <ion-card-subtitle>
+              {{ house.houseDescription }}
+            </ion-card-subtitle>
+
+            <!-- Calculate and display the discounted price if discountPercentage is available -->
+            <ng-container *ngIf="house.discountPercentage !== ''">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>
+                  <span class="text-decoration-line-through">
+                    GH₵{{ house.pricePerMonth | number:'1.2-2' }} / Month
+                  </span>
+                  <br />
+                  <span>
+                    GH₵{{ calculateDiscountedPrice(house.pricePerMonth,
+                    house.discountPercentage) | number:'1.2-2' }} / Month
+                  </span>
+                </p>
+                <span class="text-center rounded-circle p-2 px-3" style="background-color: #1a4640; color: lightgrey">
+                  {{ house.discountPercentage }}% <br />
+                  <b class="text-light">OFF</b>
+                </span>
+              </div>
+            </ng-container>
+
+            <!-- If there's no discountPercentage, just display the regular price -->
+            <ng-container *ngIf="house.discountPercentage === ''">
+              <p>GH₵{{ house.pricePerMonth | number:'1.2-2' }} / Month</p>
+            </ng-container>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="selectedSegment === 'vehicles'">
+    <!-- Display vehicles for rent -->
+    <ion-row *ngIf="rentingVehicles.length > 0">
+      <ion-col size="12" size-md="4" size-lg="3" class="p-0 mb-3" *ngFor="let vehicle of rentingVehicles">
+        <ion-card class="h-100" [routerLink]="['/rent-items-details']"
+          [queryParams]="{ item: 'vehicle', id: vehicle.id }" style="background-color: #ffffff">
+          <swiper-container slides-per-view="1.2" speed="500" loop="true" css-mode="true" space-between="5" pager="true"
+            class="slides-container">
+            <!-- Loop through all the images of the house -->
+            <swiper-slide class="pb-5" *ngFor="let image of vehicleImages(vehicle)">
+              <div class="image-wrapper">
+                <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+                <div class="image-label" style="text-transform: uppercase">
+                  {{ image?.image }}
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <ion-card-content style="background-color: #ffffff">
+            <!-- Display the house details from the data -->
+            <ion-card-title class="fs-6" style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              ">
+              {{ vehicle.regionLocation }} region, {{ vehicle.location }}
+            </ion-card-title>
+            <ion-card-subtitle> {{ vehicle.tagline }} </ion-card-subtitle>
+
+            <ng-container class="mt-3" *ngIf="vehicle.drivenBy == 'Chauffeur only' || vehicle.drivenBy == 'both'">
+              <h4 class="text-danger fw-bold mb-0">
+                Pricing for Chauffeur driving
+              </h4>
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <ng-container *ngIf="vehicle.discountPercentageCD != '0'">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>
+                    <span class="text-decoration-line-through">
+                      GH₵{{ vehicle.priceWithinRegionCD | number:'1.2-2' }} /
+                      day
+                    </span>
+                    <br />
+                    <span>
+                      GH₵{{
+                      calculateDiscountedPrice(vehicle.priceWithinRegionCD,
+                      vehicle.discountPercentageCD) | number:'1.2-2' }} / day
+                    </span>
+                  </p>
+                  <span class="text-center rounded-circle p-2 px-3" style="background-color: #1a4640; color: lightgrey">
+                    {{ vehicle.discountPercentageCD }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- If there's no discountPercentageCD, just display the regular price -->
+              <ng-container *ngIf="vehicle.discountPercentageCD == '0'">
+                <p>
+                  GH₵{{ vehicle.priceWithinRegionCD | number:'1.2-2' }} / day
+                </p>
+              </ng-container>
+            </ng-container>
+
+            <ng-container class="mt-3" *ngIf="vehicle.drivenBy == 'Self drive' || vehicle.drivenBy == 'both'">
+              <h4 class="text-danger fw-bold">Pricing for self driving</h4>
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <ng-container *ngIf="vehicle.discountPercentageSD != '0'">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>
+                    <span class="text-decoration-line-through">
+                      GH₵{{ vehicle.priceWithinRegionSD | number:'1.2-2' }} /
+                      day
+                    </span>
+                    <br />
+                    <span>
+                      GH₵{{
+                      calculateDiscountedPrice(vehicle.priceWithinRegionSD,
+                      vehicle.discountPercentageSD) | number:'1.2-2' }} / day
+                    </span>
+                  </p>
+                  <span class="text-center rounded-circle p-2 px-3" style="background-color: #1a4640; color: lightgrey">
+                    {{ vehicle.discountPercentageSD }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- If there's no discountPercentageCD, just display the regular price -->
+              <ng-container *ngIf="vehicle.discountPercentageSD == '0'">
+                <p>
+                  GH₵{{ vehicle.priceWithinRegionSD | number:'1.2-2' }} / day
+                </p>
+              </ng-container>
+            </ng-container>
+
+            <p class="text-muted mt-3">
+              Pricing is for drive within the same region. <br />
+              <small>Click to see pricing for other regions.</small>
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="selectedSegment === 'machinery'">
+    <!-- Display houses for rent -->
+    <ion-row *ngIf="machineryListings.length > 0">
+      <ion-col size="12" size-md="4" size-lg="3" class="p-0 mb-3" *ngFor="let machinery of machineryListings">
+        <ion-card class="h-100" [routerLink]="['/rent-items-details']"
+          [queryParams]="{ item: 'machinery', id: machinery.id }" style="background-color: #ffffff">
+          <swiper-container slides-per-view="1.2" speed="500" loop="true" css-mode="true" space-between="5" pager="true"
+             class="slides-container">
+            <!-- Loop through all the images of the house -->
+            <swiper-slide class="pb-5" *ngFor="let image of machineryImages(machinery)">
+              <div class="image-wrapper">
+                <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+                <!-- <div class="image-label" style="text-transform: uppercase">
+                  {{ image?.image }}
+                </div> -->
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <ion-card-content style="background-color: #ffffff">
+            <!-- Display the house details from the data -->
+            <ion-card-title class="fs-6" style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              ">
+              {{ machinery.regionalLocation }} region, {{ machinery.location }}
+            </ion-card-title>
+            <ion-card-subtitle> {{ machinery.description }} </ion-card-subtitle>
+
+            <!-- Calculate and display the discounted price if discountPercentage is available -->
+            <ng-container *ngIf="machinery.discountPercentage !== 0">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>
+                  <span class="text-decoration-line-through">
+                    GH₵{{ machinery.priceWithinRegion | number:'1.2-2' }} /
+                    Day
+                  </span>
+                  <br />
+                  <span>
+                    GH₵{{ calculateDiscountedPrice(machinery.priceWithinRegion,
+                    machinery.discountPercentage) | number:'1.2-2' }} / Day
+                  </span>
+                </p>
+                <span class="text-center rounded-circle p-2 px-3" style="background-color: #1a4640; color: lightgrey">
+                  {{ machinery.discountPercentage }}% <br />
+                  <b class="text-light">OFF</b>
+                </span>
+              </div>
+            </ng-container>
+
+            <!-- If there's no discountPercentage, just display the regular price -->
+            <ng-container *ngIf="machinery.discountPercentage === 0">
+              <p>
+                GH₵{{ machinery.priceWithinRegion | number:'1.2-2' }} / Day
+              </p>
+            </ng-container>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="selectedSegment === 'events'">
+    <!-- Display events items for rent -->
+    <ion-row *ngIf="eventsItemsListings.length > 0">
+      <ion-col size="12" size-md="4" size-lg="3" class="p-0 mb-3" *ngFor="let eventsItems of eventsItemsListings">
+        <ion-card class="h-100" [routerLink]="['/rent-items-details']"
+          [queryParams]="{ item: 'events', id: eventsItems.id }" style="background-color: #ffffff">
+          <ion-slides pager="true" class="slides-container">
+            <!-- Loop through all the images of the house -->
+            <ion-slide class="pb-5" *ngFor="let image of eventsItemsImages(eventsItems)">
+              <div class="image-wrapper">
+                <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+                <!-- <div class="image-label" style="text-transform: uppercase">
+                  {{ image?.image }}
+                </div> -->
+              </div>
+            </ion-slide>
+          </ion-slides>
+          <ion-card-content style="background-color: #ffffff">
+            <!-- Display the house details from the data -->
+            <ion-card-title class="fs-6" style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              ">
+              {{ eventsItems.regionalLocation }} region, {{ eventsItems.location }}
+            </ion-card-title>
+            <ion-card-subtitle> {{ eventsItems.description }} </ion-card-subtitle>
+
+            <!-- Calculate and display the discounted price if discountPercentage is available -->
+            <ng-container *ngIf="eventsItems.discountPercentage !== 0">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>
+                  <span class="text-decoration-line-through">
+                    GH₵{{ eventsItems.priceWithinRegion | number:'1.2-2' }} /
+                    Day
+                  </span>
+                  <br />
+                  <span>
+                    GH₵{{ calculateDiscountedPrice(eventsItems.priceWithinRegion,
+                    eventsItems.discountPercentage) | number:'1.2-2' }} / Day
+                  </span>
+                </p>
+                <span class="text-center rounded-circle p-2 px-3" style="background-color: #1a4640; color: lightgrey">
+                  {{ eventsItems.discountPercentage }}% <br />
+                  <b class="text-light">OFF</b>
+                </span>
+              </div>
+            </ng-container>
+
+            <!-- If there's no discountPercentage, just display the regular price -->
+            <ng-container *ngIf="eventsItems.discountPercentage === 0">
+              <p>
+                GH₵{{ eventsItems.priceWithinRegion | number:'1.2-2' }} / Day
+              </p>
+            </ng-container>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="presentRentItemsModal()" style="--background: #1a4640">
+      <ion-icon class="text-light" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

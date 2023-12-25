@@ -1,0 +1,212 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-button
+      fill="clear"
+      slot="start"
+      (click)="navigateBack()"
+      ><ion-icon
+        class="text-light"
+        size="large"
+        name="arrow-back-outline"
+      ></ion-icon
+    ></ion-button>
+
+    <ion-title>Details</ion-title>
+
+    <!-- Share and Save icons -->
+    <ion-buttons slot="end">
+      <!-- Add your share and save button icons here -->
+      <ion-button>
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!dataAvailable">
+    <p class="text-center mt-3">No listing found</p>
+  </div>
+
+  <ion-row class="text-dark" *ngIf="serviceData">
+    <ion-col size="12" size-md="6">
+      <ion-item
+        lines="none"
+        style="--background: #f2f2f247; --padding-start: 0"
+      >
+        <ion-avatar slot="start">
+          <img alt="Use Profile" [src]="serviceData.user.user_profile.url" />
+        </ion-avatar>
+        <ion-label>
+          <ion-card-title class="text-dark"
+            >{{serviceData.user.first_name}}
+            {{serviceData.user.last_name}}</ion-card-title
+          >
+        </ion-label>
+      </ion-item>
+
+      <h3>{{serviceData.serviceType}}</h3>
+      <h4>
+        <span class="fw-bold text-danger">Experience:</span>
+        {{serviceData.yearsOfExperience}} years
+      </h4>
+      <p style="font-size: 1rem">
+        <span class="fw-bold text-danger"> What I do: </span> <br />
+        {{serviceData.description}}
+      </p>
+      <div class="mt-3">
+        <h4 class="text-danger m-0">Service Charge</h4>
+        <div
+          class="d-flex w-100 justify-content-between align-items-center"
+          *ngIf="serviceData.discountPercentage"
+        >
+          <div class="d-flex flex-column">
+            <span class="text-decoration-line-through text-secondary">
+              GH₵ {{serviceData.price}} {{serviceData.priceUnit}}
+            </span>
+            <span class="text-dark">
+              GH₵ {{ calculateDiscountedPrice(serviceData.price,
+              serviceData.discountPercentage) | number:'1.2-2' }}
+              {{serviceData.priceUnit}}
+            </span>
+          </div>
+          <div>
+            <span
+              class="rounded-circle py-3 px-4 d-flex flex-column align-items-center justify-content-center bg-dark text-light"
+            >
+              <span>{{serviceData.discountPercentage}}%</span>
+              <span class="fw-italic">OFF</span>
+            </span>
+          </div>
+        </div>
+        <div
+        class="d-flex w-100 justify-content-between align-items-center"
+        *ngIf="!serviceData.discountPercentage"
+      >
+        <div class="d-flex flex-column">
+          <span class="text-dark">
+            GH₵ {{serviceData.price}} {{serviceData.priceUnit}}
+          </span>
+        </div>
+      </div>
+        <div class="row">
+          <div class="col-md-6 mt-3 text-center">
+            <div class="container">
+              <button
+                (click)="handleCall(serviceData.mobile)"
+                class="btn btn-dark w-100"
+              >
+                <i class="fa-solid fa-phone-volume me-1 fa-shake"></i>
+                Get in Touch
+              </button>
+            </div>
+          </div>
+          <div class="col-md-6 mt-3 text-center">
+            <div class="container">
+              <button class="btn btn-info w-100" (click)="handleRequestCallback()" >
+                <i class="fa-solid fa-headset fa-beat-fade me-2"></i>Request
+                call back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col class="lgPadding">
+      <p>
+        <span class="text-danger fw-bold">
+          <i class="fa-solid fa-globe me-1"></i>
+          My Location:
+        </span>
+        <br />
+        <span class="text-dark">
+          {{serviceData.regionalLocation}} Region, {{serviceData.location}}
+        </span>
+      </p>
+
+      <!--  -->
+      <p class="mt-3" style="text-transform: capitalize;">
+        <span class="text-danger fw-bold">
+          <i class="fa-solid fa-person-walking-luggage me-1"></i> Service
+          Delivery:</span
+        >
+        <br />
+        {{serviceData.serviceDelivery=="both" ? "Remotely & In person" : serviceData.serviceDelivery}}
+      </p>
+
+      <p class="mt-3 d-flex align-items-center">
+        <span class="text-dark me-2">
+          <i class="fa-solid fa-certificate me-1"></i>
+          Certified
+        </span>
+        <span>
+          <i
+            *ngIf="serviceData.isCertified === 'yes'"
+            class="fa-solid fa-clipboard-check text-success fa-2x"
+          ></i>
+          <i
+            *ngIf="serviceData.isCertified !== 'yes'"
+            class="fa-solid fa-circle-xmark fa-2x text-danger"
+          ></i>
+        </span>
+      </p>
+
+      <p class="m-0 mt-3 text-danger fw-bold">
+        <i class="fa-solid fa-briefcase me-1"></i>
+        <span> My Portfolio: </span>
+      </p>
+      <ion-row>
+        <ion-col
+          *ngFor="let Portfolio of serviceData.Portfolios"
+          size="12"
+          size-md="6"
+          size-lg="4"
+          class="mt-3"
+        >
+          <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+              <img [src]="Portfolio.image.imageUrl" alt="Portfolio Image" class="image w-100" />
+
+            <ion-card-header class="p-2 pb-0">
+              <ion-card-title
+                class="text-danger pb-2"
+                style="
+                  font-size: 0.9rem;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  text-align: left;
+                "
+              >
+                {{Portfolio.title}}
+              </ion-card-title>
+              <ion-card-subtitle
+                style="
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2; /* Number of lines to display */
+                  -webkit-box-orient: vertical;
+                  line-height: 1.5; /* Adjust the line height as needed */
+                  max-height: 3em;
+                  text-align: left;
+                  margin-top: 0;
+                "
+              >
+                {{Portfolio.description}}
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="text-start">
+                <a href="/">View More...</a>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

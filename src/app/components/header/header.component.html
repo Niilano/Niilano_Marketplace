@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar style="color: #f2f2f2; --background: #f2f2f2">
+    <ion-title slot="start" style="width: auto" class="logo d-flex">
+      <img src="../../../assets/images/logo.png" class="logo" alt="logo" />
+
+    </ion-title>
+
+    <ion-button slot="end"
+    class="d-sm-block d-none"
+    style="
+      --background: transparent;
+      margin-right: 15px;
+      text-transform: capitalize;
+      --padding-end: 100px;
+    --padding-top: 5px;
+    --padding-bottom: 5px;
+    height: max-content;
+    "
+    (click)="searchI()">
+    <ion-icon
+    class="me-3"
+    slot="icon-only"
+    name="search-outline"
+    style="color: #1a4640"
+  ></ion-icon>
+      <span style="
+      color: #8ea3a0;">
+        Search 
+      </span>
+    </ion-button>    
+
+    <ion-button
+    class="search-btn d-sm-none d-block"
+      slot="end"
+      style="
+        --background: transparent;
+        --padding-end: 0;
+        --padding-start: 0;
+        --box-shadow: 0;
+      "
+      (click)="searchI()"
+    >
+      <ion-icon
+        slot="icon-only"
+        size="large"
+        name="search-outline"
+        style="color: #1a4640"
+      ></ion-icon>
+    </ion-button>
+
+    <!-- <ion-button
+      (click)="redirect('saveditems')"
+      class="d-sm-block d-none py-1 rounded"
+      style="color: #f2f2f2; background: #1a4640"
+      slot="end"
+    >
+      <ion-button class="d-flex align-items-center justify-content-center">
+        <ion-icon size="large" name="bookmark-outline"></ion-icon>
+        <span>Saved Items</span>
+      </ion-button>
+
+      <span
+        class="position-absolute start-0 translate-middle badge rounded-pill bg-danger"
+        style="top: 20%"
+      >
+        {{ savedItems.length }}
+      </span>
+    </ion-button> -->
+
+    <ion-button (click)="redirect('saveditems')" class="d-sm-block d-none" style="margin-right: 30px;;" color="warning" slot="end">
+Saved Items
+<ion-badge color="danger" class="ms-1">
+  {{ savedItems.length }}
+</ion-badge>
+    </ion-button>
+
+     <ion-buttons
+      (click)="redirect('saveditems')"
+      class="d-sm-none d-block rounded m-0"
+      style="color: #1a4640"
+      slot="end"
+    >
+      <ion-button
+        id="mobile-saved-icon"
+        style="--padding-end: 0%"
+        class="d-flex m-0 p-0 align-items-center justify-content-center"
+        routerLink="/cart"
+      >
+        <ion-icon size="large" name="bookmark-outline"></ion-icon>
+        <span
+          class="position-absolute start-20 translate-middle badge rounded-pill bg-danger"
+          style="top: 30%"
+        >
+          {{ savedItems.length }}
+        </span>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons class="menu-button" slot="end">
+      <ion-menu-button size="large" style="color: #1a4640"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="desktop-segment text-light">
+    <ion-segment (ionChange)="handleSegmentChange($event)" [value]="segmentValue">
+      <ion-segment-button value="home">
+        <ion-label>For You</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="products">
+        <ion-label>Shop</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="rent">
+        <ion-label>Rent</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="services">
+        <ion-label>Hire Service</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>

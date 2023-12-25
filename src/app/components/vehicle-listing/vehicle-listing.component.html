@@ -1,0 +1,806 @@
+<div>
+  <h3
+    *ngIf="sectionTitle && currentSection === 1"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 2"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 3"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 4"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 5"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 6"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <h3
+    *ngIf="sectionTitle && currentSection === 7"
+    class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight"
+  >
+    {{ sectionTitle }}
+  </h3>
+  <ion-progress-bar
+    [value]="currentSection / totalSections"
+    color="primary"
+  ></ion-progress-bar>
+</div>
+
+<form (ngSubmit)="submitVehicleDetailsForm()" class="py-3 pb-5">
+  <!-- Section 1: Vehicle Type -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 1"
+  >
+    <div class="mt-4">
+      <!-- Question 1 -->
+      <p class="m-0 text-dark">Select vehicle type</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.vehicleType"
+          name="vehicleType"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Vehicle Type"
+        >
+          <ion-select-option value="saloon">Saloon</ion-select-option>
+          <ion-select-option value="sedan">Sedan</ion-select-option>
+          <ion-select-option value="suv">SUV</ion-select-option>
+          <ion-select-option value="4x4">4x4</ion-select-option>
+          <ion-select-option value="minivan">Minivan</ion-select-option>
+          <ion-select-option value="bus">Bus</ion-select-option>
+          <ion-select-option value="pickup">Pickup</ion-select-option>
+          <ion-select-option value="convertible">Convertible</ion-select-option>
+          <ion-select-option value="coupe">Coupe</ion-select-option>
+          <ion-select-option value="wagon">Wagon</ion-select-option>
+          <ion-select-option value="sports">Sports</ion-select-option>
+          <ion-select-option value="truck">Truck</ion-select-option>
+          <ion-select-option value="articulator">Articulator</ion-select-option>
+          <ion-select-option value="van">Van</ion-select-option>
+          <ion-select-option value="box-truck">Box Truck</ion-select-option>
+          <ion-select-option value="flatbed-truck"
+            >Flatbed Truck</ion-select-option
+          >
+          <ion-select-option value="dump-truck">Dump Truck</ion-select-option>
+          <ion-select-option value="tow-truck">Tow Truck</ion-select-option>
+          <ion-select-option value="food-truck">Food Truck</ion-select-option>
+          <ion-select-option value="fire-truck">Fire Truck</ion-select-option>
+          <ion-select-option value="ambulance">Ambulance</ion-select-option>
+          <ion-select-option value="police-car">Police Car</ion-select-option>
+          <ion-select-option value="limousine">Limousine</ion-select-option>
+          <ion-select-option value="motorcycle">Motorcycle</ion-select-option>
+          <ion-select-option value="scooter">Scooter</ion-select-option>
+          <ion-select-option value="bicycle">Bicycle</ion-select-option>
+          <ion-select-option value="rv"
+            >RV (Recreational Vehicle)</ion-select-option
+          >
+          <ion-select-option value="atv"
+            >ATV (All-Terrain Vehicle)</ion-select-option
+          >
+          <ion-select-option value="snowmobile">Snowmobile</ion-select-option>
+          <ion-select-option value="tractor">Tractor</ion-select-option>
+          <ion-select-option value="bulldozer">Bulldozer</ion-select-option>
+          <ion-select-option value="excavator">Excavator</ion-select-option>
+          <ion-select-option value="crane">Crane</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 2 -->
+      <p class="m-0 mt-4 text-dark">Select vehicle brand/make</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.vehicleMake"
+          name="vehicleMake"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Vehicle brand/make"
+        >
+          <ion-select-option value="Toyota">Toyota</ion-select-option>
+          <ion-select-option value="Honda">Honda</ion-select-option>
+          <ion-select-option value="Ford">Ford</ion-select-option>
+          <ion-select-option value="Chevrolet">Chevrolet</ion-select-option>
+          <ion-select-option value="Nissan">Nissan</ion-select-option>
+          <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
+          <ion-select-option value="BMW">BMW</ion-select-option>
+          <ion-select-option value="Mercedes-Benz"
+            >Mercedes-Benz</ion-select-option
+          >
+          <ion-select-option value="Audi">Audi</ion-select-option>
+          <ion-select-option value="Kia">Kia</ion-select-option>
+          <ion-select-option value="Hyundai">Hyundai</ion-select-option>
+          <ion-select-option value="Subaru">Subaru</ion-select-option>
+          <ion-select-option value="Mazda">Mazda</ion-select-option>
+          <ion-select-option value="Lexus">Lexus</ion-select-option>
+          <ion-select-option value="Volvo">Volvo</ion-select-option>
+          <ion-select-option value="Porsche">Porsche</ion-select-option>
+          <ion-select-option value="Tesla">Tesla</ion-select-option>
+          <ion-select-option value="Jaguar">Jaguar</ion-select-option>
+          <ion-select-option value="Land Rover">Land Rover</ion-select-option>
+          <ion-select-option value="Ferrari">Ferrari</ion-select-option>
+          <ion-select-option value="Lamborghini">Lamborghini</ion-select-option>
+          <ion-select-option value="Rolls-Royce">Rolls-Royce</ion-select-option>
+          <ion-select-option value="Bentley">Bentley</ion-select-option>
+          <ion-select-option value="Maserati">Maserati</ion-select-option>
+          <ion-select-option value="Bugatti">Bugatti</ion-select-option>
+          <ion-select-option value="Mitsubishi">Mitsubishi</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 3 -->
+      <p class="m-0 mt-4 text-dark">Model year</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.modelYear"
+          name="modelYear"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Select model year"
+        >
+          <ion-select-option
+            *ngFor="let year of vehicleModelYearOptions"
+            [value]="year"
+            >{{ year }}</ion-select-option
+          >
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="text-end mt-4">
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Vehicle Details -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 2"
+  >
+    <div class="mt-4">
+      <p class="m-0 text-dark">Mileage</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="vehicleDetailsFormModal.mileage"
+          name="mileage"
+          type="number"
+          placeholder="Enter mileage"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Color of the vehicle</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="vehicleDetailsFormModal.color"
+          name="color"
+          type="text"
+          placeholder="Enter vehicle color"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Registration Number of the vehicle</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="vehicleDetailsFormModal.regNumber"
+          name="regNumber"
+          type="text"
+          placeholder="Enter registration number"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Vehicle Specifications -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 3"
+  >
+    <div class="mt-4">
+      <p class="m-0 text-dark">Transmission type</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.transmissionType"
+          name="transmissionType"
+          interface="action-sheet"
+          placeholder="Select transmission type"
+        >
+          <ion-select-option value="manual">Manual</ion-select-option>
+          <ion-select-option value="automatic">Automatic</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Fuel</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.fuel"
+          name="fuel"
+          interface="action-sheet"
+          placeholder="Select fuel"
+        >
+          <ion-select-option value="diesel">Diesel</ion-select-option>
+          <ion-select-option value="petrol">Petrol</ion-select-option>
+          <ion-select-option value="gas">Gas</ion-select-option>
+          <ion-select-option value="electric">Electric</ion-select-option>
+          <ion-select-option value="hybrid">Hybrid</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Number of seats</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.seats"
+          name="seats"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Select seats No."
+        >
+          <ion-select-option *ngFor="let n of seatNumberOptions" [value]="n">{{
+            n
+          }}</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Driving and Location -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 4"
+  >
+    <div class="mt-4">
+      <p class="m-0 text-dark">Are you a car rental company?</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.isCarRentalCompany"
+          name="isCarRentalCompany"
+          interface="action-sheet"
+          placeholder="Choose an option"
+        >
+          <ion-select-option value="yes">Yes</ion-select-option>
+          <ion-select-option value="no">No</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Vehicle allowed to be driven by?</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.drivenBy"
+          name="drivenBy"
+          interface="action-sheet"
+          placeholder="Select fuel"
+        >
+          <ion-select-option value="Chauffeur only"
+            >Chauffeur only</ion-select-option
+          >
+          <ion-select-option value="Self drive">Self-drive</ion-select-option>
+          <ion-select-option value="both">Both</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 4 -->
+      <p class="m-0 mt-4 text-dark">Region of Vehicle?</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.regionLocation"
+          name="regionLocation"
+          [interface]="isIOSDevice ? 'action-sheet' : 'alert'"
+          placeholder="Select Region"
+        >
+          <ion-select-option value="Greater Accra"
+            >Greater Accra Region</ion-select-option
+          >
+          <ion-select-option value="Ashanti">Ashanti Region</ion-select-option>
+          <ion-select-option value="Central">Central Region</ion-select-option>
+          <ion-select-option value="Eastern">Eastern Region</ion-select-option>
+          <ion-select-option value="Western">Western Region</ion-select-option>
+          <ion-select-option value="Volta">Volta Region</ion-select-option>
+          <ion-select-option value="Northern"
+            >Northern Region</ion-select-option
+          >
+          <ion-select-option value="Upper East"
+            >Upper East Region</ion-select-option
+          >
+          <ion-select-option value="Upper West"
+            >Upper West Region</ion-select-option
+          >
+          <ion-select-option value="Bono">Bono Region</ion-select-option>
+          <ion-select-option value="Bono East"
+            >Bono East Region</ion-select-option
+          >
+          <ion-select-option value="Ahafo">Ahafo Region</ion-select-option>
+          <ion-select-option value="Oti">Oti Region</ion-select-option>
+          <ion-select-option value="Savannah"
+            >Savannah Region</ion-select-option
+          >
+          <ion-select-option value="North East"
+            >North East Region</ion-select-option
+          >
+          <ion-select-option value="Western North"
+            >Western North Region</ion-select-option
+          >
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <!-- Question 4 -->
+      <p class="m-0 mt-4 text-dark">Location of Vehicle</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="vehicleDetailsFormModal.location"
+          name="location"
+          placeholder="Enter precise location in the selected region"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Is tracking system present?</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.isTrackingSystemAvailable"
+          name="isTrackingSystemAvailable"
+          interface="action-sheet"
+          placeholder="Select an option"
+        >
+          <ion-select-option value="yes">Yes</ion-select-option>
+          <ion-select-option value="no">No</ion-select-option>
+        </ion-select>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Vehicle Features and Description -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 5"
+  >
+    <div class="mt-4">
+      <p class="m-0 text-dark">Features Of Vehicle</p>
+      <ion-item>
+        <ion-select
+          [(ngModel)]="vehicleDetailsFormModal.vehicleFeatures"
+          name="vehicleFeatures"
+          interface="action-sheet"
+          placeholder="Select vehicle features"
+          multiple="true"
+        >
+          <ion-select-option value="Air Conditioner"
+            >Air Conditioner</ion-select-option
+          >
+          <ion-select-option value="Bluetooth Connectivity"
+            >Bluetooth Connectivity</ion-select-option
+          >
+          <ion-select-option value="GPS Navigation"
+            >GPS Navigation</ion-select-option
+          >
+          <ion-select-option value="USB Charging Ports"
+            >USB Charging Ports</ion-select-option
+          >
+          <ion-select-option value="Sunroof">Sunroof</ion-select-option>
+          <ion-select-option value="Leather Seats"
+            >Leather Seats</ion-select-option
+          >
+          <ion-select-option value="Backup Camera"
+            >Backup Camera</ion-select-option
+          >
+          <ion-select-option value="Keyless Entry"
+            >Keyless Entry</ion-select-option
+          >
+          <ion-select-option value="Cruise Control"
+            >Cruise Control</ion-select-option
+          >
+          <ion-select-option value="Parking Sensors"
+            >Parking Sensors</ion-select-option
+          >
+          <ion-select-option value="Heated Seats"
+            >Heated Seats</ion-select-option
+          >
+          <ion-select-option value="Automatic Transmission"
+            >Automatic Transmission</ion-select-option
+          >
+          <ion-select-option value="Convertible Roof"
+            >Convertible Roof</ion-select-option
+          >
+          <ion-select-option value="Four-Wheel Drive (4WD)"
+            >Four-Wheel Drive (4WD)</ion-select-option
+          >
+          <ion-select-option value="Advanced Safety Features"
+            >Advanced Safety Features</ion-select-option
+          >
+          <!-- Add more features as needed -->
+        </ion-select>
+        <ion-note slot="helper">**Select one or more features</ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Short tagline for vehicle</p>
+      <ion-item>
+        <ion-textarea
+          [(ngModel)]="vehicleDetailsFormModal.tagline"
+          name="tagline"
+          placeholder="e.g Toyota Camry for rent"
+          rows="2"
+          maxlength="60"
+        ></ion-textarea>
+        <ion-note slot="helper"
+          >**This field is required
+          <!-- ({{
+        houseDetailsFormModal.houseDescription.length
+      }}/60) -->
+        </ion-note>
+      </ion-item>
+
+      <p class="m-0 mt-4 text-dark">Mobile No.</p>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="vehicleDetailsFormModal.mobile"
+          name="mobile"
+          placeholder="Enter your 10 digits telephone number"
+          type="number"
+          maxlength="10"
+        ></ion-input>
+        <ion-note slot="helper">**This field is required</ion-note>
+      </ion-item>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Pricing and Discounts -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 6"
+  >
+    <div class="mt-4">
+      <!-- Question 18: Price(s) per day -->
+      <h4 class="m-0 text-dark">Price(s) per day</h4>
+
+      <div
+        *ngIf="
+          vehicleDetailsFormModal.drivenBy == 'Chauffeur only' ||
+          vehicleDetailsFormModal.drivenBy == 'both'
+        "
+      >
+        <p class="m-0 mt-4 fw-bold border-bottom border-danger text-danger">
+          With Chauffeur Pricing
+        </p>
+
+        <p class="m-0 mt-4 text-dark">Within the region:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceWithinRegionCD"
+            name="priceWithinRegion"
+            placeholder="Price within region"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <p class="m-0 mt-4 text-dark">Regions around:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceRegionsAroundCD"
+            name="priceRegionsAround"
+            placeholder="Price for regions around"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <p class="m-0 mt-4 text-dark">Regions far away:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceRegionsFarAwayCD"
+            name="priceRegionsFarAway"
+            placeholder="Price for regions far away"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <h4 class="m-0 mt-4 text-dark">Discounts</h4>
+        <p class="m-0 mt-4 text-dark">Enter percentage if available:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.discountPercentageCD"
+            name="discountPercentage"
+            placeholder="Discount percentage if available"
+            clearInput
+          ></ion-input>
+          <ion-note slot="helper">Optional</ion-note>
+        </ion-item>
+      </div>
+
+      <div
+        *ngIf="
+          vehicleDetailsFormModal.drivenBy == 'Self drive' ||
+          vehicleDetailsFormModal.drivenBy == 'both'
+        "
+      >
+        <p class="m-0 mt-4 fw-bold border-bottom border-danger text-danger">
+          Self Drive Pricing
+        </p>
+
+        <p class="m-0 mt-4 text-dark">Within the region:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceWithinRegionSD"
+            name="priceWithinRegion"
+            placeholder="Price within region"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <p class="m-0 mt-4 text-dark">Regions around:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceRegionsAroundSD"
+            name="priceRegionsAround"
+            placeholder="Price for regions around"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <p class="m-0 mt-4 text-dark">Regions far away:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.priceRegionsFarAwaySD"
+            name="priceRegionsFarAway"
+            placeholder="Price for regions far away"
+            clearInput
+          ></ion-input>
+        </ion-item>
+
+        <h4 class="m-0 mt-4 text-dark">Discounts</h4>
+        <p class="m-0 mt-4 text-dark">Enter percentage if available:</p>
+        <ion-item>
+          <ion-input
+            type="number"
+            [(ngModel)]="vehicleDetailsFormModal.discountPercentageSD"
+            name="discountPercentage"
+            placeholder="Discount percentage if available"
+            clearInput
+          ></ion-input>
+          <ion-note slot="helper">Optional</ion-note>
+        </ion-item>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button (click)="nextSection()"
+          >Next <ion-icon name="arrow-redo-outline" class="ms-1"></ion-icon
+        ></ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Vehicle Images -->
+  <div
+    class="w-100 animate__animated animate__fadeInRight"
+    *ngIf="currentSection === 7"
+  >
+    <!-- Note for image sections -->
+    <ion-note class="note-section" slot="start">
+      Please make sure the uploaded images match the respective sections.
+    </ion-note>
+    <div class="mt-4">
+      <!-- Question 13 -->
+      <p class="m-0 text-dark">
+        Vehicle Front Image <small class="text-danger">**Required</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="frontImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="frontImage"
+          type="file"
+          class="d-none"
+          (change)="uploadFrontImage($event)"
+        />
+        <ion-note slot="helper"
+          >Upload an image of the vehicle from the front</ion-note
+        >
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="vehicleDetailsFormModal.frontImagePreview"
+          *ngIf="vehicleDetailsFormModal.frontImagePreview"
+          alt="Vehicle Front Image"
+        />
+      </div>
+
+      <!-- Question 14: Vehicle Side Image -->
+      <p class="m-0 mt-5 text-dark">
+        Vehicle Side Image <small class="text-danger">**Required</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="sideImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="sideImage"
+          type="file"
+          class="d-none"
+          (change)="uploadSideImage($event)"
+        />
+        <ion-note slot="helper"
+          >Upload an image of the vehicle from the side</ion-note
+        >
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="vehicleDetailsFormModal.sideImagePreview"
+          *ngIf="vehicleDetailsFormModal.sideImagePreview"
+          alt="Vehicle Side Image"
+        />
+      </div>
+
+      <!-- Question 15: Interior Image -->
+      <p class="m-0 mt-5 text-dark">
+        Interior Image <small class="text-danger">**Required</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="interiorImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="interiorImage"
+          type="file"
+          class="d-none"
+          (change)="uploadInteriorImage($event)"
+        />
+        <ion-note slot="helper"
+          >Upload an image of the vehicle interior</ion-note
+        >
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="vehicleDetailsFormModal.interiorImagePreview"
+          *ngIf="vehicleDetailsFormModal.interiorImagePreview"
+          alt="Vehicle Interior Image"
+        />
+      </div>
+
+      <!-- Question 16: Additional Image (e.g. Special Features) -->
+      <p class="m-0 mt-5 text-dark">
+        Additional Image (e.g. Special Features)
+        <small class="text-primary">Optional</small>
+      </p>
+      <ion-item lines="none">
+        <label
+          for="additionalImage"
+          class="btn btn-dark d-flex align-items-center justify-content-center"
+        >
+          <ion-icon class="me-1" name="add-circle-outline"></ion-icon> Click to
+          select an image</label
+        >
+        <input
+          id="additionalImage"
+          type="file"
+          class="d-none"
+          (change)="uploadAdditionalImage($event)"
+        />
+        <ion-note slot="helper">Upload an additional image</ion-note>
+      </ion-item>
+
+      <div class="image-preview">
+        <img
+          [src]="vehicleDetailsFormModal.additionalImagePreview"
+          *ngIf="vehicleDetailsFormModal.additionalImagePreview"
+          alt="Additional Image"
+        />
+      </div>
+
+      <!-- Add more image upload inputs as needed -->
+
+      <div class="d-flex justify-content-between mt-4">
+        <ion-button (click)="prevSection()">
+          <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+          Previous
+        </ion-button>
+      </div>
+
+      <!-- Submit button -->
+      <ion-button *ngIf="!editingListing" class="mt-3 w-100" type="submit">
+        <ion-icon class="me-1" name="cloud-upload-outline"></ion-icon>
+        Publish vehicle
+      </ion-button>
+
+    </div>
+  </div>
+
+    <!-- Save Changes button -->
+    <ion-button (click)="submitEditListing()" *ngIf="editingListing" color="warning" class="mt-5 w-100" type="button">
+      <ion-icon class="me-1" name="cloud-upload-outline"></ion-icon>
+      Save Changes
+    </ion-button>
+
+</form>

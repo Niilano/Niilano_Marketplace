@@ -1,0 +1,548 @@
+<app-header [segmentValue]="pageTitle"></app-header>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($any($event))" class="ion-padding">
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div
+  class="mt-4 container d-flex align-items-center flex-column justify-content-center"
+  *ngIf="connected === false"
+>
+<!-- <p class="text-dark">
+  {{serverURL}}
+</p> -->
+<i class="fa-solid fa-satellite-dish fa-fade fa-8x text-danger mb-3"></i>
+  <h3 class="mb-0 text-dark mb-3">UNABLE TO CONNECT</h3>
+  <button class="btn btn-dark w-100" (click)="retry()">RETRY</button>
+</div>
+
+  <div *ngIf="products.trendingProducts?.length > 0" class="trending-section text-dark">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="m-0">
+        <ion-icon name="trending-up-outline" class="discount-icon"></ion-icon>
+        Trending
+      </h4>
+
+      <ion-button style="--padding-end: 0" fill="clear">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        <span>See More</span>
+      </ion-button>
+    </div>
+
+    <swiper-container class="h-100 pb-3" [slidesPerView]="slidesPerView" speed="500" css-mode="true" space-between="10">
+      <swiper-slide
+        class="h-100"
+        [routerLink]="['/product-details']"
+        [queryParams]="{ product: product.id }"
+        *ngFor="let product of products.trendingProducts"
+      >
+        <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+          <div
+            class="bg-dark image-wrapper"
+            [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
+          >
+            <img
+              [src]="modifyImageUrl(product.image?.url)"
+              class="image"
+              alt="{{ product.name }}"
+              referrerpolicy="no-referrer" 
+              (load)="onImageLoad($event)"
+            />
+          </div>
+
+          <ion-card-header class="p-2 pb-0">
+            <ion-card-title
+              class="fs-6 text-start"
+              style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              >{{ product.name }}</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content class="p-2 text-start mt-1 pt-0">
+            <div class="price">
+              <div
+                class="d-flex justify-content-between"
+                *ngIf="product.discount_percent"
+              >
+                <div style="width: 70%">
+                  <span class="text-decoration-line-through me-2"
+                    >{{product.price | currency : 'GH₵'}}</span
+                  >
+                  <br />
+                  <span class="discounted-price"
+                    >{{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span
+                  >
+                </div>
+                <span style="width: 30%">
+                  <ion-badge
+                    class="w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="--background: #1a4640"
+                    >{{product.discount_percent}}%</ion-badge
+                  >
+                </span>
+              </div>
+
+              <span class="original-price" *ngIf="!product.discount_percent"
+                >{{product.price | currency : 'GH₵'}}</span
+              >
+            </div>
+
+            <p
+              class="m-0"
+              style="
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              "
+            >
+              <ion-icon
+                class="text-dark me-1"
+                name="location-outline"
+              ></ion-icon>
+              <span>{{product.location}}</span>
+            </p>
+
+            <!-- <p *ngIf="product.Campus" class="d-flex align-items-center text-nowrap"
+                          style="text-overflow: ellipsis;"> <ion-icon class="text-dark me-1"
+                            name="school-outline"></ion-icon> {{product.Campus}} </p> -->
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+
+      <!-- Navigation arrows -->
+      <!-- <div class="slides-navigation">
+      <ion-button (click)="slides.slidePrev()">
+        <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      <ion-button (click)="slides.slideNext()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div> -->
+    </swiper-container>
+  </div>
+
+  <div *ngIf="products.discountedProducts?.length > 0" class="discount-section text-dark">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="m-0">
+        <ion-icon name="pricetag-outline" class="discount-icon"></ion-icon>
+        On Discount
+      </h4>
+
+      <ion-button style="--padding-end: 0" fill="clear">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        <span>See More</span>
+      </ion-button>
+    </div>
+    <swiper-container class="pb-3" [slidesPerView]="slidesPerView" speed="500" css-mode="true" space-between="10">
+      <swiper-slide
+        class="h-100"
+        [routerLink]="['/product-details']"
+        [queryParams]="{ product: product.id }"
+        *ngFor="let product of products.discountedProducts"
+      >
+        <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+          <div
+            class="bg-dark image-wrapper"
+            [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
+          >
+            <img
+              [src]="modifyImageUrl(product.image?.url)"
+              class="image"
+              alt="{{ product.name }}"
+              (load)="onImageLoad($event)"
+            />
+          </div>
+
+          <ion-card-header class="p-2 pb-0">
+            <ion-card-title
+              class="fs-6"
+              style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              >{{ product.name }}</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content class="p-2 mt-1 pt-0">
+            <div class="price">
+              <div
+                class="d-flex justify-content-between"
+                *ngIf="product.discount_percent"
+              >
+                <div class="text-start" style="width: 70%">
+                  <span class="text-decoration-line-through"
+                    >{{product.price | currency : 'GH₵'}}</span
+                  >
+                  <br />
+                  <span class="discounted-price"
+                    >  {{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span
+                  >
+                </div>
+                <span style="width: 30%">
+                  <ion-badge
+                    class="w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="--background: #1a4640"
+                    >{{product.discount_percent}}%</ion-badge
+                  >
+                </span>
+              </div>
+
+              <span class="original-price" *ngIf="!product.discount_percent"
+                >{{product.price | currency : 'GH₵'}}</span
+              >
+            </div>
+
+            <p
+              class="m-0"
+              style="
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              "
+            >
+              <ion-icon
+                class="text-dark me-1"
+                name="location-outline"
+              ></ion-icon>
+              <span>{{product.location}}</span>
+            </p>
+
+            <!-- <p *ngIf="product.Campus" class="d-flex align-items-center text-nowrap"
+                          style="text-overflow: ellipsis;"> <ion-icon class="text-dark me-1"
+                            name="school-outline"></ion-icon> {{product.Campus}} </p> -->
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+
+      <!-- Navigation arrows -->
+      <!-- <div class="slides-navigation">
+      <ion-button (click)="slides.slidePrev()">
+        <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      <ion-button (click)="slides.slideNext()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div> -->
+    </swiper-container>
+  </div>
+
+  <div *ngIf="products.productsAvailable?.length > 0" class="sale-section text-dark">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="m-0">
+        <ion-icon name="cart-outline"></ion-icon>
+        For Sale
+      </h4>
+
+      <ion-button [routerLink]="['/products']" style="--padding-end: 0" fill="clear">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        <span>See More</span>
+      </ion-button>
+    </div>
+
+    <swiper-container class="pb-2" [slidesPerView]="slidesPerView" speed="500" css-mode="true" space-between="10">
+      <swiper-slide
+        class="h-100"
+        [routerLink]="['/product-details']"
+        [queryParams]="{ product: product.id }"
+        *ngFor="let product of products.productsAvailable"
+      >
+        <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+          <div
+            class="bg-dark image-wrapper"
+            [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
+          >
+            <img
+              [src]="modifyImageUrl(product.image?.url)"
+              class="image"
+              alt="{{ product.name }}"
+              (load)="onImageLoad($event)"
+            />
+          </div>
+
+          <ion-card-header class="p-2 pb-0">
+            <ion-card-title
+              class="fs-6"
+              style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              >{{ product.name }}</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content class="p-2 mt-1 pt-0">
+            <div class="price">
+              <div
+                class="d-flex justify-content-between"
+                *ngIf="product.discount_percent"
+              >
+                <div class="text-start" style="width: 70%">
+                  <span class="text-decoration-line-through"
+                    >{{product.price | currency : 'GH₵'}}</span
+                  >
+                  <br />
+                  <span class="discounted-price"
+                    >{{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span
+                  >
+                </div>
+                <span style="width: 30%">
+                  <ion-badge
+                    class="w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="--background: #1a4640"
+                    >{{product.discount_percent}}%</ion-badge
+                  >
+                </span>
+              </div>
+
+              <span class="original-price" *ngIf="!product.discount_percent"
+                >{{product.price | currency : 'GH₵'}}</span
+              >
+            </div>
+
+            <p
+              class="d-flex justify-content-center align-items-center text-nowrap"
+              style="text-overflow: ellipsis"
+            >
+              <ion-icon
+                class="text-dark me-1"
+                name="location-outline"
+              ></ion-icon>
+              {{product.location}}
+            </p>
+
+            <!-- <p *ngIf="product.Campus" class="d-flex align-items-center text-nowrap"
+                          style="text-overflow: ellipsis;"> <ion-icon class="text-dark me-1"
+                            name="school-outline"></ion-icon> {{product.Campus}} </p> -->
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+
+      <!-- Navigation arrows -->
+      <!-- <div class="slides-navigation">
+      <ion-button (click)="slides.slidePrev()">
+        <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      <ion-button (click)="slides.slideNext()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div> -->
+    </swiper-container>
+  </div>
+
+  <div *ngIf="rentingProducts" class="rent-section text-dark mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="m-0">
+        <ion-icon name="key-outline"></ion-icon>
+        For Rent
+      </h4>
+
+      <ion-button style="--padding-end: 0" fill="clear">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        <span>See More</span>
+      </ion-button>
+    </div>
+    <!-- <ion-slides [options]="slideOpts" #slides>
+      <ion-slide
+        class="h-100"
+        [routerLink]="['/product-details']"
+        [queryParams]="{ product: product.id }"
+        *ngFor="let product of products"
+      >
+        <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+          <div
+            class="bg-dark image-wrapper"
+            [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
+          >
+            <img
+              [src]="modifyImageUrl(product.image?.url)"
+              class="image"
+              alt="{{ product.name }}"
+              (load)="onImageLoad($event)"
+            />
+          </div>
+
+          <ion-card-header class="p-2 pb-0">
+            <ion-card-title
+              class="fs-6"
+              style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              >{{ product.name }}</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content class="p-2 mt-1 pt-0">
+            <div class="price">
+              <div
+                class="d-flex justify-content-between"
+                *ngIf="product.discount_percent"
+              >
+                <div style="width: 70%">
+                  <span class="text-decoration-line-through me-2"
+                    >{{product.price | currency : 'GH₵'}}</span
+                  >
+                  <br />
+                  <span class="discounted-price"
+                    >{{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span
+                  >
+                </div>
+                <span style="width: 30%">
+                  <ion-badge
+                    class="w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="--background: #1a4640"
+                    >{{product.discount_percent}}%</ion-badge
+                  >
+                </span>
+              </div>
+
+              <span class="original-price" *ngIf="!product.discount_percent"
+                >{{product.price | currency : 'GH₵'}}</span
+              >
+            </div>
+
+            <p
+              class="d-flex justify-content-center align-items-center text-nowrap"
+              style="text-overflow: ellipsis"
+            >
+              <ion-icon
+                class="text-dark me-1"
+                name="location-outline"
+              ></ion-icon>
+              {{product.location}}
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+
+    </ion-slides> -->
+  </div>
+
+  <div *ngIf="servicesProducts" class="services-section text-dark mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="m-0">
+        <ion-icon name="briefcase-outline" class="discount-icon"></ion-icon>
+        Hire a service
+      </h4>
+
+      <ion-button style="--padding-end: 0" fill="clear">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        <span>See More</span>
+      </ion-button>
+    </div>
+    <!-- <ion-slides [options]="slideOpts" #slides>
+      <ion-slide
+        class="h-100"
+        [routerLink]="['/product-details']"
+        [queryParams]="{ product: product.id }"
+        *ngFor="let product of products"
+      >
+        <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+          <div
+            class="bg-dark image-wrapper"
+            [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
+          >
+            <img
+              [src]="modifyImageUrl(product.image?.url)"
+              class="image"
+              alt="{{ product.name }}"
+              (load)="onImageLoad($event)"
+            />
+          </div>
+
+          <ion-card-header class="p-2 pb-0">
+            <ion-card-title
+              class="fs-6"
+              style="
+                color: #1a4640;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              >{{ product.name }}</ion-card-title
+            >
+          </ion-card-header>
+          <ion-card-content class="p-2 mt-1 pt-0">
+            <div class="price">
+              <div
+                class="d-flex justify-content-between"
+                *ngIf="product.discount_percent"
+              >
+                <div style="width: 70%">
+                  <span class="text-decoration-line-through me-2"
+                    >{{product.price | currency : 'GH₵'}}</span
+                  >
+                  <br />
+                  <span class="discounted-price"
+                    >{{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span
+                  >
+                </div>
+                <span style="width: 30%">
+                  <ion-badge
+                    class="w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="--background: #1a4640"
+                    >{{product.discount_percent}}%</ion-badge
+                  >
+                </span>
+              </div>
+
+              <span class="original-price" *ngIf="!product.discount_percent"
+                >{{product.price | currency : 'GH₵'}}</span
+              >
+            </div>
+
+            <p
+              class="d-flex justify-content-center align-items-center text-nowrap"
+              style="text-overflow: ellipsis"
+            >
+              <ion-icon
+                class="text-dark me-1"
+                name="location-outline"
+              ></ion-icon>
+              {{product.location}}
+            </p>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+
+    </ion-slides> -->
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button style="--background:#1A4640;">
+      <ion-icon class="text-light" name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="presentListServicesModal()" style="--background:#1A4640;" data-desc="Post a service">
+        <ion-icon class="text-light" name="briefcase"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="presentRentItemsModal()" style="--background:#1A4640;" data-desc="Rent your items">
+        <ion-icon class="text-light" name="key"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="presentListProductModal()" style="--background:#1A4640;" data-desc="Sell your stuff">
+        <ion-icon class="text-light" name="cash"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

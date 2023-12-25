@@ -1,0 +1,145 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons class="d-sm-block d-none" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Services</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<app-header [segmentValue]="pageTitle"></app-header>
+
+<ion-content>
+  <div *ngIf="!dataAvailable" class="coming-soon-container text-dark">
+    <ion-icon name="alarm-outline" size="large"></ion-icon>
+    <h2>No Services Found</h2>
+    <p>Stay tuned for exciting updates!</p>
+    <ion-icon name="notifications-outline" size="large"></ion-icon>
+  </div>
+
+  <ion-row *ngIf="servicesData.length > 0" class="mt-2 mb-5">
+    <ion-col
+      *ngFor="let data of servicesData"
+      size="12"
+      size-md="4"
+      size-lg="3"
+      class="p-0 mb-2"
+    >
+      <ion-card style="background-color: #ffffff">
+        <ion-card-header class="ion-no-padding">
+          <ion-item lines="full" style="--background: #f2f2f247">
+            <ion-avatar slot="start">
+              <img alt="User Image" [src]="data.user.user_profile.url" />
+            </ion-avatar>
+            <ion-label>
+              <ion-card-title class="text-dark"
+                >{{data.user.first_name}}
+                {{data.user.last_name}}</ion-card-title
+              >
+              <ion-card-subtitle class="text-secondary"
+                >{{data.serviceType}}</ion-card-subtitle
+              >
+              <ion-card-subtitle class="text-danger"
+                >{{data.yearsOfExperience}} years of
+                experience</ion-card-subtitle
+              >
+            </ion-label>
+          </ion-item>
+        </ion-card-header>
+
+        <ion-card-content class="mt-3">
+          <p>{{data.description}}</p>
+          <div>
+            <h2 class="text-success fw-bold mt-3">
+              <i class="fa-solid fa-briefcase me-1"></i>
+              My Portfolio
+            </h2>
+
+            <swiper-container slides-per-view="2.5" speed="500" loop="true" css-mode="true" space-between="10" class="mt-2">
+              <swiper-slide
+                *ngFor="let portfolio of data.Portfolios"
+                class="h-100"
+              >
+                <ion-card class="m-0 w-100 h-100" style="background: #f2f2f2">
+                  <div class="bg-dark image-wrapper">
+                    <!-- [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}" -->
+                    <img [src]="portfolio.image.imageUrl" class="image" />
+                  </div>
+
+                  <ion-card-header class="p-2 pb-0">
+                    <ion-card-title
+                      class="text-danger pb-2"
+                      style="
+                        font-size: 0.7rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                      "
+                    >
+                      {{portfolio.title}}
+                    </ion-card-title>
+                    <ion-card-subtitle
+                      style="
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2; /* Number of lines to display */
+                        -webkit-box-orient: vertical;
+                        line-height: 1.5; /* Adjust the line height as needed */
+                        max-height: 3em;
+                        text-align: left;
+                        margin-top: 0;
+                        font-size: 0.7rem;
+                      "
+                    >
+                      {{portfolio.description}}
+                    </ion-card-subtitle>
+                  </ion-card-header>
+                </ion-card>
+              </swiper-slide>
+
+              <!-- Navigation arrows -->
+              <!-- <div class="slides-navigation">
+            <ion-button (click)="slides.slidePrev()">
+              <ion-icon name="arrow-back"></ion-icon>
+              </ion-button>
+            <ion-button (click)="slides.slideNext()">
+              <ion-icon name="arrow-forward"></ion-icon>
+            </ion-button>
+          </div> -->
+            </swiper-container>
+
+            <div class="text-center mt-3">
+              <button
+                [routerLink]="['/service-detail']"
+                [queryParams]="{ listingId: data.id }"
+                class="btn btn-success fw-bold"
+                style="
+                  background-image: linear-gradient(
+                    45deg,
+                    #a71b1b82,
+                    transparent 100px
+                  );
+                "
+              >
+                View more and hire me
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button
+      (click)="presentListServicesModal()"
+      style="--background: #1a4640"
+    >
+      <ion-icon class="text-light" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

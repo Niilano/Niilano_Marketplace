@@ -1,0 +1,134 @@
+<!-- <ion-header>
+  <ion-toolbar style="--background:#1A4640; color: #f2f2f2; border-bottom: 1px solid;">
+    <ion-buttons class="d-sm-block d-none" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Products
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button style="color: #f2f2f2;"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar id="search" style="--background:#1A4640; color: #f2f2f2;">
+    <ion-searchbar (click)="searchI()" class="custom" placeholder="Search for products or sellers"></ion-searchbar>
+  </ion-toolbar>
+</ion-header> -->
+
+<app-header [segmentValue]="pageTitle"></app-header>
+
+
+<ion-content>
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed"
+    (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline"
+      refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item lines="none" style="--background: transparent;">
+
+    <!-- <ion-label class="search-results text-dark">
+      Products found: {{productsAvailable}}
+    </ion-label> -->
+
+    <ion-buttons slot="end">
+      <ion-button class="text-primary fs-6" (click)="openFilter()">
+        <ion-icon class="me-1" name="options"></ion-icon> Filter
+      </ion-button>
+    </ion-buttons>
+
+  </ion-item>
+
+  <ion-grid>
+
+    <ion-row class="products">
+
+      <!-- <app-loading></app-loading> -->
+
+      <ion-col class="product-item" (click)="navigateToProductDetails(product.id)" size="6" size-md="3" size-lg="2"
+        *ngFor="let product of products">
+
+        <ion-card class="m-1 h-100" style="background: #ffffff">
+          <div class="bg-dark image-wrapper" [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}">
+            <img [src]="modifyImageUrl(product.image?.url)" class="image" alt="{{ product.name }}"
+              (load)="onImageLoad($event)" />
+          </div>
+          <ion-card-content class="p-2" style="background-color:#ffffff;">
+            <ion-card-title class="fs-6"
+              style="color: #1A4640; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{product.name}}
+            </ion-card-title>
+
+            <ion-card-subtitle class="mt-1">
+              <div class="price">
+
+                <div class="d-flex justify-content-between" *ngIf="product.discount_percent">
+                  <div style="width: 70%;">
+                    <span class="text-decoration-line-through me-2">{{product.price |
+                      currency : 'GH₵'}}</span> <br>
+                    <span class="discounted-price">{{
+                      calculateDiscountedPrice(product.price,
+                      product.discount_percent) | currency : 'GH₵' }}</span>
+                  </div>
+                  <span style="width: 30%;">
+                    <ion-badge class="w-100 h-100 d-flex align-items-center justify-content-center"
+                      style="--background:#1A4640;">{{product.discount_percent}}%</ion-badge>
+                  </span>
+                </div>
+
+                <span class="original-price" *ngIf="!product.discount_percent">{{product.price | currency :
+                  'GH₵'}}</span>
+
+              </div>
+            </ion-card-subtitle>
+
+            <p class="m-0" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+              <ion-icon class="text-dark me-1" name="location-outline"></ion-icon>
+              <span>{{product.location}}</span>
+            </p>
+
+            <!-- <p *ngIf="product.Campus" class="d-flex align-items-center text-nowrap" style="text-overflow: ellipsis;" > <ion-icon class="text-dark me-1" name="school-outline"></ion-icon> {{product.Campus}} </p> -->
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+  <ion-infinite-scroll *ngIf="!filteringProducts" class="custom-spinner" (ionInfinite)="loadMoreProducts($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+  <div id="container" *ngIf="products.length < 1 && getProductsComplete" class="text-dark text-center">
+
+    <strong>
+      No products available for your search.
+    </strong>
+
+    <p>
+      New items will be available soon!
+    </p>
+
+    <button class="btn btn-dark" (click)="resetFilter()">
+      <i class="fa-solid fa-filter fa-fade ne-2"></i> Reset Filter
+    </button>
+  </div>
+
+  <div *ngIf="products.length > 0 && filteringProducts" class="text-dark my-3 text-center">
+
+    <strong>
+      Filtered results ended.
+    </strong>
+    <br />
+    <button class="btn btn-dark" (click)="resetFilter()">
+      <i class="fa-solid fa-filter fa-fade ne-2"></i> Reset Filter
+    </button>
+  </div>
+
+
+</ion-content>

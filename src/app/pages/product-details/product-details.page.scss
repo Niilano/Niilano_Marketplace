@@ -1,0 +1,92 @@
+ion-img.main {
+    width: auto;
+    object-fit: cover;
+  }
+
+.products-thumb::-webkit-scrollbar,.product-description::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f2f2f2;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #1a4640;
+    }
+  
+    .btn{
+        --bs-btn-border-width: 0px;
+    }
+
+    .product-images{
+        height: 400px;
+
+        @media(max-width:500px){
+            height:300px;
+        }
+    }
+
+    // @media(max-width:500px){
+
+    // }
+
+    :host-context(.ios) {
+      .e{
+        margin-bottom: 0% !important;
+      }
+    }
+
+    .follow-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .follow-btn ion-icon {
+      margin-bottom: 0.2rem;
+    }
+    
+    @media(min-width>600px){
+      .product-description{
+        height: 170px;
+      }
+    }
+
+    .image-wrapper {
+      height: 200px; /* Adjust the height as per your requirements */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    
+    .image-wrapper::after{
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.593);
+      z-index: 0;
+    }
+    
+    .image {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      filter: blur(10px); /* Apply initial blur effect */
+      transition: filter 0.5s ease-out;
+    }
+    
+    .image.loaded {
+      filter: blur(0); /* Remove blur effect after image is loaded */
+    }
