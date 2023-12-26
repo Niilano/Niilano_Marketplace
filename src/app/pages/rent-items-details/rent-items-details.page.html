@@ -1,18 +1,16 @@
 <ion-header>
   <ion-toolbar>
 
-    <ion-button
-      fill="clear"
-      slot="start"
-      (click)="navigateBack()"
-      ><ion-icon
-        class="text-light"
-        size="large"
-        name="arrow-back-outline"
-      ></ion-icon
-    ></ion-button>
+    <ion-button fill="clear" slot="start" style="--padding-end: 0;" (click)="navigateBack()"><ion-icon
+        class="text-light" size="medium" name="arrow-back-outline"></ion-icon></ion-button>
 
-    <ion-title class="fs-6">Details</ion-title>
+    <ion-title *ngIf="house" class="fs-6">{{house.houseDescription ? house.houseDescription : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="vehicle" class="fs-6">{{vehicle.tagline ? vehicle.tagline : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="machinery" class="fs-6">{{machinery.description ? machinery.description : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="eventItem" class="fs-6">{{eventItem.description ? eventItem.description : 'Details'}}</ion-title>
 
     <!-- Share and Save icons -->
     <ion-buttons slot="end">
@@ -30,20 +28,19 @@
 <ion-content>
   <ng-container *ngIf="house">
     <!-- Display the house images here -->
-    <swiper-container [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true" space-between="5" pager="true">
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+      space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
       <!-- Loop through all the images of the house -->
-      <ng-container
-        *ngFor="let image of [
+      <ng-container *ngFor="let image of [
     this.house.bedroomImage,
     this.house.washroomImage,
     this.house.compoundImage,
     this.house.infrontImage,
     this.house.additionalImage,
-  ]"
-      >
+  ]">
         <swiper-slide *ngIf="image" class="pb-5">
           <div class="image-wrapper">
-            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" loading="lazy" />
             <div class="image-label" style="text-transform: uppercase">
               {{ image?.image }}
             </div>
@@ -73,14 +70,11 @@
                   house.discountPercentage) | number:'1.2-2' }} / Month
                 </span>
               </p>
-              <span
-                class="text-center rounded-circle p-2 px-3"
-                style="
+              <span class="text-center rounded-circle p-2 px-3" style="
                   background-color: #1a4640;
                   font-size: 0.8em;
                   color: lightgrey;
-                "
-              >
+                ">
                 {{ house.discountPercentage }}% <br />
                 <b class="text-light">OFF</b>
               </span>
@@ -93,19 +87,11 @@
           </ng-container>
           <!-- Call and Request Call Back buttons with icons -->
           <div class="call-buttons mb-3 d-flex justify-content-between">
-            <ion-button
-              (click)="handleCall(house.mobile)"
-              class="w-50"
-              color="primary"
-            >
+            <ion-button (click)="handleCall(house.mobile)" class="w-50" color="primary">
               <ion-icon class="me-1" name="call"></ion-icon>
               Call
             </ion-button>
-            <ion-button
-              (click)="handleRequestCallback()"
-              class="w-50"
-              color="secondary"
-            >
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
               Request Call Back
             </ion-button>
           </div>
@@ -114,10 +100,8 @@
           <p>Compound: {{ house.tenantPlaceType }}</p>
           <p>
             Storey Building
-            <i
-              class="fa-solid ms-2"
-              [ngClass]="house.isStoreyBuilding === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
-            ></i>
+            <i class="fa-solid ms-2"
+              [ngClass]="house.isStoreyBuilding === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
           </p>
           <p>Bathrooms: {{ house.bathroomLocation }}</p>
         </ion-col>
@@ -140,55 +124,38 @@
             </div>
           </div>
 
-          <div
-            class="text-center shadow mt-5 pb-2 d-flex justify-content-between align-items-center"
-          >
-            <div
-              class="d-flex justify-content-center align-items-center"
-              style="width: 32%"
-            >
+          <div class="text-center shadow mt-5 pb-2 d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
               <div>
                 <i class="fa-solid fa-square-parking"></i>
                 <br />
                 <span>Parking</span>
               </div>
               <!-- Check if Parking is available -->
-              <i
-                class="fa-solid ms-2"
-                [ngClass]="house.isCarParkAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
-              ></i>
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isCarParkAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
             </div>
 
-            <div
-              class="d-flex justify-content-center align-items-center"
-              style="width: 32%"
-            >
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
               <div>
                 <i class="fa-solid fa-shield-halved"></i>
                 <br />
                 <span>Security</span>
               </div>
               <!-- Check if Security is available -->
-              <i
-                class="fa-solid ms-2"
-                [ngClass]="house.isSecurityAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
-              ></i>
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isSecurityAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
             </div>
 
-            <div
-              class="d-flex justify-content-center align-items-center"
-              style="width: 32%"
-            >
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
               <div>
                 <i class="fa-solid fa-couch"></i>
                 <br />
                 <span>Furnished</span>
               </div>
               <!-- Check if Furnished is available -->
-              <i
-                class="fa-solid ms-2"
-                [ngClass]="house.isFurnishedAlready === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
-              ></i>
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isFurnishedAlready === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
             </div>
           </div>
 
@@ -211,16 +178,15 @@
 
   <ng-container *ngIf="vehicle">
     <!-- Display the vehicles details here -->
-    <swiper-container [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true" space-between="5" pager="true">
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
       <!-- Loop through all the images of the vehicles -->
-      <ng-container
-        *ngFor="let image of [
+      <ng-container *ngFor="let image of [
     this.vehicle.frontImage,
     this.vehicle.interiorImage,
     this.vehicle.sideImage,
     this.vehicle.additionalImage,
-  ]"
-      >
+  ]">
         <swiper-slide *ngIf="image" class="pb-5">
           <div class="image-wrapper">
             <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
@@ -242,15 +208,11 @@
           <h4 class="m-0 text-dark">Price(s) per day</h4>
 
           <ng-container>
-            <ng-container
-              *ngIf="vehicle.drivenBy == 'Chauffeur only' || vehicle.drivenBy == 'both'"
-            >
+            <ng-container *ngIf="vehicle.drivenBy == 'Chauffeur only' || vehicle.drivenBy == 'both'">
               <!-- Calculate and display the discounted price if discountPercentage is available -->
               <h6 class="text-danger">Prices for Chauffeur driving</h6>
               <ng-container *ngIf="vehicle.discountPercentageCD != '0'">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -300,14 +262,11 @@
                     </div>
                   </div>
 
-                  <span
-                    class="text-center rounded-circle p-2 px-3"
-                    style="
+                  <span class="text-center rounded-circle p-2 px-3" style="
                       background-color: #1a4640;
                       font-size: 0.8em;
                       color: lightgrey;
-                    "
-                  >
+                    ">
                     {{ vehicle.discountPercentageCD }}% <br />
                     <b class="text-light">OFF</b>
                   </span>
@@ -316,9 +275,7 @@
 
               <!-- Display prices if no discount -->
               <ng-container *ngIf="vehicle.discountPercentageCD == '0'">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -362,15 +319,11 @@
               </ng-container>
             </ng-container>
 
-            <ng-container
-              *ngIf="vehicle.drivenBy == 'Self drive' || vehicle.drivenBy == 'both'"
-            >
+            <ng-container *ngIf="vehicle.drivenBy == 'Self drive' || vehicle.drivenBy == 'both'">
               <!-- Calculate and display the discounted price if discountPercentage is available -->
               <h6 class="text-danger">Prices for self driving</h6>
               <ng-container *ngIf="vehicle.discountPercentageSD != '0'">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -420,14 +373,11 @@
                     </div>
                   </div>
 
-                  <span
-                    class="text-center rounded-circle p-2 px-3"
-                    style="
+                  <span class="text-center rounded-circle p-2 px-3" style="
                       background-color: #1a4640;
                       font-size: 0.8em;
                       color: lightgrey;
-                    "
-                  >
+                    ">
                     {{ vehicle.discountPercentageSD }}% <br />
                     <b class="text-light">OFF</b>
                   </span>
@@ -436,9 +386,7 @@
 
               <!-- Display prices if no discount -->
               <ng-container *ngIf="vehicle.discountPercentageSD == '0'">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -484,19 +432,11 @@
           </ng-container>
 
           <div class="call-buttons mb-3 d-flex justify-content-between">
-            <ion-button
-              (click)="handleCall(vehicle.mobile)"
-              class="w-50"
-              color="primary"
-            >
+            <ion-button (click)="handleCall(vehicle.mobile)" class="w-50" color="primary">
               <ion-icon class="me-1" name="call"></ion-icon>
               Call
             </ion-button>
-            <ion-button
-              (click)="handleRequestCallback()"
-              class="w-50"
-              color="secondary"
-            >
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
               Request Call Back
             </ion-button>
           </div>
@@ -578,14 +518,13 @@
 
   <ng-container *ngIf="machinery">
     <!-- Display the machiney details here -->
-    <swiper-container [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true" space-between="5" pager="true">
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
       <!-- Loop through all the images of the machinery -->
-      <ng-container
-        *ngFor="let image of [
+      <ng-container *ngFor="let image of [
     this.machinery.mainImage,
     this.machinery.additionalImage,
-  ]"
-      >
+  ]">
         <swiper-slide *ngIf="image" class="pb-5">
           <div class="image-wrapper">
             <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
@@ -611,9 +550,7 @@
             <ng-container>
               <!-- Calculate and display the discounted price if discountPercentage is available -->
               <ng-container *ngIf="machinery.discountPercentage !== 0">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -663,14 +600,11 @@
                     </div>
                   </div>
 
-                  <span
-                    class="text-center rounded-circle p-2 px-3"
-                    style="
+                  <span class="text-center rounded-circle p-2 px-3" style="
                       background-color: #1a4640;
                       font-size: 0.8em;
                       color: lightgrey;
-                    "
-                  >
+                    ">
                     {{ machinery.discountPercentage }}% <br />
                     <b class="text-light">OFF</b>
                   </span>
@@ -679,9 +613,7 @@
 
               <!-- Display prices if no discount -->
               <ng-container *ngIf="machinery.discountPercentage == 0">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -715,19 +647,11 @@
           </ng-container>
 
           <div class="call-buttons mb-3 d-flex justify-content-between">
-            <ion-button
-              (click)="handleCall(machinery.mobile)"
-              class="w-50"
-              color="primary"
-            >
+            <ion-button (click)="handleCall(machinery.mobile)" class="w-50" color="primary">
               <ion-icon class="me-1" name="call"></ion-icon>
               Call
             </ion-button>
-            <ion-button
-              (click)="handleRequestCallback()"
-              class="w-50"
-              color="secondary"
-            >
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
               Request Call Back
             </ion-button>
           </div>
@@ -741,10 +665,7 @@
           </div>
 
           <!-- Display Features Available as a list -->
-          <div
-            *ngIf="machinery.equipmentFeatures.length > 0"
-            class="amenities-list mt-5"
-          >
+          <div *ngIf="machinery.equipmentFeatures.length > 0" class="amenities-list mt-5">
             <h3>Machinery Features:</h3>
             <ul class="list-unstyled">
               <!-- Split the equipmentFeatures string into an array -->
@@ -763,14 +684,13 @@
 
   <ng-container *ngIf="eventItem">
     <!-- Display the machiney details here -->
-    <swiper-container [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true" space-between="5" pager="true">
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
       <!-- Loop through all the images of the events -->
-      <ng-container
-        *ngFor="let image of [
+      <ng-container *ngFor="let image of [
     this.eventItem.mainImage,
     this.eventItem.additionalImage,
-  ]"
-      >
+  ]">
         <swiper-slide *ngIf="image" class="pb-5">
           <div class="image-wrapper">
             <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
@@ -796,9 +716,7 @@
             <ng-container>
               <!-- Calculate and display the discounted price if discountPercentage is available -->
               <ng-container *ngIf="eventItem.discountPercentage !== 0">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -848,14 +766,11 @@
                     </div>
                   </div>
 
-                  <span
-                    class="text-center rounded-circle p-2 px-3"
-                    style="
+                  <span class="text-center rounded-circle p-2 px-3" style="
                       background-color: #1a4640;
                       font-size: 0.8em;
                       color: lightgrey;
-                    "
-                  >
+                    ">
                     {{ eventItem.discountPercentage }}% <br />
                     <b class="text-light">OFF</b>
                   </span>
@@ -864,9 +779,7 @@
 
               <!-- Display prices if no discount -->
               <ng-container *ngIf="eventItem.discountPercentage == 0">
-                <div
-                  class="d-flex mb-2 justify-content-between align-items-center"
-                >
+                <div class="d-flex mb-2 justify-content-between align-items-center">
                   <div>
                     <div>
                       <h5>Within region</h5>
@@ -900,19 +813,11 @@
           </ng-container>
 
           <div class="call-buttons mb-3 d-flex justify-content-between">
-            <ion-button
-              (click)="handleCall(eventItem.mobile)"
-              class="w-50"
-              color="primary"
-            >
+            <ion-button (click)="handleCall(eventItem.mobile)" class="w-50" color="primary">
               <ion-icon class="me-1" name="call"></ion-icon>
               Call
             </ion-button>
-            <ion-button
-              (click)="handleRequestCallback()"
-              class="w-50"
-              color="secondary"
-            >
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
               Request Call Back
             </ion-button>
           </div>
@@ -926,10 +831,7 @@
           </div>
 
           <!-- Display Features Available as a list -->
-          <div
-            *ngIf="eventItem.itemFeatures.length > 0"
-            class="amenities-list mt-5"
-          >
+          <div *ngIf="eventItem.itemFeatures.length > 0" class="amenities-list mt-5">
             <h3>Item Features:</h3>
             <ul class="list-unstyled">
               <!-- Split the itemFeatures string into an array -->

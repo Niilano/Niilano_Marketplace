@@ -24,6 +24,44 @@ export class RentItemsDetailsPage implements OnInit {
 
   slidesPerView = 1.2
 
+  // 576: {
+  //   slidesPerView: 2.2,
+  //   spaceBetween: 10,
+  // },
+  // // When window width is >= 768px
+  // 768: {
+  //   slidesPerView: 3.1,
+  //   spaceBetween: 15,
+  // },
+  // // When window width is >= 992px
+  // 992: {
+  //   slidesPerView: 3.5,
+  //   spaceBetween: 20,
+  // },
+  // // When window width is >= 1200px
+  // 1200: {
+  //   slidesPerView: 5,
+  //   spaceBetween: 25,
+  // },
+
+  checkScreen() {
+    let innerWidth = window.innerWidth;
+    switch (true) {
+      case 576 >= innerWidth:
+        this.slidesPerView = 1.2
+        break;
+      case 768 >= innerWidth:
+        this.slidesPerView = 2.2
+        break;
+      case 992 >= innerWidth:
+        this.slidesPerView = 3.5
+        break;
+      case 1200 <= innerWidth:
+        this.slidesPerView = 5
+        break;
+    }
+  }
+
   slideOpts: any = {
     initialSlide: 1,
     speed: 1000,
@@ -148,6 +186,22 @@ export class RentItemsDetailsPage implements OnInit {
             // Handle the data submitted by the user
             // console.log('Name:', data.name);
             // console.log('Phone Number:', data.phoneNumber);
+
+            if(!data.name || !data.phoneNumber){
+              this.toastController
+                    .create({
+                      message: "Please provide the requested information.",
+                      duration: 2000,
+                      header: 'Invalid info',
+                      color: 'danger',
+                      position: 'bottom',
+                    })
+                    .then((toast) => {
+                      toast.present();
+                    });
+
+                    return;
+            }
 
             let requestData;
 
@@ -279,6 +333,8 @@ export class RentItemsDetailsPage implements OnInit {
   data = {};
 
   ionViewDidEnter() {
+    this.checkScreen();
+    
     this.subscriptions.push(
       this.activeRoute.queryParams.subscribe((params) => {
         if (!params['id'] && !params['item']) {
