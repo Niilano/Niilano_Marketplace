@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { FilterComponent } from 'src/app/components/filter/filter.component';
 import {
+  AlertController,
   ModalController,
   NavController,
   PopoverController,
@@ -27,12 +28,15 @@ import { SearchComponent } from 'src/app/components/search/search.component';
   templateUrl: './products.page.html',
   styleUrls: ['./products.page.scss'],
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage {
 
   // Page Subscribtions
   private subscriptions: Subscription[] = [];
 
-  pageTitle = "products";
+  pageTitle = "Products";
+
+  isLoggedIn = false
+  userProfile : any = {}
 
   handleRefresh(event: any) {
     // do some work to refresh the content here
@@ -48,6 +52,22 @@ export class ProductsPage implements OnInit {
 
   products: any = [];
   categoriesAndSubcategories: any = [];
+
+  showFilter = true
+  toggleFilter(){
+    this.showFilter = !this.showFilter
+  }
+
+  checkScreen(){
+    let windowWidth = window.innerWidth
+    if(windowWidth<768){
+      this.showFilter = false
+    }
+  }
+
+  getRange(n: number): number[] {
+    return [...Array(n).keys()];
+  }
 
   productsAvailable: any;
 
@@ -72,16 +92,21 @@ export class ProductsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modalCtrl: ModalController,
     private router: Router,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private activeRoute: ActivatedRoute,
+    private alertController : AlertController
   ) { }
 
   getProducts = false;
   getProductsComplete = false;
   filteringProducts = false
+  productsLoading = true
 
-  ngOnInit() {
-    // console.log('init');
+  navigateBack() {
+    this.navCtrl.back();
+  }
 
+  ionViewWillEnter() {
     // Getting all avialable categories and subcategories
     this.productsService
       .getCategoriesAndSubCategoies()
@@ -89,17 +114,28 @@ export class ProductsPage implements OnInit {
       .subscribe(
         (res) => {
           this.categoriesAndSubcategories = res;
+          
+          this.activeRoute.queryParams.subscribe(async (params) => {
+            let sortCategory = params['category']
+            if(sortCategory){
+              let categoryName = this.categoriesAndSubcategories.find((cat: { id: any; })=>(cat.id==sortCategory))
+              this.pageTitle = categoryName.name
+            }
+          })
 
-          // this.activatedRoute.queryParams.pipe(take(1)).subscribe((params) => {
-          //   if (params['openFilter']) {
-          //     this.openFilter();
-          //   }
-          // });
         },
         (err) => {
           console.log(err);
         }
       );
+
+      this.store.select('checkLogin')
+      .subscribe((res) => {
+        if(res.loggedIn){
+          this.isLoggedIn = res.loggedIn;
+        this.userProfile = res.profile
+        }
+      });
 
     // Getting the states of the products at each time
     this.subscriptions.push(
@@ -116,15 +152,15 @@ export class ProductsPage implements OnInit {
 
         if (!res.filter && res.process) {
           this.getProductsComplete = false
-          this.products.length < 1 && this.store.dispatch(startLoading());
+          // this.products.length < 1 && this.store.dispatch(startLoading());
         } else if (res.filter && res.process) {
           this.getProducts = true
-          this.store.dispatch(startLoading());
+          // this.store.dispatch(startLoading());
         }
 
         if (!res.filter && res.success) {
 
-          this.store.dispatch(endLoading());
+          this.productsLoading = false
           // console.log(res.products)
           this.products =
             this.products.length > 0
@@ -140,6 +176,7 @@ export class ProductsPage implements OnInit {
           this.filteringProducts = true
 
           this.store.dispatch(endLoading());
+          this.productsLoading = false
           // console.log(res.products)
           this.products = res.products;
 
@@ -184,6 +221,39 @@ export class ProductsPage implements OnInit {
         }
 
       }))
+
+  }
+
+  async presentLoginAlert() {
+    const alert = await this.alertController.create({
+      header: 'Login Required',
+      message: 'Please login/register to continue.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.router.navigateByUrl('auth?page=login');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async presentListProductModal() {
+    // Migration: not using modals for listing anymore moving on to pages
+
+    if (!this.isLoggedIn) {
+      this.presentLoginAlert();
+      return;
+    } else {
+      this.router.navigate(['/list-product']);
+    }
+  }
+
+  ionViewWillLeave(){
+    console.log("Page Exited")
   }
 
   loadMoreProducts(event: any) {
@@ -302,6 +372,7 @@ export class ProductsPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.checkScreen()
     // console.log("Entered")
     // setTimeout(() => {
     //   let products = document.querySelector('.products') as HTMLElement

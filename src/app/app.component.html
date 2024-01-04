@@ -37,7 +37,7 @@
     <ion-router-outlet id="main-content">
       <ion-tabs>
         <ion-tab-bar #tabBar id="tabBar" *ngIf="showTabs" slot="bottom" style="--background: #1a4640; --color:#f2f2f2;">
-          <ion-tab-button tab="home">
+          <ion-tab-button (click)="clearNavStack()" tab="home">
             <ion-icon name="heart"></ion-icon>
             <ion-label>For You</ion-label>
           </ion-tab-button>

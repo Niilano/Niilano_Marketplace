@@ -1,6 +1,4 @@
-import {
-  Component, ElementRef, ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/types/AppState';
 import { Router } from '@angular/router';
@@ -35,9 +33,7 @@ export class HomePage {
 
   // This method takes care of refreshing the page
   handleRefresh(event: any) {
-
-    // this.initialActions();
-    this.store.dispatch(getProductsSummary())
+    // this.store.dispatch(getProductsSummary())
 
     // when the refresh is complete, call the complete() method
     setTimeout(() => {
@@ -45,19 +41,20 @@ export class HomePage {
     }, 1500);
   }
 
+  navigateProductsCategories(catId: number) {
+    this.router.navigateByUrl(`products?category=${catId}`);
+  }
+
   // Stores the user logged in status, by default it's false until checked
   isLoggedIn = false;
+  userProfile = {}
 
-  products: any = [];
-  rentingProducts: any;
-  servicesProducts: any;
-
+  // Determines whether to show a welcome message to a new user upon successful registration
   welcomeMessage = false;
 
   isIOS!: boolean;
 
   onScroll(event: CustomEvent<ScrollDetail>) {
-
     // Define a variable to store the previous scroll position
     let previousScrollTop = 0;
     // Get the current scroll position
@@ -80,7 +77,8 @@ export class HomePage {
   }
 
   constructor(
-    private store: Store<AppState>, private router: Router,
+    private store: Store<AppState>,
+    private router: Router,
     private toastController: ToastController,
     private platform: Platform,
     private alertController: AlertController,
@@ -116,28 +114,42 @@ export class HomePage {
   // Incase of connection error this method retry getting the products again
   retry() {
     // this.initialActions();
-    this.store.dispatch(getProductsSummary())
+    // this.store.dispatch(getProductsSummary());
   }
 
-  slidesPerView = 1.5
+  slidesPerView = 2.5;
+  slidesPerViewRent = 2;
+  slidesPerViewCat = 1.5;
 
   checkScreen() {
     let innerWidth = window.innerWidth;
     switch (true) {
       case 340 <= innerWidth && innerWidth <= 400:
-        this.slidesPerView = 1.5
+        this.slidesPerView = 2.5;
+        this.slidesPerViewRent = 2;
+        this.slidesPerViewCat = 1.5;
         break;
-      case 401 <= innerWidth && innerWidth <= 700:
-        this.slidesPerView = 1.6
+      case 401 <= innerWidth && innerWidth <= 500:
+        this.slidesPerView = 2.5;
+        this.slidesPerViewRent = 2;
+        this.slidesPerViewCat = 1.5;
         break;
-      case 701 <= innerWidth && innerWidth <= 900:
-        this.slidesPerView = 3.2
+      case 500 <= innerWidth && innerWidth <= 767:
+        this.slidesPerView = 4.5;
+        this.slidesPerViewRent = 4;
+        this.slidesPerViewCat = 1.5;
+        break;
+      case 767 <= innerWidth && innerWidth <= 900:
+        this.slidesPerView = 3.5;
+        this.slidesPerViewRent = 3.5;
         break;
       case 901 <= innerWidth && innerWidth <= 1000:
-        this.slidesPerView = 4.5
+        this.slidesPerView = 4.5;
+        this.slidesPerViewRent = 4.5;
         break;
       case 1001 <= innerWidth:
-        this.slidesPerView = 5.5
+        this.slidesPerView = 5.5;
+        this.slidesPerViewRent = 4.5;
         break;
     }
   }
@@ -224,6 +236,7 @@ export class HomePage {
     }
   }
 
+  // Not Used
   loadMoreProducts(event: any) {
     // Not Used
     // Fetch more products from the database or service
@@ -244,9 +257,7 @@ export class HomePage {
     return await modal.present();
   }
 
-  totalUnreadMessages = 0;
-
-  // Opens the filter modal
+  // Redirects to the products page and pens the filter modal
   openfilter() {
     this.router.navigate(['/products'], { queryParams: { openFilter: true } });
   }
@@ -260,48 +271,29 @@ export class HomePage {
     return discountedPrice;
   }
 
-  initialActions() {
-    this.store.dispatch(startLoading())
-    // Get summary of all products belonging to discounted, trending and for sale
-    this.subscriptions.push(
-      this.http
-        .get<{ products: any }>(
-          `${environment.server}/products/productsSummary/1`
-        )
-        .pipe(take(1))
-        .subscribe((res) => {
-          // console.log(res);
-          this.products = res
-          this.connected = true
-          this.store.dispatch(endLoading())
-        }, err => {
-          console.log(err)
-          this.store.dispatch(endLoading())
-          this.connected = false
-          this.toastController
-            .create({
-              message: err.error.error ? err.error.error : 'Unable to connect',
-              duration: 4000,
-              header: 'Connection error',
-              color: 'danger',
-              position: 'top',
-            })
-            .then((toast) => {
-              toast.present();
-            });
-        })
-    );
+  getProducts = false;
+
+  trendingProducts: any = [];
+  trendingProductsLoading = true;
+
+  discountProducts: any = [];
+  discountProductsLoading = true;
+
+  productCategories: any = [];
+  productCategoriesLoading = true;
+
+  houses: any = [];
+  housesLoading = true;
+
+  vehicles: any = [];
+  vehiclesLoading = true;
+
+  getRange(n: number): number[] {
+    return [...Array(n).keys()];
   }
 
-  getProducts = false
-
   ionViewWillEnter() {
-
-
-
-    setTimeout(() => {
-      this.checkScreen();
-    }, 1000);
+    this.checkScreen();
 
     this.subscriptions.push(
       this.platform.resize.subscribe(async () => {
@@ -309,61 +301,70 @@ export class HomePage {
       })
     );
 
-    this.subscriptions.push(
-      this.store.select('getProductsSummary').subscribe(
-        (res) => {
-          if (res.loading) {
-            this.store.dispatch(startLoading());
-          }
-          else {
-            if (!res.data.productsAvailable && !res.data.trendingProducts && !res.data.discountProducts) {
-              if (!this.getProducts) {
-                //  console.log("Working")
-                this.getProducts = true
-                this.store.dispatch(getProductsSummary())
-              }
-            }
-          }
+    this.trendingProducts.length < 1 &&
+      this.subscriptions.push(
+        this.http
+          .get(`${environment.server}/products/trendingProducts`)
+          .subscribe((res) => {
+            // console.log(res)
+            this.trendingProductsLoading = false;
+            this.trendingProducts = res;
+          })
+      );
 
-          if (res.success && res.data) {
-            this.connected = true
-            this.store.dispatch(endLoading());
-            // Assuming res.data is an object with properties
-            this.products = res.data;
-          }
+    this.discountProducts.length < 1 &&
+      this.subscriptions.push(
+        this.http
+          .get(`${environment.server}/products/discountProducts`)
+          .subscribe((res) => {
+            // console.log(res)
+            this.discountProductsLoading = false;
+            this.discountProducts = res;
+          })
+      );
 
-          if (res.failed) {
-            // console.log(res.message)
-            this.store.dispatch(endLoading())
-            this.connected = false
-            this.toastController
-              .create({
-                message: res.message ? res.message : 'Unable to connect',
-                duration: 4000,
-                header: 'Connection error',
-                color: 'danger',
-                position: 'top',
-              })
-              .then((toast) => {
-                toast.present();
-              });
-          }
-        }
-      )
-    );
+    this.productCategories.length < 1 &&
+      this.subscriptions.push(
+        this.http
+          .get(`${environment.server}/products/categories-only`)
+          .subscribe((res) => {
+            // console.log(res)
+            this.productCategoriesLoading = false;
+            this.productCategories = res;
+          })
+      );
 
+    // get houses
+    this.houses.length < 1 &&
+      this.subscriptions.push(
+        this.http
+          .get(`${environment.server}/renting/getHouses`)
+          .subscribe((res) => {
+            // console.log(res)
+            this.housesLoading = false;
+            this.houses = res;
+          })
+      );
 
-    // this.subscriptions.push(
-    //   this.websocketservice.totalUnreadMessages.subscribe((res) => {
-    //     this.totalUnreadMessages = res;
-    //   })
-    // );
+    // get vehicles
+    this.vehicles.length < 1 &&
+      this.subscriptions.push(
+        this.http
+          .get(`${environment.server}/renting/getVehicles`)
+          .subscribe((res) => {
+            // console.log(res)
+            this.vehiclesLoading = false;
+            this.vehicles = res;
+          })
+      );
 
-    if (localStorage.getItem('access_token')) {
-      this.isLoggedIn = true;
-    } else {
-      this.isLoggedIn = false;
-    }
+      this.store.select('checkLogin')
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.isLoggedIn = res.loggedIn;
+        this.userProfile = res.profile
+      });
+
   }
 
   ionViewWillLeave() {

@@ -6,7 +6,7 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { AuthService } from './services/auth/auth.service';
 import { checkLogin } from './store/checkLogin/checklogin.actions';
@@ -64,7 +64,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private dataSharing: DataSharingService,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private navCtrl:NavController
   ) {
     if (localStorage.getItem('access_token')) {
       this.isLoggedIn = true;
@@ -99,6 +100,14 @@ export class AppComponent implements OnInit, OnDestroy {
     return await modal.present();
   }
 
+  clearNavStack(){
+    this.navCtrl.navigateRoot('/home')
+  }
+
+  // toProducts(){
+  //   this.navCtrl.navigateRoot('/products')
+  // }
+
   ngOnInit() {
     // this.presentWelcomeModal()
 
@@ -125,8 +134,8 @@ export class AppComponent implements OnInit, OnDestroy {
           event['url'].startsWith('/product-details') ||
           event['url'].startsWith('/rent-items-details') ||
           event['url'].startsWith('/service-detail') ||
-          event['url'].startsWith('/list' ||
-          event['url'] === '/my-products')
+          event['url'].startsWith('/list') ||
+          event['url'] === '/my-products'
         ) {
           this.showTabs = false; // <-- hide tabs on specific pages
           // const element = this.myElement.nativeElement as HTMLElement;

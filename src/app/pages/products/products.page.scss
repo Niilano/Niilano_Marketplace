@@ -110,3 +110,32 @@ ion-infinite-scroll-content{
 .image.loaded {
   filter: blur(0); /* Remove blur effect after image is loaded */
 }
+
+header{
+  background-color: #1a4640;
+}
+
+.pImages{
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.single-line-ellipsis {
+  white-space: nowrap;      /* Prevents text from wrapping to the next line */
+  overflow: hidden;         /* Hides the overflowing content */
+  text-overflow: ellipsis;  /* Displays an ellipsis (...) to indicate overflow */
+}
+// 230,40,50
+
+ion-skeleton-text{
+  --background-rgb: 26, 70, 64;
+}
+
+swiper-slide{
+  cursor: pointer;
+}
+
+swiper-slide:hover{
+  border: 1px solid red;
+}

@@ -1,13 +1,81 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-buttons class="d-sm-block d-none" slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Services</ion-title>
-  </ion-toolbar>
-</ion-header> -->
 
-<app-header [segmentValue]="pageTitle"></app-header>
+<!-- <app-header [segmentValue]="pageTitle"></app-header> -->
+
+<header class="text-light px-md-5 px-2 py-2" style="background:#1A4640;">
+
+  <div class="d-flex d-md-none justify-content-between mb-2">
+    <img src="../../../assets/images/logo_n.png" width="35" height="35" />
+    <div class="d-flex w-100 align-items-center text-light justify-content-end">
+      <span *ngIf="!isLoggedIn">
+        Sign in / Register
+      </span>
+      <img *ngIf="isLoggedIn" [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded-circle border" />
+      <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+    </div>
+  </div>
+
+  <div class="d-md-flex d-none justify-content-between align-items-center">
+    <div>
+      <img src="../../../assets/images/logo_n_large.png" style="width: 130px; height: auto;" />
+    </div>
+    <div style="width: 50%;">
+      <div class="d-flex justify-content-between gap-2 align-items-center">
+        <div class="d-flex gap-2 text-light align-items-center">
+          <i class="fa-solid fa-magnifying-glass-location"></i> 
+          <ion-select aria-label="Regions" value="all" placeholder="Select region">
+            <ion-select-option value="all">All regions</ion-select-option>
+            <ion-select-option value="ashanti">Ashanti</ion-select-option>
+            <ion-select-option value="accra">Greater Accra</ion-select-option>
+          </ion-select>
+        </div>
+        <button style="font-size: .8em;" class="w-100 d-flex align-items-center gap-2 btn btn-light">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>
+            Search on niilano
+          </span>
+        </button>
+        <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <button *ngIf="!isLoggedIn" [routerLink]="['/auth']" [queryParams]="{ page: 'login' }" style="font-size: .8em; height: max-content;" class="btn btn-light d-flex gap-2 justify-content-center align-items-center">
+        <i class="fa-regular fa-circle-user"></i>
+        Sign in / Register
+      </button>
+      
+      <span *ngIf="isLoggedIn" style="font-size: .8em; height: max-content;" class="bg-light rounded pe-2 overflow-hidden d-flex gap-2 justify-content-center align-items-center">
+        <img [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded border" />
+        <span class="animate__animated animate__bounceInLeft text-dark">
+          {{userProfile.username ? userProfile.username : userProfile.first_name}}
+        </span>
+      </span>
+      <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+    </div>
+  </div>
+  <nav class="mt-4 d-md-flex d-none text-light justify-content-between">
+  <div>
+    <button [routerLink]="['/home']" style="font-size: .8em;" class="btn text-light">
+      For You
+      </button>
+      <button [routerLink]="['/products']" style="font-size: .8em;" class="btn text-light">
+        For Sale
+        </button>
+      <button [routerLink]="['/rent']" style="font-size: .8em;" class="btn text-light">
+        For Rent
+        </button>
+        <button [routerLink]="['/services']" style="font-size: .8em;" class="btn btn-light">
+          Hire a service
+          </button>
+  </div>
+  <div>
+    <button class="btn btn-danger" (click)="presentListServicesModal()">
+      <i class="fa-solid fa-briefcase me-1"></i>
+      Post Your Service
+    </button>
+  </div>
+  </nav>
+
+</header>
 
 <ion-content>
   <div *ngIf="!dataAvailable" class="coming-soon-container text-dark">
@@ -133,7 +201,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab class="d-block d-md-none" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button
       (click)="presentListServicesModal()"
       style="--background: #1a4640"

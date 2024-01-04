@@ -264,6 +264,16 @@ export class RentPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.store.select('checkLogin')
+      .subscribe((res) => {
+        if(res.loggedIn){
+          this.isLoggedIn = res.loggedIn;
+        this.userProfile = res.profile
+        // console.log(res)
+        // console.log(this.userProfile)
+        }
+      });
+
     if (this.rentingHouses.length < 1) {
       // Call the function to fetch the renting houses when the component initializes
       this.subscriptions.push(
@@ -298,6 +308,7 @@ export class RentPage implements OnInit {
   }
 
   isLoggedIn = false;
+  userProfile : any = {}
 
   async presentLoginAlert() {
     const alert = await this.alertController.create({
@@ -317,11 +328,6 @@ export class RentPage implements OnInit {
   }
 
   async presentRentItemsModal() {
-    if (localStorage.getItem('access_token')) {
-      this.isLoggedIn = true;
-    } else {
-      this.isLoggedIn = false;
-    }
 
     if (!this.isLoggedIn) {
       this.presentLoginAlert();

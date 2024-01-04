@@ -2,6 +2,10 @@
   margin-right: 12px;
 }
 
+header{
+  background-color: #1a4640;
+}
+
 /* Scoped components require higher specificity to customize */
 ion-searchbar.custom {
   --background: #f2f2f2;

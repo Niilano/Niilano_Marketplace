@@ -1,121 +1,102 @@
-<ion-header>
-  <ion-toolbar style="color: #f2f2f2; --background: #f2f2f2">
-    <ion-title slot="start" style="width: auto;flex:1.5;" class="logo d-flex">
-      <img src="../../../assets/images/logo.png" class="logo ms-2" alt="logo" />
-
-    </ion-title>
-
-    <ion-button slot="end"
-    class="d-sm-block d-none"
-    style="
-      --background: transparent;
-      margin-right: 15px;
-      text-transform: capitalize;
-      --padding-end: 100px;
-    --padding-top: 5px;
-    --padding-bottom: 5px;
-    height: max-content;
-    "
-    (click)="searchI()">
-    <ion-icon
-    class="me-3"
-    slot="icon-only"
-    name="search-outline"
-    style="color: #1a4640"
-  ></ion-icon>
-      <span style="
-      color: #8ea3a0;">
-        Search 
-      </span>
-    </ion-button>    
-
-    <ion-button
-    class="search-btn d-sm-none d-block"
-      slot="end"
-      style="
-        --background: transparent;
-        --padding-end: 0;
-        --padding-start: 0;
-        --box-shadow: 0;
-      "
-      (click)="searchI()"
-    >
-      <ion-icon
-        slot="icon-only"
-        size="large"
-        name="search-outline"
-        style="color: #1a4640"
-      ></ion-icon>
-    </ion-button>
-
-    <!-- <ion-button
-      (click)="redirect('saveditems')"
-      class="d-sm-block d-none py-1 rounded"
-      style="color: #f2f2f2; background: #1a4640"
-      slot="end"
-    >
-      <ion-button class="d-flex align-items-center justify-content-center">
-        <ion-icon size="large" name="bookmark-outline"></ion-icon>
-        <span>Saved Items</span>
-      </ion-button>
-
-      <span
-        class="position-absolute start-0 translate-middle badge rounded-pill bg-danger"
-        style="top: 20%"
-      >
-        {{ savedItems.length }}
-      </span>
-    </ion-button> -->
-
-    <ion-button (click)="redirect('saveditems')" class="d-sm-block d-none" style="margin-right: 30px;;" color="warning" slot="end">
-Saved Items
-<ion-badge color="danger" class="ms-1">
-  {{ savedItems.length }}
-</ion-badge>
-    </ion-button>
-
-     <ion-buttons
-      (click)="redirect('saveditems')"
-      class="d-sm-none d-block rounded m-0"
-      style="color: #1a4640"
-      slot="end"
-    >
-      <ion-button
-        id="mobile-saved-icon"
-        style="--padding-end: 0%"
-        class="d-flex m-0 p-0 align-items-center justify-content-center"
-        routerLink="/cart"
-      >
-        <ion-icon size="large" name="bookmark-outline"></ion-icon>
-        <span
-          class="position-absolute start-20 translate-middle badge rounded-pill bg-danger"
-          style="top: 30%"
-        >
-          {{ savedItems.length }}
+<!-- Desktop Header -->
+<header class="px-5 d-none d-md-block py-2">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <img src="../../../assets/images/logo_n_large.png" style="width: 130px; height: auto;" />
+    </div>
+    <div style="width: 50%;">
+      <div class="d-flex justify-content-between gap-2 align-items-center">
+        <div class="d-flex gap-2 text-light align-items-center">
+          <i class="fa-solid fa-magnifying-glass-location"></i> 
+          <ion-select aria-label="Regions" value="all" placeholder="Select region">
+            <ion-select-option value="all">All regions</ion-select-option>
+            <ion-select-option value="ashanti">Ashanti</ion-select-option>
+            <ion-select-option value="accra">Greater Accra</ion-select-option>
+          </ion-select>
+        </div>
+        <button style="font-size: .8em; height: max-content;" class="w-100 d-flex align-items-center gap-2 btn btn-light">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>
+            Search on niilano
+          </span>
+        </button>
+        <!-- <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon> -->
+      </div>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <button *ngIf="!isLoggedIn" (click)="toSignInPage()" style="font-size: .8em; height: max-content;" class="btn btn-light d-flex gap-2 justify-content-center align-items-center">
+        <i class="fa-regular fa-circle-user"></i>
+        Sign in / Register
+      </button>
+      
+      <span *ngIf="isLoggedIn" style="font-size: .8em; height: max-content;" class="bg-light rounded pe-2 overflow-hidden d-flex gap-2 justify-content-center align-items-center">
+        <img [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded border" />
+        <span>
+          {{userProfile.username ? userProfile.username : userProfile.first_name}}
         </span>
-      </ion-button>
-    </ion-buttons>
+      </span>
+      <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+    </div>
+  </div>
+  <nav class="mt-4 text-light d-flex justify-content-between">
+  <div>
+    <button (click)="changePage('home')" style="font-size: .8em;" class="btn btn-light">
+      For You
+      </button>
+      <button (click)="changePage('products')" style="font-size: .8em;" class="btn text-light">
+        For Sale
+        </button>
+      <button (click)="changePage('rent')" style="font-size: .8em;" class="btn text-light">
+        For Rent
+        </button>
+        <button (click)="changePage('services')" style="font-size: .8em;" class="btn text-light">
+          Hire a service
+          </button>
+  </div>
+  
+  <div class="btn-group">
+    <button class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fa-solid fa-circle-plus me-1"></i>
+      Post Item
+    </button>
+    <ul class="dropdown-menu">
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentListProductModal()"><i class="fa-solid fa-cart-plus me-1"></i> Sell Your Products</span></li>
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentRentItemsModal()"><i class="fa-solid fa-key me-1"></i>Rent Your Items</span></li>
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentListServicesModal()"><i class="fa-solid fa-briefcase me-1"></i> Post Your Service</span></li>
+    </ul>
+  </div>
+  
+  </nav>
+  </header>
 
-    <ion-buttons class="menu-button" slot="end">
-      <ion-menu-button size="large" style="color: #1a4640"></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <ion-toolbar class="desktop-segment text-light">
-    <ion-segment (ionChange)="handleSegmentChange($event)" [value]="segmentValue">
-      <ion-segment-button value="home">
-        <ion-label>For You</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="products">
-        <ion-label>Shop</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="rent">
-        <ion-label>Rent</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="services">
-        <ion-label>Hire Service</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-
-</ion-header>
+  <!-- Mobile header -->
+  <header class="p-2 pt-2 pb-1 d-block d-md-none">
+    <div class="d-flex justify-content-between mb-2">
+  <img src="../../../assets/images/logo_n.png" width="35" height="35" />
+  <div class="d-flex w-100 align-items-center text-light justify-content-end">
+    <button *ngIf="!isLoggedIn" (click)="toSignInPage()" class="btn text-light border" style="font-size: .8em;">
+      Sign in / Register
+    </button>
+    <!-- <i *ngIf="isLoggedIn" class="fa-solid fa-circle-user fa-2x"></i> -->
+    <img *ngIf="isLoggedIn" [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded-circle border" />
+    <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+  </div>
+    </div>
+    <div class="d-flex justify-content-between gap-2 align-items-center">
+    <button class="w-100 d-flex align-items-center gap-2 btn btn-light">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>
+        Search on niilano
+      </span>
+    </button>
+    <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon>
+  </div>
+  <div class="mt-1 d-flex gap-2 text-light align-items-center">
+    <i class="fa-solid fa-magnifying-glass-location"></i> 
+    <ion-select aria-label="Regions" value="all" placeholder="Select region">
+      <ion-select-option value="all">All regions</ion-select-option>
+      <ion-select-option value="ashanti">Ashanti</ion-select-option>
+      <ion-select-option value="accra">Greater Accra</ion-select-option>
+    </ion-select>
+  </div>
+  </header>

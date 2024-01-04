@@ -41,6 +41,7 @@ export class ServicesPage implements OnInit {
   };
 
   isLoggedIn = false;
+  userProfile : any = {}
 
   async presentLoginAlert() {
     const alert = await this.alertController.create({
@@ -60,11 +61,6 @@ export class ServicesPage implements OnInit {
   }
 
   async presentListServicesModal() {
-    if (localStorage.getItem('access_token')) {
-      this.isLoggedIn = true;
-    } else {
-      this.isLoggedIn = false;
-    }
 
     if (!this.isLoggedIn) {
       this.presentLoginAlert();
@@ -104,6 +100,17 @@ export class ServicesPage implements OnInit {
   }
 
   ionViewWillEnter() {
+
+    this.store.select('checkLogin')
+      .subscribe((res) => {
+        if(res.loggedIn){
+          this.isLoggedIn = res.loggedIn;
+        this.userProfile = res.profile
+        // console.log(res)
+        // console.log(this.userProfile)
+        }
+      });
+
     if (this.servicesData.length < 1) {
       this.getServices();
     }
