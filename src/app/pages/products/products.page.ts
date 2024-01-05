@@ -371,6 +371,29 @@ export class ProductsPage {
     imgElement.classList.add('loaded');
   }
 
+  // Filter Section
+
+  filterData : any = {
+    selectedCatInfo : {}
+  }
+
+  categoryModal = false
+
+  toggleCategoryModal() {
+    this.categoryModal = !this.categoryModal;
+  }
+
+  categorySelection(data: any) {
+    this.filterData.selectedCatInfo.category_id = data.category_id;
+    this.filterData.selectedCatInfo.category_name = data.category_name;
+    this.filterData.selectedCatInfo.subcategory_id = data.subcategory_id;
+    this.filterData.selectedCatInfo.subCategory_name = data.subCategory_name;
+    this.filterData.selectedCatInfo.productCategory = data;
+    console.log(this.filterData.selectedCatInfo.productCategory);
+    // this.categoryModal.dismiss();
+    this.categoryModal = false;
+  }
+
   ionViewDidEnter() {
     this.checkScreen()
     // console.log("Entered")

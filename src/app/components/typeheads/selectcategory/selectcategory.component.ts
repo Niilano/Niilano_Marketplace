@@ -58,6 +58,7 @@ export class SelectcategoryComponent implements OnInit {
     // console.log(this.selectedSubCategory);
     let finalValues = {
       category_id: this.categorySelected.id,
+      category_name : this.categorySelected.name,
       subcategory_id: this.selectedSubCategory,
       subCategory_name: this.categorySelected.Subcategories.find(
         (cat: any) => cat.id === this.selectedSubCategory

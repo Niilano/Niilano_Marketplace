@@ -13,6 +13,7 @@ import { LoadingModule } from 'src/app/components/loading/loading.component.modu
 import { MenuModule } from 'src/app/components/menu/menu.component.module';
 import { HeaderModule } from 'src/app/components/header/header.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { SelectcategoryModule } from 'src/app/components/typeheads/selectcategory/selectcategory.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
     FilterModule,
     LoadingModule,
     MenuModule,
-    HeaderModule
+    HeaderModule,
+    SelectcategoryModule
   ],
   declarations: [ProductsPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
