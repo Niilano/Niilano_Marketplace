@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FilterComponent } from 'src/app/components/filter/filter.component';
 import {
   AlertController,
@@ -22,6 +19,9 @@ import { ProductsserviceService } from 'src/app/services/productsservice/product
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { SearchComponent } from 'src/app/components/search/search.component';
+import { regionData } from '../list-product/regions';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-products',
@@ -29,14 +29,13 @@ import { SearchComponent } from 'src/app/components/search/search.component';
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage {
-
   // Page Subscribtions
   private subscriptions: Subscription[] = [];
 
-  pageTitle = "Products";
+  pageTitle = 'Products';
 
-  isLoggedIn = false
-  userProfile : any = {}
+  isLoggedIn = false;
+  userProfile: any = {};
 
   handleRefresh(event: any) {
     // do some work to refresh the content here
@@ -53,15 +52,15 @@ export class ProductsPage {
   products: any = [];
   categoriesAndSubcategories: any = [];
 
-  showFilter = true
-  toggleFilter(){
-    this.showFilter = !this.showFilter
+  showFilter = true;
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
   }
 
-  checkScreen(){
-    let windowWidth = window.innerWidth
-    if(windowWidth<768){
-      this.showFilter = false
+  checkScreen() {
+    let windowWidth = window.innerWidth;
+    if (windowWidth < 768) {
+      this.showFilter = false;
     }
   }
 
@@ -83,7 +82,6 @@ export class ProductsPage {
     });
   }
 
-
   constructor(
     private popoverController: PopoverController,
     private store: Store<AppState>,
@@ -94,19 +92,21 @@ export class ProductsPage {
     private router: Router,
     private navCtrl: NavController,
     private activeRoute: ActivatedRoute,
-    private alertController : AlertController
-  ) { }
+    private alertController: AlertController,
+    private http: HttpClient
+  ) {}
 
   getProducts = false;
   getProductsComplete = false;
-  filteringProducts = false
-  productsLoading = true
+  filteringProducts = false;
+  productsLoading = true;
 
   navigateBack() {
     this.navCtrl.back();
   }
 
   ionViewWillEnter() {
+    this.regions = regionData.map((data) => data.region);
     // Getting all avialable categories and subcategories
     this.productsService
       .getCategoriesAndSubCategoies()
@@ -114,81 +114,58 @@ export class ProductsPage {
       .subscribe(
         (res) => {
           this.categoriesAndSubcategories = res;
-          
-          this.activeRoute.queryParams.subscribe(async (params) => {
-            let sortCategory = params['category']
-            if(sortCategory){
-              let categoryName = this.categoriesAndSubcategories.find((cat: { id: any; })=>(cat.id==sortCategory))
-              this.pageTitle = categoryName.name
-            }
-          })
 
+          this.activeRoute.queryParams.subscribe(async (params) => {
+            let sortCategory = params['category'];
+            if (sortCategory) {
+              let categoryName = this.categoriesAndSubcategories.find(
+                (cat: { id: any }) => cat.id == sortCategory
+              );
+              this.pageTitle = categoryName.name;
+              this.filterData.selectedCatInfo.category_id = categoryName.id;
+              this.filterData.selectedCatInfo.category_name = categoryName.name;
+              this.sendFilterData();
+            }
+          });
         },
         (err) => {
           console.log(err);
         }
       );
 
-      this.store.select('checkLogin')
-      .subscribe((res) => {
-        if(res.loggedIn){
-          this.isLoggedIn = res.loggedIn;
-        this.userProfile = res.profile
-        }
-      });
+    this.store.select('checkLogin').subscribe((res) => {
+      if (res.loggedIn) {
+        this.isLoggedIn = res.loggedIn;
+        this.userProfile = res.profile;
+      }
+    });
 
     // Getting the states of the products at each time
     this.subscriptions.push(
       this.store.select('products').subscribe((res) => {
-
-        if (!res.filter && !this.getProducts) {
+        if (!this.getProducts) {
           this.getProducts = true;
           if (res.products.length < 1) {
             this.store.dispatch(getProducts({ page: 1 }));
+            this.productsLoading = true;
           }
-        } else if (res.filter) {
-          this.getProducts = false;
         }
 
-        if (!res.filter && res.process) {
-          this.getProductsComplete = false
-          // this.products.length < 1 && this.store.dispatch(startLoading());
-        } else if (res.filter && res.process) {
-          this.getProducts = true
-          // this.store.dispatch(startLoading());
+        if (res.process) {
+          this.productsLoading = true;
         }
 
-        if (!res.filter && res.success) {
-
-          this.productsLoading = false
-          // console.log(res.products)
+        if (res.success) {
+          this.productsLoading = false;
           this.products =
             this.products.length > 0
               ? [...this.products, ...res.products]
               : res.products;
 
           this.productsAvailable = res.productsAvailable;
-          this.getProductsComplete = true
-          this.filteringProducts = false
-        } else if (res.filter && res.success) {
-
-          this.getProducts = true;
-          this.filteringProducts = true
-
-          this.store.dispatch(endLoading());
-          this.productsLoading = false
-          // console.log(res.products)
-          this.products = res.products;
-
-          this.productsAvailable = res.productsAvailable;
-          this.getProductsComplete = true
         }
 
         if (res.failure) {
-          this.store.dispatch(endLoading());
-
-          // console.log(res.message)
-
           this.toastController
             .create({
               message: res.message
@@ -219,9 +196,8 @@ export class ProductsPage {
             })
             .then((toast) => toast.present());
         }
-
-      }))
-
+      })
+    );
   }
 
   async presentLoginAlert() {
@@ -252,8 +228,8 @@ export class ProductsPage {
     }
   }
 
-  ionViewWillLeave(){
-    console.log("Page Exited")
+  ionViewWillLeave() {
+    console.log('Page Exited');
   }
 
   loadMoreProducts(event: any) {
@@ -276,62 +252,6 @@ export class ProductsPage {
       showBackdrop: true,
     });
     return await modal.present();
-  }
-
-  async openFilter() {
-
-    const modal = await this.modalCtrl.create({
-      component: FilterComponent,
-      showBackdrop: true,
-      componentProps: {
-        selectedCategory: this.selectedCategory,
-        selectedSubcategory: this.selectedSubcategory,
-        priceRange: this.priceRange,
-        categoriesAndSubcategories: this.categoriesAndSubcategories,
-      }
-    });
-
-    modal.onDidDismiss().then((data) => {
-      // Check if data returned has a value
-
-      if (!data.data.selectedCategory && !data.data.selectedSubCategory && !data.data.priceRange.des) {
-        // console.log('nothing')
-        this.products = []
-        this.selectedCategory = data.data.selectedCategory
-        this.selectedSubcategory = data.data.selectedSubCategory
-        this.priceRange = data.data.priceRange
-        this.store.dispatch(clearFilter());
-        return
-      }
-
-      // console.log('Data received from FilterComponent:', data.data);
-      this.selectedCategory = data.data.selectedCategory
-      this.selectedSubcategory = data.data.selectedSubCategory
-      this.priceRange = data.data.priceRange
-
-      this.store.dispatch(
-        filterProducts({
-          filters: {
-            category: data.data.selectedCategory,
-            subcategory: data.data.selectedSubCategory,
-            priceRange: JSON.stringify(data.data.priceRange),
-          },
-        })
-      );
-
-    }
-    );
-
-    return await modal.present();
-
-  }
-
-  resetFilter() {
-    this.products = []
-    this.selectedCategory = undefined
-    this.selectedSubcategory = undefined
-    this.priceRange = undefined
-    this.store.dispatch(clearFilter());
   }
 
   // Method to calculate the discounted price
@@ -358,11 +278,11 @@ export class ProductsPage {
         let newImageUrl = parts[0] + 'upload/w_500/' + parts[1];
         return newImageUrl; // The modified URL with 'w_500'
       }
-
-
     }
 
-    return url ? url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg';
+    return url
+      ? url
+      : 'https://ionicframework.com/docs/img/demos/thumbnail.svg';
   }
 
   // Smooth loading of products images
@@ -373,11 +293,17 @@ export class ProductsPage {
 
   // Filter Section
 
-  filterData : any = {
-    selectedCatInfo : {}
-  }
+  filterData: any = {
+    selectedCatInfo: {},
+    discount: false,
+  };
 
-  categoryModal = false
+  filterPriceRange = {
+    minPrice: 0,
+    maxPrice: 0,
+  };
+
+  categoryModal = false;
 
   toggleCategoryModal() {
     this.categoryModal = !this.categoryModal;
@@ -394,8 +320,67 @@ export class ProductsPage {
     this.categoryModal = false;
   }
 
+  locationModal = false;
+
+  regions: any = [];
+
+  toggleLocationModal() {
+    this.locationModal = !this.locationModal;
+  }
+
+  receiveLocationData(data: any) {
+    this.filterData.location = data;
+    // console.log(this.productInfo.productLocation)
+    this.locationModal = false;
+  }
+
+  filteringData = false;
+
+  sendFilterData() {
+    this.productsLoading = true;
+    this.showFilter = window.innerWidth < 768 ? false : true
+    // if(this.filterData.selectedCatInfo.category_id == "0" && filteringData==false){
+    //   this.productsLoading = false
+    //   return
+    // }
+    this.getProducts = false;
+    this.http
+      .get(
+        `${environment.server}/products/filter/${
+          this.filterData.selectedCatInfo.category_id
+        }/${this.filterData.selectedCatInfo.subcategory_id}/${
+          this.filterData.location
+        }/${JSON.stringify(this.filterPriceRange)}/${this.filterData.discount}`
+      )
+      .subscribe((res: any) => {
+        this.filteringData = true;
+        // console.log(res.products)
+        this.productsLoading = false;
+        this.products = res.products;
+        this.getProducts = true;
+      });
+  }
+
+  clearFilter() {
+    this.filteringData = false;
+
+    this.filterData = {
+      selectedCatInfo: {},
+      discount: false,
+    };
+
+    this.filterPriceRange = {
+      minPrice: 0,
+      maxPrice: 0,
+    };
+
+    this.products = [];
+
+    this.store.dispatch(getProducts({ page: 1 }));
+  }
+
   ionViewDidEnter() {
-    this.checkScreen()
+    this.checkScreen();
     // console.log("Entered")
     // setTimeout(() => {
     //   let products = document.querySelector('.products') as HTMLElement

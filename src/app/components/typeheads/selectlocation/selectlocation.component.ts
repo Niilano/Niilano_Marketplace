@@ -16,6 +16,8 @@ export class SelectlocationComponent implements OnInit {
   @Output() modalClose = new EventEmitter<void>();
   @Output() confirmChanges: any = new EventEmitter<string>();
 
+  @Input() onlyRegions = false
+
   selectedRegion = false
   regionSelected:any = []
 
@@ -48,11 +50,16 @@ export class SelectlocationComponent implements OnInit {
   filteredCities:any
 
   selectRegion(region:string){
+    if(this.onlyRegions){
+      this.confirmChanges.emit(region)
+      return;
+    }
     if (region) {
       this.selectedRegion = true;
       this.regionSelected = this.regions.find((reg: any) => reg.region === region);
       this.filteredCities = this.regionSelected.cities;
       this.title = 'Select City / Town';
+
     }
   }
 
@@ -88,7 +95,7 @@ export class SelectlocationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.filteredRegions = this.regions
+    this.filteredRegions =  this.onlyRegions ? this.regions : this.regions.map((item: { region: any; })=>item.region)
     // console.log(this.filteredRegions)
   }
 

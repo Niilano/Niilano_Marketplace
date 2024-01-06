@@ -44,6 +44,18 @@ export class SelectcategoryComponent implements OnInit {
   }
 
   selectCategory(id: number) {
+    if(id==0){
+      let finalValues = {
+        category_id: 0,
+        category_name : "All Categories",
+        subcategory_id: 0,
+        subCategory_name: "All Subcategories",
+      };
+  
+      this.confirmChanges.emit(finalValues);
+
+      return;
+    }
     if (id) {
       this.selectedCategory = true;
       this.categorySelected = this.categories.find((cat: any) => cat.id === id);
@@ -60,7 +72,7 @@ export class SelectcategoryComponent implements OnInit {
       category_id: this.categorySelected.id,
       category_name : this.categorySelected.name,
       subcategory_id: this.selectedSubCategory,
-      subCategory_name: this.categorySelected.Subcategories.find(
+      subCategory_name: this.selectedSubCategory == "0" ? "All Subcategories" : this.categorySelected.Subcategories.find(
         (cat: any) => cat.id === this.selectedSubCategory
       ).name,
     };

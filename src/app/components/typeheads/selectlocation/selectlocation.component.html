@@ -25,9 +25,9 @@
       button
       detail="true"
       *ngFor="let region of filteredRegions"
-      (click)="selectRegion(region.region)"
+      (click)="selectRegion(region)"
     >
-      <ion-label>{{ region.region }} Region</ion-label>
+      <ion-label>{{ region }} Region</ion-label>
     </ion-item>
   </div>
 

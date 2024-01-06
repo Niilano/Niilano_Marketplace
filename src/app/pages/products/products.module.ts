@@ -14,6 +14,7 @@ import { MenuModule } from 'src/app/components/menu/menu.component.module';
 import { HeaderModule } from 'src/app/components/header/header.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { SelectcategoryModule } from 'src/app/components/typeheads/selectcategory/selectcategory.module';
+import { SelectlocationModule } from 'src/app/components/typeheads/selectlocation/selectlocation.module';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { SelectcategoryModule } from 'src/app/components/typeheads/selectcategor
     LoadingModule,
     MenuModule,
     HeaderModule,
-    SelectcategoryModule
+    SelectcategoryModule,
+    SelectlocationModule
   ],
   declarations: [ProductsPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
