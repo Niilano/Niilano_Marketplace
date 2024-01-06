@@ -117,6 +117,12 @@ export class ProductsPage {
 
           this.activeRoute.queryParams.subscribe(async (params) => {
             let sortCategory = params['category'];
+            let openFilter = params['openFilter'];
+            if (openFilter && openFilter == 'true') {
+              this.showFilter = true;
+            } else {
+              this.checkScreen();
+            }
             if (sortCategory) {
               let categoryName = this.categoriesAndSubcategories.find(
                 (cat: { id: any }) => cat.id == sortCategory
@@ -338,7 +344,7 @@ export class ProductsPage {
 
   sendFilterData() {
     this.productsLoading = true;
-    this.showFilter = window.innerWidth < 768 ? false : true
+    this.showFilter = window.innerWidth < 768 ? false : true;
     // if(this.filterData.selectedCatInfo.category_id == "0" && filteringData==false){
     //   this.productsLoading = false
     //   return
@@ -364,6 +370,8 @@ export class ProductsPage {
   clearFilter() {
     this.filteringData = false;
 
+    this.showFilter = window.innerWidth < 768 ? false : true;
+
     this.filterData = {
       selectedCatInfo: {},
       discount: false,
@@ -377,26 +385,5 @@ export class ProductsPage {
     this.products = [];
 
     this.store.dispatch(getProducts({ page: 1 }));
-  }
-
-  ionViewDidEnter() {
-    this.checkScreen();
-    // console.log("Entered")
-    // setTimeout(() => {
-    //   let products = document.querySelector('.products') as HTMLElement
-    //   let masonry = new Masonry(products, {
-    //     itemSelector: '.product-item'
-    //   })
-    //   console.log("timer working")
-    // }, 2000);
-  }
-
-  ngAfterViewInit() {
-    // window.addEventListener('load',()=>{
-    //   let products = document.querySelector('.products') as HTMLElement
-    // this.masonry = new Masonry(products,{
-    //   itemSelector : '.product-item'
-    // })
-    // })
   }
 }

@@ -2,448 +2,926 @@
 <ion-content>
   <div class="px-md-5 px-sm-0 py-md-2 py-sm-0 text-dark">
     <div class="row">
-      <div style="position: relative;" class="col-lg-2 col-md-3 col-sm-12 bg-light shadow rounded d-none d-md-block">
-        <div class="py-3" style="position: sticky; top: 0;">
+      <div
+        style="position: relative"
+        class="col-lg-2 col-md-3 col-sm-12 bg-light shadow rounded d-none d-md-block"
+      >
+        <div class="py-3" style="position: sticky; top: 0">
           <h4 class="m-0 mb-2">Shop</h4>
-          <div *ngIf="productCategoriesLoading" class="d-flex flex-column gap-2 text-light">
+          <div
+            *ngIf="productCategoriesLoading"
+            class="d-flex flex-column gap-2 text-light"
+          >
             <ng-container *ngFor="let _ of [].constructor(10); let i = index">
-              <div class="overflow-hidden rounded" style="position: relative;">
-                <div class="p-2 py-1" style="position: relative; z-index: 2;">
-                  <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          
+              <div class="overflow-hidden rounded" style="position: relative">
+                <div class="p-2 py-1" style="position: relative; z-index: 2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+
                   <div class="d-flex justify-content-end">
-                    <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
+                    <ion-skeleton-text
+                      class="w-50"
+                      [animated]="true"
+                    ></ion-skeleton-text>
                   </div>
-          
                 </div>
-                <ion-skeleton-text style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; --background-rgb: 0, 255, 221;" [animated]="true"></ion-skeleton-text>
+                <ion-skeleton-text
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    z-index: 0;
+                    --background-rgb: 0, 255, 221;
+                  "
+                  [animated]="true"
+                ></ion-skeleton-text>
               </div>
             </ng-container>
           </div>
-          
-          <div *ngIf="!productCategoriesLoading" class="d-flex flex-column gap-2 text-light">
-            <div class="overflow-hidden rounded" style="position: relative;" *ngFor="let cat of productCategories">
-            <div class="p-2 py-1" style="position: relative; z-index: 2;">
-              <h6 class="font-bold">{{cat.name}}</h6>
 
-              <div class="d-flex justify-content-end">
-                <button (click)="navigateProductsCategories(cat.id)" style="font-size: .7em;" class="btn btn-danger">
-                  Shop Now <i class="fa-solid fa-arrow-right ms-1"></i>
-                </button>
+          <div
+            *ngIf="!productCategoriesLoading"
+            class="d-flex flex-column gap-2 text-light"
+          >
+            <div
+              class="overflow-hidden rounded"
+              style="position: relative"
+              *ngFor="let cat of productCategories"
+            >
+              <div class="p-2 py-1" style="position: relative; z-index: 2">
+                <h6 class="font-bold">{{cat.name}}</h6>
+
+                <div class="d-flex justify-content-end">
+                  <button
+                    (click)="navigateProductsCategories(cat.id)"
+                    style="font-size: 0.7em"
+                    class="btn btn-danger"
+                  >
+                    Shop Now <i class="fa-solid fa-arrow-right ms-1"></i>
+                  </button>
+                </div>
               </div>
-            
+              <div
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  z-index: 1;
+                  background-color: rgba(0, 0, 0, 0.342);
+                "
+              ></div>
+              <img
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  z-index: 0;
+                "
+                [src]="modifyImageUrl(cat?.image?.url)"
+              />
             </div>
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background-color: rgba(0, 0, 0, 0.342);">
-        
-            </div>
-            <img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" [src]="modifyImageUrl(cat?.image?.url)" />
-           </div>
           </div>
         </div>
       </div>
 
       <div class="col-lg-2 col-md-3 col-sm-12 d-block d-md-none">
-
-        <swiper-container loop="true" *ngIf="productCategoriesLoading" class="text-light" [slidesPerView]="slidesPerViewCat" speed="500" css-mode="true" space-between="5">
-          <swiper-slide
-          >
-         <div class="overflow-hidden bg-light" style="position: relative;">
-          <div class="p-2" style="position: relative; z-index: 2;">
-            <h3 class="d-flex justify-content-between">
-              <ion-skeleton-text [animated]="true" style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <ion-skeleton-text [animated]="true" style="width: 100%"></ion-skeleton-text>
-          </div>
-         </div>
-          </swiper-slide>
-          <swiper-slide
-          >
-         <div class="overflow-hidden bg-light" style="position: relative;">
-          <div class="p-2" style="position: relative; z-index: 2;">
-            <h3 class="d-flex justify-content-between">
-              <ion-skeleton-text [animated]="true" style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <ion-skeleton-text [animated]="true" style="width: 100%"></ion-skeleton-text>
-          </div>
-         </div>
-          </swiper-slide>
-          </swiper-container>
-    
-        <swiper-container *ngIf="!productCategoriesLoading" class="text-light" [slidesPerView]="slidesPerViewCat" speed="500" css-mode="true" space-between="5" loop="true" autoplay-delay="4000">
-          <swiper-slide *ngFor="let cat of productCategories"
-          >
-         <div class="overflow-hidden h-100" style="position: relative;">
-          <div class="p-2" style="position: relative; z-index: 2;">
-            <p style="font-size:.9em;" class="font-bold">{{cat.name}}</p>
-
-              <div class="d-flex justify-content-end">
-                <button (click)="navigateProductsCategories(cat.id)" style="font-size: .7em;" class="btn btn-danger">
-                  Shop Now <i class="fa-solid fa-arrow-right ms-1"></i>
-                </button>
+        <swiper-container
+          loop="true"
+          *ngIf="productCategoriesLoading"
+          class="text-light"
+          [slidesPerView]="slidesPerViewCat"
+          speed="500"
+          css-mode="true"
+          space-between="5"
+        >
+          <swiper-slide>
+            <div class="overflow-hidden bg-light" style="position: relative">
+              <div class="p-2" style="position: relative; z-index: 2">
+                <h3 class="d-flex justify-content-between">
+                  <ion-skeleton-text
+                    [animated]="true"
+                    style="width: 50%"
+                  ></ion-skeleton-text>
+                </h3>
+                <ion-skeleton-text
+                  [animated]="true"
+                  style="width: 100%"
+                ></ion-skeleton-text>
               </div>
-          </div>
-          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background-color: rgba(0, 0, 0, 0.466);">
-      
-          </div>
-          <img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" [src]="modifyImageUrl(cat?.image?.url)" />
-         </div>
-          </swiper-slide>
-          </swiper-container>
-          <div class="text-primary d-flex justify-content-end mt-2 pe-2">
-            <small class="text-underline"> More Categories <i class="fa-solid ms-1 fa-arrow-right"></i></small>
-          </div>
-      </div>
-      
-  <div class="col-lg-10 col-md-9 col-sm-12">
-     <!-- Top Products -->
-  <div>
-    <div class="d-flex px-2 justify-content-between text-dark align-items-center">
-      <h6 class="m-0">
-        Trending Products <i class="fa-solid fa-arrow-trend-up ms-1"></i>
-      </h6>
-      <button class="btn text-primary pe-0">
-        <small>View More <i class="fa-solid ms-1 fa-arrow-right"></i></small>
-      </button>
-    </div>
-    <swiper-container *ngIf="trendingProductsLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerView" speed="500" space-between="5" [grid]="{'rows':2,'fill': 'rows'}">
-      
-      <swiper-slide *ngFor="let i of getRange(20); let index = index" class="h-100 pb-2"
-      >
-      <div class="rounded shadow overflow-hidden">
-        <div>
-            <ion-skeleton-text style="width: 100%; height: 100px;" [animated]="true"></ion-skeleton-text>
-        </div>
-        <div class="p-2">
-          <ion-skeleton-text style="width: 100%;" [animated]="true"></ion-skeleton-text>
-          <ion-skeleton-text style="width: 50%;" [animated]="true"></ion-skeleton-text>
-          <ion-skeleton-text style="width: 100%" [animated]="true"></ion-skeleton-text>
-        </div>
-      </div>
-      </swiper-slide>
-      </swiper-container>
-    <swiper-container *ngIf="!trendingProductsLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerView" speed="500" space-between="5" [grid]="{'rows':2,'fill': 'rows'}">
-      <swiper-slide *ngFor="let product of trendingProducts" [routerLink]="['/product-details']"
-      [queryParams]="{ product: product.id }" class="h-100 pb-2"
-      >
-      <div class="rounded shadow overflow-hidden">
-        <div>
-          <img class="pImages" [src]="modifyImageUrl(product?.image?.url)" />
-        </div>
-        <div class="p-2">
-          <p style="font-size: .9em; font-weight: bold;" class="m-0 font-bold single-line-ellipsis">{{product.name}}</p>
-          <p style="font-size: .8em;" class="m-0">GH₵{{product.price!.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}</p>
-          <p style="font-size: .8em;" class="m-0 single-line-ellipsis"><i class="fa-solid fa-location-dot me-1"></i> {{product.location}}</p>
-        </div>
-      </div>
-      </swiper-slide>
-      </swiper-container>
-      
-  </div>
-
-    <!-- Special Offers -->
-    <div>
-      <div class="d-flex px-2 justify-content-between text-dark align-items-center">
-        <h6 class="m-0">
-          Special Offers <i class="fa-solid fa-tags ms-1 text-danger"></i>
-        </h6>
-        <button class="btn text-danger pe-0">
-          <small>View More <i class="fa-solid ms-1 fa-arrow-right"></i></small>
-        </button>
-      </div>
-      <swiper-container *ngIf="discountProductsLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerView" speed="500" space-between="5" [grid]="{'rows':2,'fill': 'rows'}">
-        <swiper-slide *ngFor="let i of getRange(12); let index = index" class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div style="position: relative;">
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text style="position: absolute; bottom: -15%; left: 35%; font-size: .5em; width: max-content;  --background-rgb: 230,40,50;" class="p-2 px-3 rounded-circle shadow d-flex flex-column align-items-center justify-content-center font-bold text-light" [animated]="true"> % </ion-skeleton-text>
-          </div>
-          <div class="p-2 pt-3">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-  
-        </swiper-container>
-      <swiper-container *ngIf="!discountProductsLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerView" speed="500" space-between="5" [grid]="{'rows':2,'fill': 'rows'}">
-        <swiper-slide *ngFor="let product of discountProducts" [routerLink]="['/product-details']"
-        [queryParams]="{ product: product.id }" class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div class="border-bottom border-danger border-3" style="position: relative;">
-            <img class="pImages" [src]="modifyImageUrl(product?.image?.url)" />
-            <div style="position: absolute; bottom: -15%; left: 35%; font-size: .5em;" class="p-2 px-3 bg-danger rounded-circle shadow d-flex flex-column align-items-center justify-content-center font-bold text-light">
-  <span>
-    {{product.discount_percent}}%
-  </span>
-  <span>OFF</span>
             </div>
-          </div>
-          <div class="p-2 pt-3">
-            <p style="font-size: .9em; font-weight: bold;" class="m-0 font-bold single-line-ellipsis">{{product.name}}</p>
-            <p style="font-size: .8em;" class="m-0 text-decoration-line-through">GH₵{{product?.price?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}</p>
-            <p style="font-size: .8em;" class="m-0">GH₵{{(product?.price-(product?.price * (product?.discount_percent / 100)))?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}</p>
-            <p style="font-size: .8em;" class="m-0 single-line-ellipsis"><i class="fa-solid fa-location-dot me-1"></i> {{product.location}}</p>
-          </div>
-        </div>
-        </swiper-slide>
-  
+          </swiper-slide>
+          <swiper-slide>
+            <div class="overflow-hidden bg-light" style="position: relative">
+              <div class="p-2" style="position: relative; z-index: 2">
+                <h3 class="d-flex justify-content-between">
+                  <ion-skeleton-text
+                    [animated]="true"
+                    style="width: 50%"
+                  ></ion-skeleton-text>
+                </h3>
+                <ion-skeleton-text
+                  [animated]="true"
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </div>
+            </div>
+          </swiper-slide>
         </swiper-container>
-        
-    </div>
-  
-    <!-- For rent -->
-    <div>
-      <div class="d-flex px-2 justify-content-between text-dark align-items-center">
-        <h6 class="m-0">
-          <i class="fa-solid fa-house me-1"></i> Rent a home
-        </h6>
-        <button class="btn text-primary pe-0">
-          <small>View More <i class="fa-solid ms-1 fa-arrow-right"></i></small>
-        </button>
-      </div>
-      <swiper-container *ngIf="housesLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerViewRent" speed="500" space-between="5">
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        </swiper-container>
-      <swiper-container *ngIf="!housesLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerViewRent" speed="500" space-between="5">
-        <swiper-slide *ngFor="let house of houses" [routerLink]="['/rent-items-details']" [queryParams]="{ item: 'house', id: house.id }" class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <img class="pImages" [src]="modifyImageUrl(house.bedroomImage?.imageUrl)" />
-          </div>
-          <div class="p-2">
-            <p style="font-size: .9em; font-weight: bold;" class="m-0 font-bold single-line-ellipsis">{{house.houseDescription}}</p>
-            <p style="font-size: .8em;" class="m-0">GH₵{{ (+house.pricePerMonth || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
-            </p>
-            <p style="font-size: .8em;" class="m-0">Per Month</p>
-            <p style="font-size: .8em;" class="m-0 single-line-ellipsis">{{house.houseRegionLocation}}, {{house.houseLocation}}</p>
-          </div>
-        </div>
-        </swiper-slide>
-        </swiper-container>
-        
-    </div>
-  
-    <div>
-      <div class="d-flex px-2 justify-content-between text-dark align-items-center">
-        <h6 class="m-0">
-          <i class="fa-solid fa-car me-1"></i> Rent a vehicle
-        </h6>
-        <button class="btn text-primary pe-0">
-          <small>View More <i class="fa-solid ms-1 fa-arrow-right"></i></small>
-        </button>
-      </div>
-      <swiper-container *ngIf="vehiclesLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerViewRent" speed="500" space-between="5">
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        <swiper-slide class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <ion-skeleton-text class="pImages" [animated]="true"></ion-skeleton-text>
-          </div>
-          <div class="p-2">
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-50" [animated]="true"></ion-skeleton-text>
-            <ion-skeleton-text class="w-100" [animated]="true"></ion-skeleton-text>
-          </div>
-        </div>
-        </swiper-slide>
-        </swiper-container>
-      <swiper-container *ngIf="!vehiclesLoading" class="text-dark h-100 pb-2 px-2" css-mode="false" [slidesPerView]="slidesPerViewRent" speed="500" space-between="5">
-        <swiper-slide *ngFor="let vehicle of vehicles" [routerLink]="['/rent-items-details']"
-        [queryParams]="{ item: 'vehicle', id: vehicle.id }" class="h-100 pb-2"
-        >
-        <div class="rounded shadow overflow-hidden">
-          <div>
-            <img class="pImages" [src]="modifyImageUrl(vehicle.frontImage?.imageUrl)" />
-          </div>
-          <div class="p-2">
-            <p style="font-size: .9em; font-weight: bold;" class="m-0 font-bold single-line-ellipsis">{{vehicle.tagline}}</p>
-            <p style="font-size: .8em;" class="m-0">GH₵{{ (+vehicle.priceWithinRegionCD || +vehicle.priceWithinRegionSD).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
-            <p style="font-size: .8em;" class="m-0">Per Day</p>
-            <p style="font-size: .8em;" class="m-0 single-line-ellipsis">{{vehicle.regionLocation}}, {{vehicle.location}}</p>
-          </div>
-        </div>
-        </swiper-slide>
-        </swiper-container>
-        
-    </div>
 
-  </div>
+        <swiper-container
+          *ngIf="!productCategoriesLoading"
+          class="text-light"
+          [slidesPerView]="slidesPerViewCat"
+          speed="500"
+          css-mode="true"
+          space-between="5"
+          loop="true"
+          autoplay-delay="4000"
+        >
+          <swiper-slide *ngFor="let cat of productCategories">
+            <div class="overflow-hidden h-100" style="position: relative">
+              <div class="p-2" style="position: relative; z-index: 2">
+                <p style="font-size: 0.9em" class="font-bold">{{cat.name}}</p>
+
+                <div class="d-flex justify-content-end">
+                  <button
+                    (click)="navigateProductsCategories(cat.id)"
+                    style="font-size: 0.7em"
+                    class="btn btn-danger"
+                  >
+                    Shop Now <i class="fa-solid fa-arrow-right ms-1"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  z-index: 1;
+                  background-color: rgba(0, 0, 0, 0.466);
+                "
+              ></div>
+              <img
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  z-index: 0;
+                "
+                [src]="modifyImageUrl(cat?.image?.url)"
+              />
+            </div>
+          </swiper-slide>
+        </swiper-container>
+        <div class="text-primary d-flex justify-content-end mt-2 pe-2">
+          <small class="text-underline">
+            More Categories <i class="fa-solid ms-1 fa-arrow-right"></i
+          ></small>
+        </div>
+      </div>
+
+      <div class="col-lg-10 col-md-9 col-sm-12">
+        <!-- Top Products -->
+        <div>
+          <div
+            class="d-flex px-2 justify-content-between text-dark align-items-center"
+          >
+            <h6 class="m-0">
+              Trending Products <i class="fa-solid fa-arrow-trend-up ms-1"></i>
+            </h6>
+            <button class="btn text-primary pe-0">
+              <small
+                >View More <i class="fa-solid ms-1 fa-arrow-right"></i
+              ></small>
+            </button>
+          </div>
+          <swiper-container
+            *ngIf="trendingProductsLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerView"
+            speed="500"
+            space-between="5"
+            [grid]="{'rows':2,'fill': 'rows'}"
+          >
+            <swiper-slide
+              *ngFor="let i of getRange(20); let index = index"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    style="width: 100%; height: 100px"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    style="width: 100%"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    style="width: 50%"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    style="width: 100%"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <swiper-container
+            *ngIf="!trendingProductsLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerView"
+            speed="500"
+            space-between="5"
+            [grid]="{'rows':2,'fill': 'rows'}"
+          >
+            <swiper-slide
+              *ngFor="let product of trendingProducts"
+              [routerLink]="['/product-details']"
+              [queryParams]="{ product: product.id }"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <img
+                    class="pImages"
+                    [src]="modifyImageUrl(product?.image?.url)"
+                  />
+                </div>
+                <div class="p-2">
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{product.name}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{product.price!.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    <i class="fa-solid fa-location-dot me-1"></i>
+                    {{product.location}}
+                  </p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+
+        <!-- Special Offers -->
+        <div>
+          <div
+            class="d-flex px-2 justify-content-between text-dark align-items-center"
+          >
+            <h6 class="m-0">
+              Special Offers <i class="fa-solid fa-tags ms-1 text-danger"></i>
+            </h6>
+            <button class="btn text-danger pe-0">
+              <small
+                >View More <i class="fa-solid ms-1 fa-arrow-right"></i
+              ></small>
+            </button>
+          </div>
+          <swiper-container
+            *ngIf="discountProductsLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerView"
+            speed="500"
+            space-between="5"
+            [grid]="{'rows':2,'fill': 'rows'}"
+          >
+            <swiper-slide
+              *ngFor="let i of getRange(12); let index = index"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div style="position: relative">
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    style="
+                      position: absolute;
+                      bottom: -15%;
+                      left: 35%;
+                      font-size: 0.5em;
+                      width: max-content;
+                      --background-rgb: 230, 40, 50;
+                    "
+                    class="p-2 px-3 rounded-circle shadow d-flex flex-column align-items-center justify-content-center font-bold text-light"
+                    [animated]="true"
+                  >
+                    %
+                  </ion-skeleton-text>
+                </div>
+                <div class="p-2 pt-3">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <swiper-container
+            *ngIf="!discountProductsLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerView"
+            speed="500"
+            space-between="5"
+            [grid]="{'rows':2,'fill': 'rows'}"
+          >
+            <swiper-slide
+              *ngFor="let product of discountProducts"
+              [routerLink]="['/product-details']"
+              [queryParams]="{ product: product.id }"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div
+                  class="border-bottom border-danger border-3"
+                  style="position: relative"
+                >
+                  <img
+                    class="pImages"
+                    [src]="modifyImageUrl(product?.image?.url)"
+                  />
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: -15%;
+                      left: 35%;
+                      font-size: 0.5em;
+                    "
+                    class="p-2 px-3 bg-danger rounded-circle shadow d-flex flex-column align-items-center justify-content-center font-bold text-light"
+                  >
+                    <span> {{product.discount_percent}}% </span>
+                    <span>OFF</span>
+                  </div>
+                </div>
+                <div class="p-2 pt-3">
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{product.name}}
+                  </p>
+                  <p
+                    style="font-size: 0.8em"
+                    class="m-0 text-decoration-line-through"
+                  >
+                    GH₵{{product?.price?.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{(product?.price-(product?.price *
+                    (product?.discount_percent / 100)))?.toLocaleString('en-US',
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    <i class="fa-solid fa-location-dot me-1"></i>
+                    {{product.location}}
+                  </p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+
+        <!-- For rent -->
+        <div>
+          <div
+            class="d-flex px-2 justify-content-between text-dark align-items-center"
+          >
+            <h6 class="m-0">
+              <i class="fa-solid fa-house me-1"></i> Rent a home
+            </h6>
+            <button class="btn text-primary pe-0">
+              <small
+                >View More <i class="fa-solid ms-1 fa-arrow-right"></i
+              ></small>
+            </button>
+          </div>
+          <swiper-container
+            *ngIf="housesLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerViewRent"
+            speed="500"
+            space-between="5"
+          >
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <swiper-container
+            *ngIf="!housesLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerViewRent"
+            speed="500"
+            space-between="5"
+          >
+            <swiper-slide
+              *ngFor="let house of houses"
+              [routerLink]="['/rent-items-details']"
+              [queryParams]="{ item: 'house', id: house.id }"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <img
+                    class="pImages"
+                    [src]="modifyImageUrl(house.bedroomImage?.imageUrl)"
+                  />
+                </div>
+                <div class="p-2">
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{house.houseDescription}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{ (+house.pricePerMonth || 0).toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">Per Month</p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    {{house.houseRegionLocation}}, {{house.houseLocation}}
+                  </p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+
+        <div>
+          <div
+            class="d-flex px-2 justify-content-between text-dark align-items-center"
+          >
+            <h6 class="m-0">
+              <i class="fa-solid fa-car me-1"></i> Rent a vehicle
+            </h6>
+            <button class="btn text-primary pe-0">
+              <small
+                >View More <i class="fa-solid ms-1 fa-arrow-right"></i
+              ></small>
+            </button>
+          </div>
+          <swiper-container
+            *ngIf="vehiclesLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerViewRent"
+            speed="500"
+            space-between="5"
+          >
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+            <swiper-slide class="h-100 pb-2">
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+          <swiper-container
+            *ngIf="!vehiclesLoading"
+            class="text-dark h-100 pb-2 px-2"
+            css-mode="false"
+            [slidesPerView]="slidesPerViewRent"
+            speed="500"
+            space-between="5"
+          >
+            <swiper-slide
+              *ngFor="let vehicle of vehicles"
+              [routerLink]="['/rent-items-details']"
+              [queryParams]="{ item: 'vehicle', id: vehicle.id }"
+              class="h-100 pb-2"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <img
+                    class="pImages"
+                    [src]="modifyImageUrl(vehicle.frontImage?.imageUrl)"
+                  />
+                </div>
+                <div class="p-2">
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{vehicle.tagline}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{ (+vehicle.priceWithinRegionCD ||
+                    +vehicle.priceWithinRegionSD).toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">Per Day</p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    {{vehicle.regionLocation}}, {{vehicle.location}}
+                  </p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+      </div>
     </div>
   </div>
 
-  <ion-fab class="d-block d-md-none" slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button style="--background:#1A4640;">
+  <ion-fab
+    class="d-block d-md-none"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button style="--background: #1a4640">
       <ion-icon class="text-light" name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button (click)="presentListServicesModal()" style="--background:#1A4640;" data-desc="Post a service">
+      <ion-fab-button
+        (click)="presentListServicesModal()"
+        style="--background: #1a4640"
+        data-desc="Post a service"
+      >
         <ion-icon class="text-light" name="briefcase"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="presentRentItemsModal()" style="--background:#1A4640;" data-desc="Rent your items">
+      <ion-fab-button
+        (click)="presentRentItemsModal()"
+        style="--background: #1a4640"
+        data-desc="Rent your items"
+      >
         <ion-icon class="text-light" name="key"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="presentListProductModal()" style="--background:#1A4640;" data-desc="Sell your stuff">
+      <ion-fab-button
+        (click)="presentListProductModal()"
+        style="--background: #1a4640"
+        data-desc="Sell your stuff"
+      >
         <ion-icon class="text-light" name="cash"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
-
 </ion-content>

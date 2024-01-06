@@ -89,14 +89,13 @@
         Search on niilano
       </span>
     </button>
-    <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon>
+    <ion-icon (click)="toProducts()" size="large" class="text-light" name="filter-circle-outline"></ion-icon>
   </div>
   <div class="mt-1 d-flex gap-2 text-light align-items-center">
     <i class="fa-solid fa-magnifying-glass-location"></i> 
-    <ion-select aria-label="Regions" value="all" placeholder="Select region">
+    <ion-select interface="action-sheet" aria-label="Regions" value="all" placeholder="Select region">
       <ion-select-option value="all">All regions</ion-select-option>
-      <ion-select-option value="ashanti">Ashanti</ion-select-option>
-      <ion-select-option value="accra">Greater Accra</ion-select-option>
+      <ion-select-option *ngFor="let region of regions" [value]="region">{{region}} Region</ion-select-option>
     </ion-select>
   </div>
   </header>

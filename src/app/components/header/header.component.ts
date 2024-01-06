@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/types/AppState';
 import { ListServicesComponent } from '../list-services/list-services.component';
 import { ListRentItemModalComponent } from '../list-rent-item-modal/list-rent-item-modal.component';
+import { regionData } from '../../pages/list-product/regions';
 
 @Component({
   selector: 'app-header',
@@ -57,12 +58,16 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl('/auth?page=login');
   }
 
+  toProducts(){
+    this.router.navigateByUrl('/products?openFilter=true')
+  }
+
   savedItems: any;
 
   isLoggedIn = false
   userProfile : any = {}
 
-  // ionView
+  regions:any = []
 
   closed$ = new Subject<any>();
 
@@ -133,6 +138,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    this.regions = regionData.map((data) => data.region);
+
     this.store.select('checkLogin')
       .subscribe((res) => {
         if(res.loggedIn){
