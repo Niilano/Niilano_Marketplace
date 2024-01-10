@@ -20,25 +20,23 @@
     <div class="authCon px-md-5 px-3 rounded py-4 bg-light shadow">
 
       <h3 class="m-0 text-dark font-bolder">Welcome back 🌟</h3>
-      <h5 class="m-0 text-dark font-bolder">Welcome back 🌟</h5>
 
         <form
           [formGroup]="loginForm"
           (ngSubmit)="login()"
-          class="mt-md-3 mt-5 text-dark"
-          class="mt--md-3 mt-4 text-dark"
+          class="mt-md-3 mt-4 text-dark"
         >
           <div class="mb-4">
             <label for="email" class="form-label"
               >Email address
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')"
               >
                 **Please enter your email
               </small>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')"
               >
                 **Please enter a valid email
@@ -62,7 +60,7 @@
             <label for="password" class="form-label"
               >Password
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')"
               >
                 **Please enter your password
@@ -146,20 +144,16 @@
  >
 
    <div class="authConRegister px-md-5 px-3 rounded py-4">
-<<<<<<< HEAD
      <h3 class="text-dark font-bolder m-0">Register</h3>
        <form
          [formGroup]="registerForm"
          (ngSubmit)="presentTermsAndConditionsAlert()"
-         class="text-dark mt-md-3 mt-5"
-=======
-     <h5 class="text-dark font-bold m-0">Register</h5>
-       <form
-         [formGroup]="registerForm"
-         (ngSubmit)="presentTermsAndConditionsAlert()"
          class="text-dark mt-3"
->>>>>>> f415e350a21c89264ab17e35f154b1b0573cb28d
-Name </label>
+       >
+         
+           <div class="row g-4">
+             <div class="col-md-6">
+               <label for="firstName" class="form-label">First Name </label>
                <input
                  type="text"
                  class="form-control"
@@ -184,7 +178,7 @@ Name </label>
                  formControlName="last_name"
                />
                <small
-                 class="text-danger fw-bolder p-2"
+                 class="text-danger"
                  *ngIf="registerForm.get('last_name')?.touched && registerForm.get('last_name')?.hasError('required')"
                >
                  **Please enter your last name
@@ -206,14 +200,14 @@ Name </label>
                 />
               </div>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')"
               >
                 **Please enter your email
               </small>
   
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')"
               >
                 **The email entered is not valid
@@ -235,7 +229,7 @@ Name </label>
                 />
               </div>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('mobile')?.touched && registerForm.get('mobile')?.hasError('required')"
               >
                 **Enter your mobile number
@@ -257,13 +251,13 @@ Name </label>
                 />
               </div>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
               >
                 **Please enter your password
               </small>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')"
               >
                 **Password Length must at least be eight(8)
@@ -286,13 +280,13 @@ Name </label>
                 />
               </div>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
               >
                 **Please confirm your password
               </small>
               <small
-                class="text-danger fw-bolder p-2"
+                class="text-danger"
                 *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('passwordMismatch')"
               >
                 **Passwords do not match
