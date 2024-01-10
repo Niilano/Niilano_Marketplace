@@ -139,7 +139,7 @@ export class AuthPage {
 
     if (this.registerForm.invalid) {
       // console.log('invalid');
-      // return;
+      return;
     }
 
     const alert = await this.alertController.create({
