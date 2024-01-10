@@ -20,11 +20,14 @@
     <div class="authCon px-md-5 px-3 rounded py-4 bg-light shadow">
 
       <h3 class="m-0 text-dark font-bolder">Welcome back 🌟</h3>
+      <h5 class="m-0 text-dark font-bolder">Welcome back 🌟</h5>
+e35f154b1b0573cb28d
 
         <form
           [formGroup]="loginForm"
           (ngSubmit)="login()"
           class="mt-md-3 mt-5 text-dark"
+          class="mt--md-3 mt-4 text-dark"
         >
           <div class="mb-4">
             <label for="email" class="form-label"
@@ -144,16 +147,20 @@
  >
 
    <div class="authConRegister px-md-5 px-3 rounded py-4">
+<<<<<<< HEAD
      <h3 class="text-dark font-bolder m-0">Register</h3>
        <form
          [formGroup]="registerForm"
          (ngSubmit)="presentTermsAndConditionsAlert()"
          class="text-dark mt-md-3 mt-5"
-       >
-         
-           <div class="row g-4">
-             <div class="col-md-6">
-               <label for="firstName" class="form-label">First Name </label>
+=======
+     <h5 class="text-dark font-bold m-0">Register</h5>
+       <form
+         [formGroup]="registerForm"
+         (ngSubmit)="presentTermsAndConditionsAlert()"
+         class="text-dark mt-3"
+>>>>>>> f415e350a21c89264ab17e35f154b1b0573cb28d
+Name </label>
                <input
                  type="text"
                  class="form-control"
