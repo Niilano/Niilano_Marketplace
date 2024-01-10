@@ -3,17 +3,13 @@ ion-content {
   --background: #f2f2f2;
 }
 
-// #register{
-//     background-color: #f2f2f2;
-//   }
-
 .authCon {
   width: 30%;
 }
 
 #login,
 #register {
-  // height: 100vh;
+  height: 100%;
   justify-content: center;
 }
 
