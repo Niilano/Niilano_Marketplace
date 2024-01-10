@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons class="rounded-circle" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      Shop Orders
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content refreshingTextColor="red" refreshingText="Refreshing..." pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div>
+    <!-- <h3>Sort:</h3> -->
+    
+    <ion-row>
+
+      <ion-col size="6">
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Select Date">
+            <ion-select-option value="Today">Today</ion-select-option>
+            <ion-select-option value="Last Week">Last Week</ion-select-option>
+            <ion-select-option value="This Week">This Week</ion-select-option>
+            <ion-select-option value="This Month">This Month</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Select status">
+            <ion-select-option value="In Transit">In Transit</ion-select-option>
+            <ion-select-option value="Completed">Completed</ion-select-option>
+            <ion-select-option value="Pending">Pending</ion-select-option>
+            <ion-select-option value="Delivered">Delivered</ion-select-option>
+            <ion-select-option value="Cancelled">Cancelled</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12">
+        <button class="btn btn-dark d-block mx-auto d-flex align-items-center justify-content-center"> <ion-icon class="me-1" name="filter-outline"></ion-icon> Sort</button>
+      </ion-col>
+
+    </ion-row>
+  </div>
+
+  <div class="border mt-3" *ngFor="let order of orders">
+
+    <ion-item lines="none">
+      <ion-thumbnail slot="start">
+        <img alt="product image" [src]="order.product.image.url" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>Order #{{ order.id }}</h2>
+        <p>Date: {{ order.createdAt | date:'MMM d, y h:mm a' }}</p>
+        <p>Price: {{ order.price | currency : 'GH₵' }}</p>
+        <p>Status: <b [class.text-success]="order.status=='Completed'" [class.text-warning]="order.status=='Pending'" [class.text-primary]="order.status=='In Transit'" [class.text-info]="order.status=='Delivered'" [class.text-danger]="order.status=='Cancelled'" > {{ order.status }} </b> </p>
+      </ion-label>
+      <ion-button style="--background:black;" slot="end" (click)="toggleOrderDetails(order.id)">
+        <ion-icon name="chevron-down-outline" *ngIf="showDetails!=order.id"></ion-icon>
+        <ion-icon name="chevron-up-outline" *ngIf="showDetails==order.id"></ion-icon>
+      </ion-button>
+    </ion-item>
+    
+    <div class="animate__animated animate__fadeInDown" *ngIf="showDetails==order.id">
+
+    <ion-item>
+
+      <ion-label text-wrap>
+
+        <h4 class="lh-lg"> <b> Name: </b> {{order.OrderInfos[0].name}}</h4>
+      <h4 class="lh-lg"> <b> Email: </b> {{order.OrderInfos[0].email}}</h4>
+      <h4 class="lh-lg"> <b> Tel: </b> {{order.OrderInfos[0].phone}}</h4>
+      <h4 class="lh-lg"> <b> Address: </b> {{order.OrderInfos[0].address}} </h4>
+
+      </ion-label>
+      
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h3>Payment Method: {{order.Payments[0].paymentMethod=="Cash" ? "Cash On Delivery" : "Mobile Money" }} </h3>
+        <p *ngIf="order.Payments[0].transactionId!='N/A'"> Status: {{order.Payments[0].transactionId!="N/A" ? "Paid" : "" }} </p>
+        <h3> Requests: {{order.specialRequests ? order.specialRequests : 'No Requests'}} </h3>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <ion-row class="ion-text-center">
+          <ion-col class="ion-text-start" size="9"><h3>Item</h3></ion-col>
+          <ion-col size="3"><h3>Quantity</h3></ion-col>
+
+          <ion-col class="ion-text-start" size="9">
+            <p class="text-wrap" >{{order.product.name}} </p>
+          </ion-col>
+
+          <ion-col size="3">
+            <p>{{order.quantity}}</p>
+          </ion-col>
+
+        </ion-row>
+          
+      </ion-label>
+    </ion-item>
+
+    </div>
+
+    <div *ngIf="order.status == 'Pending'" class="my-3 d-flex align-items-center justify-content-between px-2">
+      <button (click)="rejectOrder(order.id)" class="btn btn-danger d-flex align-items-center justify-content-center">
+        <ion-icon class="me-1" name="close-circle"></ion-icon> Reject
+      </button>
+      <button (click)="acceptOrder(order.id)" class="btn btn-success d-flex align-items-center justify-content-center">
+        <ion-icon class="me-1" name="checkmark-done-circle"></ion-icon> Accept
+      </button>
+    </div>
+
+    <button *ngIf="order.status == 'In Transit'" (click)="confirmDelivery(order.id)" class="btn btn-success my-3 d-block mx-auto d-flex align-items-center justify-content-center">
+      <ion-icon class="me-1" name="bag-check"></ion-icon> Confirm Product is Delivered
+    </button>
+    
+  </div>
+
+  <ion-item class="ion-text-center" *ngIf="!orders" >
+    <ion-label text-wrap>
+      There are no orders or requests for your products.
+    </ion-label>
+  </ion-item>
+
+</ion-content>

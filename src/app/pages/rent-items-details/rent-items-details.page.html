@@ -1,0 +1,850 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-button fill="clear" slot="start" style="--padding-end: 0;" (click)="navigateBack()"><ion-icon
+        class="text-light" size="medium" name="arrow-back-outline"></ion-icon></ion-button>
+
+    <ion-title *ngIf="house" class="fs-6">{{house.houseDescription ? house.houseDescription : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="vehicle" class="fs-6">{{vehicle.tagline ? vehicle.tagline : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="machinery" class="fs-6">{{machinery.description ? machinery.description : 'Details'}}</ion-title>
+
+    <ion-title *ngIf="eventItem" class="fs-6">{{eventItem.description ? eventItem.description : 'Details'}}</ion-title>
+
+    <!-- Share and Save icons -->
+    <ion-buttons slot="end">
+      <!-- Add your share and save button icons here -->
+      <ion-button>
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="house">
+    <!-- Display the house images here -->
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+      space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+      <!-- Loop through all the images of the house -->
+      <ng-container *ngFor="let image of [
+    this.house.bedroomImage,
+    this.house.washroomImage,
+    this.house.compoundImage,
+    this.house.infrontImage,
+    this.house.additionalImage,
+  ]">
+        <swiper-slide *ngIf="image" class="pb-5">
+          <div class="image-wrapper">
+            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" loading="lazy" />
+            <div class="image-label" style="text-transform: uppercase">
+              {{ image?.image }}
+            </div>
+          </div>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+
+    <!-- Display house details here -->
+    <div class="house-details container text-dark">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <h3>
+            {{ house.houseRegionLocation }} Region, {{ house.houseLocation }}
+          </h3>
+          <p>{{ house.houseDescription }}</p>
+          <!-- Calculate and display the discounted price if discountPercentage is available -->
+          <ng-container *ngIf="house.discountPercentage !== ''">
+            <div class="d-flex mb-2 justify-content-between align-items-center">
+              <p class="m-0">
+                <span class="text-decoration-line-through">
+                  GH₵{{ house.pricePerMonth | number:'1.2-2' }} / Month
+                </span>
+                <br />
+                <span>
+                  GH₵{{ calculateDiscountedPrice(house.pricePerMonth,
+                  house.discountPercentage) | number:'1.2-2' }} / Month
+                </span>
+              </p>
+              <span class="text-center rounded-circle p-2 px-3" style="
+                  background-color: #1a4640;
+                  font-size: 0.8em;
+                  color: lightgrey;
+                ">
+                {{ house.discountPercentage }}% <br />
+                <b class="text-light">OFF</b>
+              </span>
+            </div>
+          </ng-container>
+
+          <!-- If there's no discountPercentage, just display the regular price -->
+          <ng-container *ngIf="house.discountPercentage === ''">
+            <p>GH₵{{ house.pricePerMonth | number:'1.2-2' }} / Month</p>
+          </ng-container>
+          <!-- Call and Request Call Back buttons with icons -->
+          <div class="call-buttons mb-3 d-flex justify-content-between">
+            <ion-button (click)="handleCall(house.mobile)" class="w-50" color="primary">
+              <ion-icon class="me-1" name="call"></ion-icon>
+              Call
+            </ion-button>
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
+              Request Call Back
+            </ion-button>
+          </div>
+
+          <p>Type: {{ house.placeType }}</p>
+          <p>Compound: {{ house.tenantPlaceType }}</p>
+          <p>
+            Storey Building
+            <i class="fa-solid ms-2"
+              [ngClass]="house.isStoreyBuilding === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
+          </p>
+          <p>Bathrooms: {{ house.bathroomLocation }}</p>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <!-- Icons with labels for bedrooms, bathrooms, etc. -->
+          <div class="d-flex shadow pb-2 px-2 justify-content-between">
+            <div class="text-center">
+              <i class="fa-solid fa-bed"></i>
+              <div class="icon-label">
+                Bedrooms <br />
+                {{ house.bedRoomNo }}
+              </div>
+            </div>
+            <div class="text-center">
+              <i class="fa-solid fa-bath"></i>
+              <div class="icon-label">
+                Bathrooms <br />
+                {{ house.bathRoomsNo }}
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center shadow mt-5 pb-2 d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
+              <div>
+                <i class="fa-solid fa-square-parking"></i>
+                <br />
+                <span>Parking</span>
+              </div>
+              <!-- Check if Parking is available -->
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isCarParkAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
+              <div>
+                <i class="fa-solid fa-shield-halved"></i>
+                <br />
+                <span>Security</span>
+              </div>
+              <!-- Check if Security is available -->
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isSecurityAvailable === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center" style="width: 32%">
+              <div>
+                <i class="fa-solid fa-couch"></i>
+                <br />
+                <span>Furnished</span>
+              </div>
+              <!-- Check if Furnished is available -->
+              <i class="fa-solid ms-2"
+                [ngClass]="house.isFurnishedAlready === 'Yes' ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
+            </div>
+          </div>
+
+          <!-- Display Amenities Available as a list -->
+          <div class="amenities-list mt-5">
+            <h3>Amenities Available:</h3>
+            <ul>
+              <!-- Split the amenitiesAvailable string into an array -->
+              <ng-container *ngIf="house.amenitiesAvailable">
+                <ng-container *ngFor="let amenity of house.amenitiesAvailable">
+                  <li>{{ amenity }}</li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="vehicle">
+    <!-- Display the vehicles details here -->
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+      <!-- Loop through all the images of the vehicles -->
+      <ng-container *ngFor="let image of [
+    this.vehicle.frontImage,
+    this.vehicle.interiorImage,
+    this.vehicle.sideImage,
+    this.vehicle.additionalImage,
+  ]">
+        <swiper-slide *ngIf="image" class="pb-5">
+          <div class="image-wrapper">
+            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+            <div class="image-label" style="text-transform: uppercase">
+              {{ image?.image }}
+            </div>
+          </div>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+
+    <!-- Display vehicle details here -->
+    <div class="vehicle-details container text-dark">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <h4 style="color: #1a4640">{{ vehicle.tagline }}</h4>
+          <p>{{ vehicle.regionLocation }} Region, {{ vehicle.location }}</p>
+
+          <h4 class="m-0 text-dark">Price(s) per day</h4>
+
+          <ng-container>
+            <ng-container *ngIf="vehicle.drivenBy == 'Chauffeur only' || vehicle.drivenBy == 'both'">
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <h6 class="text-danger">Prices for Chauffeur driving</h6>
+              <ng-container *ngIf="vehicle.discountPercentageCD != '0'">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceWithinRegionCD | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceWithinRegionCD,
+                          vehicle.discountPercentageCD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceRegionsAroundCD | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceRegionsAroundCD,
+                          vehicle.discountPercentageCD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceRegionsFarAwayCD | number:'1.2-2'
+                          }} / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceRegionsFarAwayCD,
+                          vehicle.discountPercentageCD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="text-center rounded-circle p-2 px-3" style="
+                      background-color: #1a4640;
+                      font-size: 0.8em;
+                      color: lightgrey;
+                    ">
+                    {{ vehicle.discountPercentageCD }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- Display prices if no discount -->
+              <ng-container *ngIf="vehicle.discountPercentageCD == '0'">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceWithinRegionCD | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceRegionsAroundCD | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceRegionsFarAwayCD | number:'1.2-2'
+                          }} / day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- <span
+                    class="text-center rounded-circle p-2 px-3"
+                    style="
+                      background-color: #1a4640;
+                      font-size: 0.8em;
+                      color: lightgrey;
+                    "
+                  >
+                    {{ vehicle.discountPercentageCD }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span> -->
+                </div>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="vehicle.drivenBy == 'Self drive' || vehicle.drivenBy == 'both'">
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <h6 class="text-danger">Prices for self driving</h6>
+              <ng-container *ngIf="vehicle.discountPercentageSD != '0'">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceWithinRegionSD | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceWithinRegionSD,
+                          vehicle.discountPercentageSD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceRegionsAroundSD | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceRegionsAroundSD,
+                          vehicle.discountPercentageSD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ vehicle.priceRegionsFarAwaySD | number:'1.2-2'
+                          }} / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(vehicle.priceRegionsFarAwaySD,
+                          vehicle.discountPercentageSD) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="text-center rounded-circle p-2 px-3" style="
+                      background-color: #1a4640;
+                      font-size: 0.8em;
+                      color: lightgrey;
+                    ">
+                    {{ vehicle.discountPercentageSD }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- Display prices if no discount -->
+              <ng-container *ngIf="vehicle.discountPercentageSD == '0'">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceWithinRegionSD | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceRegionsAroundSD | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ vehicle.priceRegionsFarAwaySD | number:'1.2-2'
+                          }} / day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- <span
+        class="text-center rounded-circle p-2 px-3"
+        style="
+          background-color: #1a4640;
+          font-size: 0.8em;
+          color: lightgrey;
+        "
+      >
+        {{ vehicle.discountPercentageCD }}% <br />
+        <b class="text-light">OFF</b>
+      </span> -->
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <div class="call-buttons mb-3 d-flex justify-content-between">
+            <ion-button (click)="handleCall(vehicle.mobile)" class="w-50" color="primary">
+              <ion-icon class="me-1" name="call"></ion-icon>
+              Call
+            </ion-button>
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
+              Request Call Back
+            </ion-button>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <div class="d-flex mt-2 justify-content-between">
+            <div class="text-center">
+              <i class="fa-solid fa-gears"></i>
+              <div class="icon-label">{{ vehicle.transmissionType }}</div>
+            </div>
+
+            <div class="text-center">
+              <i class="fa-solid fa-gas-pump"></i>
+              <div class="icon-label">{{ vehicle.fuel }}</div>
+            </div>
+
+            <div class="text-center">
+              <i class="fa-solid fa-couch"></i>
+              <div class="icon-label">{{ vehicle.seats }}</div>
+            </div>
+          </div>
+
+          <div class="d-flex mt-3 justify-content-between">
+            <div class="text-center">
+              <i class="fa-solid fa-car"></i>
+              <div class="icon-label">{{ vehicle.vehicleType }}</div>
+            </div>
+
+            <div class="text-center">
+              <i class="fa-solid fa-car-side"></i>
+              <div class="icon-label">{{ vehicle.vehicleMake }}</div>
+            </div>
+
+            <div class="text-center">
+              <i class="fa-solid fa-calendar"></i>
+              <div class="icon-label">{{ vehicle.modelYear }}</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mt-3">
+              <i class="fa-solid bg-dark text-light p-2 fa-road"></i>
+              <span class="ps-2">Mileage: </span>
+              <span class="fw-bold">{{ vehicle.mileage }} miles</span>
+            </div>
+
+            <div class="mt-3 col-md-6">
+              <i class="fa-solid bg-dark text-light p-2 fa-paint-roller"></i>
+              <span class="ps-2">Color: </span>
+              <span class="fw-bold">{{ vehicle.color }}</span>
+            </div>
+
+            <!-- <div>
+              <i class="fa-solid bg-dark text-light p-2 fa-car-crash"></i>
+              <span>Registration Number:</span>
+              <span>{{ vehicle.regNumber }}</span>
+            </div> -->
+          </div>
+
+          <!-- Display Features Available as a list -->
+          <div class="amenities-list mt-5">
+            <h3>Vehicle Features:</h3>
+            <ul class="list-unstyled">
+              <!-- Split the vehicleFeatures string into an array -->
+              <ng-container *ngIf="vehicle.vehicleFeatures">
+                <ng-container *ngFor="let feature of vehicle.vehicleFeatures">
+                  <li>
+                    <i class="fa-solid text-primary fa-clipboard-check"></i> {{
+                    feature }}
+                  </li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="machinery">
+    <!-- Display the machiney details here -->
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+      <!-- Loop through all the images of the machinery -->
+      <ng-container *ngFor="let image of [
+    this.machinery.mainImage,
+    this.machinery.additionalImage,
+  ]">
+        <swiper-slide *ngIf="image" class="pb-5">
+          <div class="image-wrapper">
+            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+            <div class="image-label" style="text-transform: uppercase">
+              {{ image?.image }}
+            </div>
+          </div>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+
+    <div class="machinery-details container text-dark">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <h4 style="color: #1a4640">{{ machinery.description }}</h4>
+          <p>
+            {{ machinery.regionalLocation }} Region, {{ machinery.location }}
+          </p>
+
+          <h4 class="m-0 text-dark">Price(s) per day</h4>
+
+          <ng-container>
+            <ng-container>
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <ng-container *ngIf="machinery.discountPercentage !== 0">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ machinery.priceWithinRegion | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(machinery.priceWithinRegion,
+                          machinery.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ machinery.priceRegionsAround | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(machinery.priceRegionsAround,
+                          machinery.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ machinery.priceRegionsFarAway | number:'1.2-2'
+                          }} / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(machinery.priceRegionsFarAway,
+                          machinery.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="text-center rounded-circle p-2 px-3" style="
+                      background-color: #1a4640;
+                      font-size: 0.8em;
+                      color: lightgrey;
+                    ">
+                    {{ machinery.discountPercentage }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- Display prices if no discount -->
+              <ng-container *ngIf="machinery.discountPercentage == 0">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ machinery.priceWithinRegion | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ machinery.priceRegionsAround | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ machinery.priceRegionsFarAway | number:'1.2-2'
+                          }} / day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <div class="call-buttons mb-3 d-flex justify-content-between">
+            <ion-button (click)="handleCall(machinery.mobile)" class="w-50" color="primary">
+              <ion-icon class="me-1" name="call"></ion-icon>
+              Call
+            </ion-button>
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
+              Request Call Back
+            </ion-button>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <div class="d-flex mt-3 justify-content-between">
+            <div class="text-center">
+              <i class="fa-solid fa-gears"></i>
+              <div class="icon-label">{{ machinery.equipmentType }}</div>
+            </div>
+          </div>
+
+          <!-- Display Features Available as a list -->
+          <div *ngIf="machinery.equipmentFeatures.length > 0" class="amenities-list mt-5">
+            <h3>Machinery Features:</h3>
+            <ul class="list-unstyled">
+              <!-- Split the equipmentFeatures string into an array -->
+              <ng-container *ngFor="let feature of machinery.equipmentFeatures">
+                <li>
+                  <i class="fa-solid text-primary fa-clipboard-check"></i> {{
+                  feature }}
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="eventItem">
+    <!-- Display the machiney details here -->
+    <swiper-container pagination="true" [slidesPerView]="slidesPerView" speed="500" loop="true" css-mode="true"
+    space-between="5" pager="true" lazy="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+      <!-- Loop through all the images of the events -->
+      <ng-container *ngFor="let image of [
+    this.eventItem.mainImage,
+    this.eventItem.additionalImage,
+  ]">
+        <swiper-slide *ngIf="image" class="pb-5">
+          <div class="image-wrapper">
+            <img [src]="modifyImageUrl(image?.imageUrl)" class="itemsImg" />
+            <div class="image-label" style="text-transform: uppercase">
+              {{ image?.image }}
+            </div>
+          </div>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+
+    <div class="events-details container text-dark">
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <h4 style="color: #1a4640">{{ eventItem.description }}</h4>
+          <p>
+            {{ eventItem.regionalLocation }} Region, {{ eventItem.location }}
+          </p>
+
+          <h4 class="m-0 text-dark">Price(s) per day</h4>
+
+          <ng-container>
+            <ng-container>
+              <!-- Calculate and display the discounted price if discountPercentage is available -->
+              <ng-container *ngIf="eventItem.discountPercentage !== 0">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ eventItem.priceWithinRegion | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(eventItem.priceWithinRegion,
+                          eventItem.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ eventItem.priceRegionsAround | number:'1.2-2' }}
+                          / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(eventItem.priceRegionsAround,
+                          eventItem.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted text-decoration-line-through">
+                          GH₵{{ eventItem.priceRegionsFarAway | number:'1.2-2'
+                          }} / day
+                        </span>
+                        <br />
+                        <span class="fw-bold">
+                          GH₵{{
+                          calculateDiscountedPrice(eventItem.priceRegionsFarAway,
+                          eventItem.discountPercentage) | number:'1.2-2' }} /
+                          day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="text-center rounded-circle p-2 px-3" style="
+                      background-color: #1a4640;
+                      font-size: 0.8em;
+                      color: lightgrey;
+                    ">
+                    {{ eventItem.discountPercentage }}% <br />
+                    <b class="text-light">OFF</b>
+                  </span>
+                </div>
+              </ng-container>
+
+              <!-- Display prices if no discount -->
+              <ng-container *ngIf="eventItem.discountPercentage == 0">
+                <div class="d-flex mb-2 justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <h5>Within region</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ eventItem.priceWithinRegion | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions around</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ eventItem.priceRegionsAround | number:'1.2-2' }}
+                          / day
+                        </span>
+                      </p>
+
+                      <h5>Regions far away</h5>
+                      <p class="m-0">
+                        <span class="text-muted">
+                          GH₵{{ eventItem.priceRegionsFarAway | number:'1.2-2'
+                          }} / day
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <div class="call-buttons mb-3 d-flex justify-content-between">
+            <ion-button (click)="handleCall(eventItem.mobile)" class="w-50" color="primary">
+              <ion-icon class="me-1" name="call"></ion-icon>
+              Call
+            </ion-button>
+            <ion-button (click)="handleRequestCallback()" class="w-50" color="secondary">
+              Request Call Back
+            </ion-button>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <div class="d-flex mt-3 justify-content-between">
+            <div class="text-center">
+              <i class="fa-solid fa-gears"></i>
+              <div class="icon-label">{{ eventItem.eventItemType }}</div>
+            </div>
+          </div>
+
+          <!-- Display Features Available as a list -->
+          <div *ngIf="eventItem.itemFeatures.length > 0" class="amenities-list mt-5">
+            <h3>Item Features:</h3>
+            <ul class="list-unstyled">
+              <!-- Split the itemFeatures string into an array -->
+              <ng-container *ngFor="let feature of eventItem.itemFeatures">
+                <li>
+                  <i class="fa-solid text-primary fa-clipboard-check"></i> {{
+                  feature }}
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,491 @@
+<!-- <app-header [segmentValue]="pageTitle"></app-header> -->
+
+<header
+  class="text-light b-block d-md-none px-2 py-2"
+  style="background: #1a4640"
+>
+  <div class="d-flex justify-content-between mb-1">
+    <img
+      class="d-inline-flex d-md-none"
+      src="../../../assets/images/logo_n.png"
+      width="35"
+      height="35"
+    />
+    <img
+      class="d-md-inline-flex d-none"
+      src="../../../assets/images/logo_n_large.png"
+      style="width: 130px; height: auto"
+    />
+    <div class="d-flex w-100 align-items-center text-light justify-content-end">
+      <button
+        *ngIf="!isLoggedIn"
+        [routerLink]="['/auth']"
+        [queryParams]="{ page: 'login' }"
+        class="btn text-light border"
+        style="font-size: 0.8em"
+      >
+        Sign in / Register
+      </button>
+      <!-- <i *ngIf="isLoggedIn" class="fa-solid fa-circle-user fa-2x"></i> -->
+      <img
+        *ngIf="isLoggedIn"
+        [src]="userProfile?.user_profile?.url"
+        width="60"
+        style="height: 40px; width: 40px; object-fit: cover"
+        class="rounded-circle border"
+      />
+      <ion-menu-button
+        size="medium"
+        style="color: #f2f2f2; --padding-start: 0; --padding-end: 0"
+      ></ion-menu-button>
+    </div>
+  </div>
+  <!-- <div class="d-flex justify-content-between gap-2 align-items-center">
+      <button class="w-100 d-flex align-items-center gap-2 btn btn-light">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>
+          Search on niilano
+        </span>
+      </button>
+      <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon>
+    </div> -->
+
+  <div
+    class="d-flex gap-2 align-items-center text-light py-0"
+    style="background: #1a4640"
+  >
+    <span>{{pageTitle}}</span>
+  </div>
+</header>
+
+<header class="px-5 d-none d-md-block py-2">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <img
+        src="../../../assets/images/logo_n_large.png"
+        style="width: 130px; height: auto"
+      />
+    </div>
+    <div style="width: 50%">
+      <div class="d-flex justify-content-between gap-2 align-items-center">
+        <div class="d-flex gap-2 text-light align-items-center">
+          <i class="fa-solid fa-magnifying-glass-location"></i>
+          <ion-select
+            aria-label="Regions"
+            value="all"
+            placeholder="Select region"
+          >
+            <ion-select-option value="all">All regions</ion-select-option>
+            <ion-select-option value="ashanti">Ashanti</ion-select-option>
+            <ion-select-option value="accra">Greater Accra</ion-select-option>
+          </ion-select>
+        </div>
+        <button
+          (click)="searchI()"
+          style="font-size: 0.8em"
+          class="w-100 d-flex align-items-center gap-2 btn btn-light"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span> Search products </span>
+        </button>
+        <!-- <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon> -->
+      </div>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <button
+        *ngIf="!isLoggedIn"
+        [routerLink]="['/auth']"
+        [queryParams]="{ page: 'login' }"
+        style="font-size: 0.8em; height: max-content"
+        class="btn btn-light d-flex gap-2 justify-content-center align-items-center"
+      >
+        <i class="fa-regular fa-circle-user"></i>
+        Sign in / Register
+      </button>
+
+      <span
+        *ngIf="isLoggedIn"
+        style="font-size: 0.8em; height: max-content"
+        class="bg-light rounded pe-2 overflow-hidden d-flex gap-2 justify-content-center align-items-center"
+      >
+        <img
+          [src]="userProfile?.user_profile?.url"
+          width="60"
+          style="height: 40px; width: 40px; object-fit: cover"
+          class="rounded border"
+        />
+        <span class="animate__animated animate__bounceInLeft">
+          {{userProfile.username ? userProfile.username :
+          userProfile.first_name}}
+        </span>
+      </span>
+      <ion-menu-button
+        size="medium"
+        style="color: #f2f2f2; --padding-start: 0; --padding-end: 0"
+      ></ion-menu-button>
+    </div>
+  </div>
+  <nav
+    class="mt-4 text-light d-flex align-items-center justify-content-between"
+  >
+    <div>
+      <button
+        [routerLink]="['/home']"
+        style="font-size: 0.8em"
+        class="btn text-light"
+      >
+        For You
+      </button>
+      <button
+        [routerLink]="['/products']"
+        style="font-size: 0.8em"
+        class="btn btn-light"
+      >
+        For Sale
+      </button>
+      <button
+        [routerLink]="['/rent']"
+        style="font-size: 0.8em"
+        class="btn text-light"
+      >
+        For Rent
+      </button>
+      <button
+        [routerLink]="['/services']"
+        style="font-size: 0.8em"
+        class="btn text-light"
+      >
+        Hire a service
+      </button>
+    </div>
+    <div>
+      <button
+        style="font-size: 0.8em"
+        class="btn btn-danger"
+        (click)="presentListProductModal()"
+      >
+        <i class="fa-solid fa-cart-plus me-1"></i>
+        Sell Your Products
+      </button>
+    </div>
+  </nav>
+</header>
+
+<ion-content>
+  <div class="px-md-5 px-lg-5 px-sm-2 px-2">
+    <div class="row text-dark my-md-3 my-lg-3 mb-sm-3">
+      <div class="col-lg-2 col-md-3 col-sm-12 bg-light shadow rounded py-3">
+        <div>
+          <div
+            style="cursor: pointer"
+            (click)="toggleFilter()"
+            class="d-flex d-md-none justify-content-between border-bottom pb-2"
+          >
+            <h6 class="m-0 font-bold text-primary">Filter</h6>
+            <i
+              *ngIf="!showFilter"
+              class="fa-solid fa-sort-down animate__animated animate__backInDown"
+            ></i>
+            <i
+              *ngIf="showFilter"
+              class="fa-solid fa-sort-up animate__animated animate__backInUp"
+            ></i>
+          </div>
+          <div
+            style="cursor: pointer"
+            class="d-none d-md-flex justify-content-between border-bottom pb-2"
+          >
+            <h6 class="m-0 font-bold text-primary">Filter</h6>
+            <i
+              class="fa-solid fa-sort-down animate__animated animate__backInDown"
+            ></i>
+          </div>
+          <div class="animate__animated animate__backInDown" *ngIf="showFilter">
+            <ion-item
+              (click)="toggleCategoryModal()"
+              lines="none"
+              style="--background: transparent"
+              class="ion-no-padding"
+              button
+              detail="true"
+              detail-icon="caret-forward-outline"
+            >
+              <ion-label>
+                <h3>Category</h3>
+                <p style="font-size: 0.7em">
+                  {{filterData.selectedCatInfo.category_name ?
+                  filterData.selectedCatInfo.category_name : "All Categories"}}
+                </p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item
+              (click)="toggleCategoryModal()"
+              lines="none"
+              style="--background: transparent"
+              class="ion-no-padding"
+              button
+              detail="true"
+              detail-icon="caret-forward-outline"
+            >
+              <ion-label>
+                <h3>Sub Category</h3>
+                <p style="font-size: 0.7em">
+                  {{filterData.selectedCatInfo.subCategory_name ?
+                  filterData.selectedCatInfo.subCategory_name : "All
+                  Subcategories"}}
+                </p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item
+              (click)="toggleLocationModal()"
+              lines="none"
+              style="--background: transparent"
+              class="ion-no-padding"
+              button
+              detail="true"
+              detail-icon="caret-forward-outline"
+            >
+              <ion-label>
+                <h3>Location</h3>
+                <p style="font-size: 0.7em">
+                  {{filterData.location ? filterData.location+" Region" : "All
+                  regions"}}
+                </p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item
+              lines="none"
+              style="--background: transparent"
+              class="ion-no-padding"
+            >
+              <ion-label>
+                <h3>Price</h3>
+                <div class="d-flex gap-2 align-items-center">
+                  <input
+                    [(ngModel)]="filterPriceRange.minPrice"
+                    style="font-size: 0.7em"
+                    class="form-control"
+                    type="number"
+                    placeholder="Lowest"
+                  />
+                  -
+                  <input
+                    [(ngModel)]="filterPriceRange.maxPrice"
+                    style="font-size: 0.7em"
+                    class="form-control"
+                    type="number"
+                    placeholder="Highest"
+                  />
+                </div>
+                <!-- <p class="mb-2">Low <br/> (GH₵0 - GH₵300)</p>
+        <p class="mb-2">Medium <br /> (GH₵300 - GH₵1000)</p>
+        <p>High <br /> (GH₵1000+)</p> -->
+              </ion-label>
+            </ion-item>
+
+            <ion-item
+              lines="none"
+              style="--background: transparent"
+              class="ion-no-padding"
+            >
+              <div class="form-check form-switch">
+                <input
+                  [(ngModel)]="filterData.discount"
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexSwitchCheckChecked"
+                  checked
+                />
+                <label class="form-check-label" for="flexSwitchCheckChecked"
+                  >On Discount</label
+                >
+              </div>
+            </ion-item>
+
+            <div class="mt-2">
+              <button
+                style="font-size: 0.8em"
+                (click)="sendFilterData()"
+                class="btn btn-primary w-100"
+              >
+                Apply Filter
+              </button>
+
+              <button
+                (click)="clearFilter()"
+                *ngIf="filteringData"
+                style="font-size: 0.8em"
+                (click)="sendFilterData()"
+                class="btn btn-danger w-100 mt-2"
+              >
+                <i class="fa-solid fa-xmark me-1"></i>
+                Clear Filter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-10 col-md-9 col-sm-12">
+        <div class="row gy-2 gx-2">
+          <!-- productsLoading -->
+          <ng-container *ngIf="getProducts">
+            <div
+              *ngFor="let product of products"
+              [routerLink]="['/product-details']"
+              [queryParams]="{ product: product.id }"
+              class="col-lg-2 col-md-3 col-sm-4 col-6 product h-100"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <img
+                    class="pImages"
+                    [src]="modifyImageUrl(product?.image?.url)"
+                  />
+                </div>
+                <div
+                  *ngIf="product.discount_percent"
+                  class="p-2 h-100 border-top border-danger border-2"
+                  style="position: relative"
+                >
+                  <div
+                    style="
+                      position: absolute;
+                      top: -40%;
+                      left: 35%;
+                      font-size: 0.5em;
+                    "
+                    class="p-2 px-3 bg-danger rounded-circle shadow d-flex flex-column align-items-center justify-content-center font-bold text-light"
+                  >
+                    <span> {{product.discount_percent}}% </span>
+                    <span>OFF</span>
+                  </div>
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{product.name}}
+                  </p>
+                  <p
+                    style="font-size: 0.7em"
+                    class="m-0 text-decoration-line-through"
+                  >
+                    GH₵{{calculateDiscountedPrice(product.price,product.discount_percent).toLocaleString('en-US',
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{product.price!.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    <i class="fa-solid fa-location-dot me-1"></i>
+                    {{product.location}}
+                  </p>
+                </div>
+                <div *ngIf="!product.discount_percent" class="p-2 h-100">
+                  <p
+                    style="font-size: 0.9em; font-weight: bold"
+                    class="m-0 font-bold single-line-ellipsis"
+                  >
+                    {{product.name}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0">
+                    GH₵{{product.price!.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  </p>
+                  <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+                    <i class="fa-solid fa-location-dot me-1"></i>
+                    {{product.location}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="productsLoading">
+            <div
+              *ngFor="let i of getRange(20); let index = index"
+              class="col-lg-2 col-md-3 col-sm-4 col-6"
+            >
+              <div class="rounded shadow overflow-hidden">
+                <div>
+                  <ion-skeleton-text
+                    class="pImages"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+                <div class="p-2">
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-50"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    class="w-100"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <div *ngIf="products.length < 1" class="col-12">
+            <p class="text-danger text-center">No Products Found</p>
+          </div>
+        </div>
+        <ion-infinite-scroll
+          *ngIf="!filteringData"
+          class="custom-spinner"
+          (ionInfinite)="loadMoreProducts($event)"
+        >
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+          ></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
+    </div>
+  </div>
+
+  <ion-fab
+    class="d-block d-md-none"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button
+      (click)="presentListProductModal()"
+      style="--background: #1a4640"
+    >
+      <ion-icon class="text-light" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-modal [isOpen]="categoryModal" #categoryModalVariable>
+  <ng-template>
+    <app-selectcategory
+      class="ion-page"
+      [categories]="categoriesAndSubcategories"
+      (modalClose)="toggleCategoryModal()"
+      [selectedValues]="filterData.selectedCatInfo"
+      (confirmChanges)="categorySelection($event)"
+    ></app-selectcategory>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="locationModal" #locationModalVariable>
+  <ng-template>
+    <app-selectlocation
+      class="ion-page"
+      [regions]="regions"
+      (modalClose)="toggleLocationModal()"
+      (confirmChanges)="receiveLocationData($event)"
+      [onlyRegions]="true"
+    ></app-selectlocation>
+  </ng-template>
+</ion-modal>

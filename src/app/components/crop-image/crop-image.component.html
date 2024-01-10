@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="fs-6">Crop Image</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon size="medium" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" style="--background: #fff">
+
+  <div *ngIf="loading" class="text-secondary mt-3 d-flex align-items-center justify-content-center">
+    <i class="fa-solid fa-spinner fa-spin me-2"></i>
+    <p class="m-0">
+      Loading Image...
+    </p>
+  </div>
+  
+  <image-cropper
+    id="container"
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="1 / 1"
+    backgroundColor="red"
+    [autoCrop]="false"
+    (imageLoaded)="imageLoaded()"
+    (cropperReady)="cropperReady()"
+    [resizeToWidth]="900"
+    [resizeToHeight]="900"
+  ></image-cropper>
+
+  <ion-fab
+    class="animate__animated animate__fadeInRight"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button (click)="cropImage()" color="success">
+      <ion-icon name="checkmark-sharp"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

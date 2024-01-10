@@ -1,0 +1,138 @@
+ion-content {
+  // --background: linear-gradient(180deg, #1A4640 0%, #f2f2f2 100%);
+  --background: #f2f2f2;
+}
+
+// *{
+//   font-family: 'Inter Tight', monospace;
+// }
+
+.authCon {
+  width: 35%;
+}
+
+.authConRegister{
+  width: 60%;
+}
+
+#login,
+#register {
+  justify-content: center;
+}
+
+@media screen and (max-width:1140px) {
+  .authCon {
+    width: 45%;
+  }
+
+  .authConRegister{
+    width: 75%;
+  }
+}
+
+
+@media screen and (max-width:850px) {
+  .authCon {
+    width: 55%;
+  }
+
+  .authConRegister{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width:700px) {
+  .authCon {
+    width: 65%;
+  }
+  .authConRegister{
+    width: 90%;
+  }
+}
+
+@media(max-width:600px) {
+
+  .authCon {
+    width: 75%;
+  }
+
+  .authConRegister{
+    width: 95%;
+  }
+
+}
+
+@media(max-width:500px) {
+
+  ion-content {
+    // --background: linear-gradient(180deg, #1A4640 0%, #f2f2f2 100%);
+    --background: #fff;
+  }
+
+  #register {
+    background-color: #f2f2f2 !important;
+    // background: linear-gradient(45deg, #1a46404d, transparent);
+    // background-image: url(../../../assets/images/gradient.png);
+    // background-size: contain;
+    // background-position: bottom;
+    // background-repeat: no-repeat;
+    // background-blend-mode: difference;
+    align-items: flex-start !important;
+  }
+
+  #login {
+    background-color: #f2f2f2 !important;
+    align-items: flex-start !important;
+    height: 100% !important;
+  }
+
+  .authCon {
+    width: 100%;
+    background-color: transparent !important;
+    // height: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .authConRegister{
+    width: 100%;
+  }
+}
+
+ion-radio {
+  --border-radius: 4px;
+  --inner-border-radius: 4px;
+
+  --color: #ddd;
+  --color-checked: #6815ec;
+}
+
+ion-radio.ios {
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
+
+.radio-checked.ios {
+  border-color: #6815ec;
+}
+
+a.terms-link {
+  color: #3880ff;
+  text-decoration: underline;
+}
+
+:host-context(.ios) {
+
+  // ion-segment-button{
+  //     // padding: 2%;
+  // }
+
+  .segment-button-checked .segment-button-indicator {
+    opacity: 0;
+  }
+
+
+}

@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+
+    <!-- <ion-buttons class="rounded-circle" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons> -->
+
+    <ion-title style="width:auto;">Settings</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher> -->
+
+  <ion-item lines="none" button detail="false">
+    <ion-icon slot="start" size="large" color="danger" name="lock-closed-outline"></ion-icon>
+    <ion-label>
+      <h2>Change Password</h2>
+    </ion-label>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer class="py-4" style="background:#f2f2f2;">
+  <p class="text-dark text-center m-0">&copy; 2023 Niilano Marketplace</p>
+</ion-footer>
+
+

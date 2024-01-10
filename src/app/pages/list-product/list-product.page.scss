@@ -1,0 +1,14 @@
+ion-item{
+   --background: transparent;
+}
+
+.otherImagesDisplay *{
+    flex-shrink: 0;
+}
+
+#removeImgClose{
+    position: absolute;
+    top: -15%;
+    right: -15%;
+    cursor: pointer;
+}

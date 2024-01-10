@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons class="rounded-circle" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Messages <span *ngIf="totalUnreadMessages" style="font-size: .6em;"> ({{totalUnreadMessages}} Unread) </span></ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button size="large" style="color:#f2f2f2;"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-no-padding">
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-row *ngIf="chats?.length > 0 || newChat" class="h-100">
+
+    <ion-col [ngClass]="{'d-sm-block d-none': selectedUserMessages, '': !selectedUserMessages}" class="mh-100" id="chatslist" style="overflow-y: scroll;" size="12" size-md="5" size-lg="4" >
+      
+      <ion-item lines="full" (click)="viewMessage(chat.id)" button *ngFor="let chat of chats">
+        <ion-avatar slot="start">
+          <img alt="User profile" [src]="chat.user_profile.url">
+        </ion-avatar>
+        <ion-label>
+          <h3> {{chat.name}} <small> (@{{chat.username}}) </small> </h3>
+          <p *ngIf="chat.messages.length > 0">{{chat.messages[chat.messages.length - 1].content}}</p>
+        </ion-label>
+        <ion-badge *ngIf="chat.unreadMessages" slot="end" style="--background:#33887d;">{{chat.unreadMessages}}</ion-badge>
+      </ion-item>
+
+    </ion-col>
+
+    <ion-col [ngClass]="{'d-sm-block d-none': !selectedUserMessages, '': selectedUserMessages}" class="mh-100" id="chats" size="12" size-md="7" size-lg="8" >
+
+      <div *ngIf="selectedUserMessages" class="h-100 d-flex flex-column">
+
+        <div class="bg-light" style="height: 10%;" >
+
+          <ion-item lines="none" button detail="false" [routerLink]="['/@', selectedUserMessages?.username]" class="h-100 ion-no-padding">
+
+            <ion-button (click)="back()" slot="start" class="m-0 d-sm-none d-block" fill="clear" style="--padding-start:0%" >
+
+              <ion-icon name="arrow-back" class="m-0" size="large" ></ion-icon>
+
+            </ion-button>
+
+            <ion-avatar *ngIf="selectedUserMessages" class="user-profile" slot="start">
+              <img alt="User Profile" [src]="selectedUserMessages?.user_profile.url" />
+            </ion-avatar>
+
+            <ion-label *ngIf="selectedUserMessages">
+              <h3> {{selectedUserMessages.name}} <small>(@{{selectedUserMessages.username}})</small> </h3>
+            </ion-label>
+          </ion-item>
+
+        </div>
+
+        <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="bg-light ion-padding" style="height: 80%; overflow-y: scroll;" >
+
+          <ng-container *ngIf="selectedUserMessages?.messages.length > 0">
+
+          <div *ngFor="let message of selectedUserMessages?.messages">
+            
+            <div *ngIf="message.to===selectedUserMessages.id" class="sent mt-2">
+
+              <div class="p-2 message rounded">
+              
+                {{message?.content}}
+   
+               <div class="time">
+                 {{formatTimestamp(message?.createdAt)}}
+                </div>
+              </div>
+              
+   
+             </div>
+   
+             <div *ngIf="message.to!==selectedUserMessages.id" class="received mt-2">
+   
+               <div class="p-2 message rounded">
+                {{message?.content}}
+                 <div class="time">
+                  {{formatTimestamp(message?.createdAt)}}
+                  </div>
+               </div>
+   
+             </div>
+
+          </div>
+
+          </ng-container>
+
+          
+        </div>
+
+        <div class="bg-light d-flex flex-column align-items-center justify-content-end ion-padding pb-0 " style="height: 15%;" >
+
+          <ion-item fill="outline" id="custom-item" class="w-100" counter="true" [counterFormatter]="customCounterFormatter">
+            <ion-label position="floating">Type a message</ion-label>
+            <ion-input [(ngModel)]="content" name="content" autofocus="true" maxlength="250" placeholder="Enter message"></ion-input>
+
+            <ion-button (click)="addChat(selectedUserMessages.id)" slot="end" fill="clear">
+              <ion-icon slot="end" name="send"></ion-icon>
+            </ion-button>
+
+          </ion-item>
+
+        </div>
+
+      </div>
+
+    </ion-col>
+
+  </ion-row>
+
+  <div class="px-1" *ngIf="chats?.length < 1 && !newChat" id="container">
+    <strong class="text-dark">You have no chats at the moment</strong>
+    <p> Start by messaging some sellers about their products. </p>
+  </div>
+
+</ion-content>

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Account Balance
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list style="background : #f2f2f2;">
+    <ion-item>
+      <ion-icon slot="start" class="text-secondary" size="large" name="checkmark-done-circle"></ion-icon>
+      <ion-label>
+        <h2>Available Balance</h2>
+        <p>{{ availableBalance | currency : 'GH₵' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-icon slot="start" class="text-secondary" size="large" name="hourglass"></ion-icon>
+      <ion-label>
+        <h2>Pending Balance</h2>
+        <p>{{ pendingMoney | currency : 'GH₵' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" style="--background:#1a4640;" (click)="withdrawMoney()"> Withdraw</ion-button>
+
+  <!-- <button class="btn d-block w-100 text-light py-3" style="background:#1a4640;">
+    <i class="fa-solid me-2 fa-money-bill-transfer"></i> Withdraw
+  </button> -->
+
+</ion-content>

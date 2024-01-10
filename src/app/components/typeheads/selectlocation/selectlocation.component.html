@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="fs-6" slot="start">{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon size="medium" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="animate__animated animate__fadeInLeft" *ngIf="!selectedRegion">
+    <ion-item class="ion-no-padding mb-3" lines="none">
+      <ion-searchbar
+      style="--background:#fff;color:grey;"
+        slot="start"
+        class="p-0 m-0"
+        (ionInput)="filterRegions($event)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-item
+      lines="full"
+      button
+      detail="true"
+      *ngFor="let region of filteredRegions"
+      (click)="selectRegion(region)"
+    >
+      <ion-label>{{ region }} Region</ion-label>
+    </ion-item>
+  </div>
+
+  <div class="animate__animated animate__fadeInRight" *ngIf="selectedRegion">
+    <ion-item class="ion-no-padding mb-2" lines="none">
+      <button
+        (click)="backSelection()"
+        class="d-flex align-items-center btn btn-danger"
+      >
+        <ion-icon name="arrow-undo-outline" class="me-2"></ion-icon>
+        {{ regionSelected.region }} Region
+      </button>
+    </ion-item>
+    <ion-item class="ion-no-padding mb-3" lines="none">
+      <ion-searchbar
+      style="--background:#fff;color:grey;"
+        class="p-0 m-0"
+        (ionInput)="filterCities($event)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-item lines="full" *ngFor="let city of filteredCities">
+      <ion-label> {{ city }} </ion-label>
+      <ion-checkbox
+      style="--background: #fff;
+      --border-color: green;"
+      color="success"
+        [value]="city"
+        [checked]="isChecked(city)"
+        (ionChange)="checkCity($event)"
+      >
+      </ion-checkbox>
+    </ion-item>
+  </div>
+
+  </ion-content>

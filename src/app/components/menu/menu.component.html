@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-no-padding" >
+      
+      <ion-item button detail="false" (click)="redirect('profile')" *ngIf="user" class="ion-no-padding" lines="none" class="mt-2" style="--background : transparent;">
+        <ion-avatar slot="start">
+          <img alt="User Profile" [src]="modifyImageUrl(user.user_profile.url)" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" referrerpolicy="no-referrer" />
+        </ion-avatar>
+        <ion-label style="color:#f2f2f2;">
+          <h3 class="fw-bold"> {{user.username ? user.username : user.first_name }} </h3>
+          
+        </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="!user" lines="none" class="my-2" style="--background : transparent;">
+          
+          <ion-button class="auth" (click)="redirectAuth('register')" slot="start" >Sign Up</ion-button>
+
+          <ion-button class="auth" slot="end" (click)="redirectAuth('login')" >Login</ion-button>
+
+          </ion-item>
+
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  
+    <!-- <ion-item lines="none" (click)="redirect('home')" button detail="false" >
+      <ion-icon slot="start" name="home"></ion-icon>
+      Home
+    </ion-item> -->
+
+    <ion-item lines="none" *ngIf="user" button detail="true" detail-icon="caret-forward-outline" (click)="redirect('my-products')" >
+      <ion-icon class="fa-solid fa-boxes-stacked" slot="start" name="search"></ion-icon>
+      <ion-label>
+        <h3>My Catalog</h3>
+        <p class="text-dark">{{userProductsAvailable}} Listed</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- <ion-item lines="none" (click)="redirect('products')" button detail="true" detail-icon="caret-forward-outline"  routerLink="/sd">
+      <ion-icon class="fa-solid fa-circle" slot="start" name="search"></ion-icon>
+      <ion-label>
+        <h3>All Products</h3>
+        <p class="text-dark">{{productsAvailable}} Available</p>
+      </ion-label>
+    </ion-item> -->
+
+    <ion-item lines="none" *ngIf="user" button detail="true" detail-icon="caret-forward-outline" (click)="redirect('messages')">
+      <ion-icon slot="start" name="chatbox-ellipses"></ion-icon>
+      <ion-label>
+        <h3>Messages</h3>
+        <p> {{totalUnreadMessages ? totalUnreadMessages : "No"}} New Messages</p>
+      </ion-label>
+    </ion-item>
+
+    <!-- <ion-item *ngIf="user" button (click)="redirect('order-history')" detail="true" detail-icon="caret-forward-outline" >
+      <ion-icon slot="start" name="list"></ion-icon>
+      Order History
+    </ion-item> -->
+
+    <ion-item lines="none" button (click)="redirect('saveditems')" detail="false" routerLink="/cart">
+      <ion-icon slot="start" name="bookmark"></ion-icon>
+      <ion-label class="text-dark">
+        <h3>Saved Items</h3>
+        <p class="text-dark"> {{savedItems.length}} Items Added</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none" (click)="redirect('profile')" button detail="false" *ngIf="user" >
+      <ion-icon slot="start" name="person"></ion-icon>
+      Profile
+    </ion-item>
+
+    <ion-item lines="none" button detail="false" *ngIf="user" (click)="openSettingsModal()">
+      <ion-icon slot="start" name="settings"></ion-icon>
+      Settings
+    </ion-item>
+
+    <ion-item lines="none" button detail="false" (click)="openSupportModal()" lines="none">
+      <ion-icon slot="start" name="help"></ion-icon>
+      Support & help
+    </ion-item>
+    
+</ion-content>

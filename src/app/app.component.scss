@@ -1,0 +1,32 @@
+ion-app{
+    --background: #f2f2f2;
+}
+
+ion-tab-button.tab-selected {
+    // --background: #08a391;
+    color: lightgreen;
+  }
+
+  ion-tab-bar {
+    transition: all 50s ease-in-out; /* Add a transition for smooth animation */
+    height: 48px; /* Set your tab bar's normal height */
+    overflow: hidden; /* Hide overflow when the tab bar disappears */
+  }
+
+  #tabBar{
+    transition: all 20s ease-in-out;
+  }
+  
+
+//   #mobile{
+//     display: none;
+//   }
+
+//   @media(max-width:600px){
+//     #mobile{
+//         display: block;
+//     }
+//     #desktop{
+//         display: none;
+//     }
+//   }

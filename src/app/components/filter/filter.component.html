@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Filter
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+
+  <p class="m-0 text-dark">Category:</p>
+  <ion-item>
+    <ion-select interface="action-sheet" [(ngModel)]="selectedCategory" (ionChange)="onCategoryChange()" placeholder="Select category">
+      <ion-select-option *ngFor="let category of categoriesAndSubcategories"
+        [value]="category.id">{{category.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ng-container *ngIf="selectedCategory">
+    <p class="m-0 mt-3 text-dark">Subcategory:</p>
+  <ion-item>
+    <ion-select interface="action-sheet" [(ngModel)]="selectedSubcategory" placeholder="Select Subcategory">
+      <ion-select-option *ngFor="let subcategory of subcategories"
+        [value]="subcategory.id">{{subcategory.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  </ng-container>
+
+  <p class="m-0 mt-3 text-dark">Price:</p>
+  <ion-item>
+    <ion-select interface="action-sheet" [(ngModel)]="priceRange" (ionChange)="onPriceChange()" placeholder="Select price range">
+      <ion-select-option value="low">Low <ion-text>(GH₵ 0 - GH₵ 300)</ion-text></ion-select-option>
+      <ion-select-option value="medium">Medium <ion-text>(GH₵ 300 - GH₵ 1000)</ion-text></ion-select-option>
+      <ion-select-option value="high">High <ion-text>(GH₵ 1000 and above)</ion-text></ion-select-option>
+      <ion-select-option value="custom">Set Custom Price</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Conditionally render input boxes for custom price -->
+  <ng-container *ngIf="priceRange === 'custom'">
+    <div class="mt-4 text-dark">
+      <h3 class="m-0">Prices Between:</h3>
+    <p class="m-0 mt-2">Lowest (GH₵):</p>
+    <ion-item>
+      <ion-input type="number" [(ngModel)]="lowestPrice"></ion-input>
+    </ion-item>
+
+    <p class="m-0 mt-3">Highest (GH₵):</p>
+    <ion-item>
+      <ion-input type="number" placeholder="1000" [(ngModel)]="highestPrice"></ion-input>
+    </ion-item>
+    </div>
+  </ng-container>
+
+</ion-content>
+
+<ion-footer style="background:#f2f2f2;">
+  <div class="d-flex justify-content-between">
+  <ion-button (click)="clearFilter()" color="danger" style="flex: 1;">Clear</ion-button>
+  <ion-button (click)="applyFilter()" style="flex: 1;">Apply</ion-button>
+  </div>
+</ion-footer>

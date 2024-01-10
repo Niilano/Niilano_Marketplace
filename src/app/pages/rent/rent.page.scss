@@ -1,0 +1,81 @@
+.coming-soon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .coming-soon-container h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .coming-soon-container p {
+    font-size: 18px;
+    color: #999;
+  }
+  
+  .itemsImg{
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .image-wrapper {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .image-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+  // ion-segment {
+  //   // background-color: #1a4640;
+  // }
+
+  /* Hide the scrollbar for ion-segment */
+ion-segment::-webkit-scrollbar {
+  display: none;
+}
+
+  
+  ion-segment-button {
+    font-size: 12px;
+    color: #1a4640;
+  }
+  
+  .segment-button-checked {
+    color: red;
+    --color-checked: red;
+    background-color: #ff00003d;
+    border-radius: 2px;
+  //   color: #F8CF80 !important; // it works properly 
+  
+  //   // Tried all of that but nothing work
+    // background-color: #000 !important; 
+  //   background: #2D303A !important; 
+  //   --background: #2D303A !important; 
+  //   --background-color: #2D303A !important; 
+  //   --background-checked: #2D303A !important; 
+  }
+
+  
+  
+  @media(max-width:500px){
+    ion-content{
+      --padding-top : 0px;
+    }
+    ion-card{
+      margin: 0% !important;
+    }
+  }

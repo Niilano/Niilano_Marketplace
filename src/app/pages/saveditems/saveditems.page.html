@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons class="rounded-circle" slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="fs-6">Saved Items</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button size="large" style="color:#f2f2f2;"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+  
+  <div class="row mt-2">
+
+    <div class="col-md-6 col-12" *ngFor="let item of savedItems.slice().reverse()">
+
+      <ion-item>
+
+        <ion-thumbnail class="h-100" slot="start">
+          <img alt="Product Image" [src]="item.image" />
+        </ion-thumbnail>
+
+        <ion-label>
+         <h3> {{ item.name }} </h3>
+        <p> Quantity: {{ item.quantity }} </p>
+        <p> Price: {{ item.price | currency : 'GH₵' }} </p>
+        <p> Seller: {{ item.seller }} </p>
+        </ion-label>
+  
+      </ion-item>
+
+      <ion-item lines="full">
+
+          <ion-buttons class="rounded" style="color:#f2f2f2; background:#dc3545;" slot="start">
+
+            <ion-button (click)="removeCartItem(item.id)" class="d-flex align-items-center justify-content-center" routerLink="/cart">
+              <ion-icon class="me-1" name="trash-outline"></ion-icon>
+              <span>Remove</span>
+            </ion-button>
+          
+          </ion-buttons>
+
+          <ion-buttons (click)="checkout(item.id)" class="rounded" style="color:#f2f2f2; background:#1A4640;" slot="end">
+
+            <ion-button class="d-flex align-items-center justify-content-center" >
+              <span>Checkout</span>
+              <ion-icon class="ms-1" name="arrow-forward"></ion-icon>
+            </ion-button>
+          
+          </ion-buttons>
+
+      </ion-item>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="savedItems.length<1" class="mt-2">
+
+  <ion-item class="ion-text-center">
+
+    <ion-label text-wrap>
+      Your saved items list is currently empty
+    </ion-label>
+
+  </ion-item>
+
+  <button (click)="redirect('products')" class="btn btn-dark mt-3 d-flex align-items-center justify-content-center mx-auto"> <ion-icon class="me-1" name="search-circle-outline" size="large" ></ion-icon> Browse Products </button>
+
+  </div>
+  
+<!--     
+  <ion-label>Total: {{ cartTotal }}</ion-label>
+  <ion-button>Checkout</ion-button> -->
+</ion-content>

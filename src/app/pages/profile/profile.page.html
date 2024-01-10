@@ -1,0 +1,163 @@
+<ion-content>
+
+  <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="cover-image">
+    <div class="h-100 overflow-hidden">
+      <img [src]="coverImageUrl" />
+
+      <ion-icon style="position: absolute; bottom: 10%; right: 5%; color: #000; " size="large" name="camera"></ion-icon>
+    </div>
+    <div class="profile-info">
+      <ion-avatar>
+        <img *ngIf="user" style="cursor:pointer;" (click)="onProfileImageClick()" [src]="modifyImageUrl(user.user_profile.url)" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" referrerpolicy="no-referrer" />
+        <ion-icon (click)="onProfileImageClick()" style="position: absolute; bottom: 10%; right: 2%; color: #f2f2f2; "
+          size="large" name="camera"></ion-icon>
+      </ion-avatar>
+    </div>
+
+    <ion-buttons class="rounded-circle" slot="start">
+      <ion-back-button mode="md" defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+  </div>
+
+  <!-- This span is used to open the image dynamically -->
+  <span id="open-view-changed-profile-image-modal"></span>
+
+  <ion-modal #modal1 trigger="open-view-changed-profile-image-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{viewImage.image}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal1.dismiss()">
+              <ion-icon style="color:#f2f2f2;" size="large" name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content style="--background:transparent !important;" >
+        
+        <div class="h-100 d-flex d-sm-none justify-content-center align-items-center">
+          <ion-img class="w-100" [src]="viewImage.url"></ion-img>
+        </div>
+
+        <div class="h-100 text-center d-none d-sm-block">
+          <ion-img class="h-100" [src]="viewImage.url"></ion-img>
+        </div>
+
+      </ion-content>
+      <ion-footer (click)="onSaveNewProfileImage()" class="text-center py-2"
+        style="background: #1A4640; cursor:pointer; color: #f2f2f2;">
+        Save Image
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
+  <input type="file" hidden id="changeProfileImage" (change)="onChangeProfileImage($event)">
+
+  <ion-row class="mt-4 px-2">
+
+    <ion-col size="12" class="ion-text-center mb-2" size-md="6">
+
+
+      <ion-card-header *ngIf="user">
+        <ion-card-title class="text-dark">{{user.username}} </ion-card-title>
+        <ion-card-subtitle>{{user.first_name}} {{user.last_name}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-item *ngIf="user.bio" class="ion-text-center" lines="none">
+        <ion-label text-wrap class="text-secondary">
+          {{user.bio}}
+        </ion-label>
+      </ion-item>
+
+
+      <ion-card-content *ngIf="user">
+        <p>Joined on {{user.createdAt | date}}</p>
+        <p>{{user.email}}</p>
+
+        <div class="d-flex justify-content-center align-items-center ">
+          <p class="p-2"> <b> {{user.followers.length}} </b> <br> Followers </p>
+
+          <p class="p-2" style="border-left: 1px dotted;"> <b> {{user.following.length}} </b> <br> Following </p>
+        </div>
+
+        <h3 *ngIf="isVerified" class="text-success d-flex align-items-center justify-content-center"> <ion-icon
+            class="me-1 text-success" size="large" name="checkmark-circle"></ion-icon> Account Verified</h3>
+
+        <ion-button style="--background:#000; color: #f2f2f2;" *ngIf="!isVerified" (click)="verifyAccount()">Verify Account</ion-button>
+
+        <ion-button (click)="editProfile()" style="--background:#1A4640;">
+          Edit Profile
+        </ion-button>
+
+      </ion-card-content>
+
+      <!-- <p>{{ email }}</p>
+        <p>Followers: {{ followers }} | Following: {{ following }}</p> -->
+
+
+
+
+
+    </ion-col>
+
+    <ion-col size="12" size-md="6" style="background:#1A4640;">
+
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Shop</ion-label>
+        </ion-list-header>
+
+        <ion-item button (click)="presentBalanceModal()">
+          <ion-icon slot="start" name="cash"></ion-icon>
+          <ion-label>My Balance</ion-label>
+        </ion-item>
+
+        <ion-item routerLink="/my-products" button detail="true" detail-icon="caret-forward-outline">
+          <ion-icon slot="start" name="shirt"></ion-icon>
+          <ion-label>My Products</ion-label>
+        </ion-item>
+
+        <ion-item routerLink="/my-orders" lines="none" button detail="true" detail-icon="caret-forward-outline">
+          <ion-icon slot="start" name="cart"></ion-icon>
+          <ion-label>Shop Orders</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Account</ion-label>
+        </ion-list-header>
+
+        <ion-item routerLink="/order-history" button detail="true" detail-icon="caret-forward-outline">
+          <ion-icon slot="start" name="timer-outline"></ion-icon>
+          <ion-label>Order History</ion-label>
+        </ion-item>
+
+        <ion-item button detail="true" detail-icon="caret-forward-outline">
+          <ion-icon slot="start" name="mail"></ion-icon>
+          <ion-label>Messages</ion-label>
+        </ion-item>
+
+        <ion-item (click)="logout()" button lines="none">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-item>
+
+      </ion-list>
+
+
+
+    </ion-col>
+
+  </ion-row>
+
+
+
+</ion-content>

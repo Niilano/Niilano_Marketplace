@@ -1,0 +1,398 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button (click)="navigateBack()" class="rounded-circle" fill="clear" slot="start">
+      <ion-icon class="text-light" size="medium" name="arrow-back-outline"></ion-icon></ion-button>
+    <ion-title class="fs-6 p-0">{{pageTitle}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container mt-3">
+    <div>
+      <h5 *ngIf="sectionTitle && currentSection === 1"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <h5 *ngIf="sectionTitle && currentSection === 2"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <h5 *ngIf="sectionTitle && currentSection === 3"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <h5 *ngIf="sectionTitle && currentSection === 4"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <h5 *ngIf="sectionTitle && currentSection === 5"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <h5 *ngIf="sectionTitle && currentSection === 6"
+        class="text-dark m-0 mb-2 fw-bold animate__animated animate__fadeInRight">
+        {{ sectionTitle }}
+      </h5>
+      <ion-progress-bar [value]="currentSection / totalSections" color="success"></ion-progress-bar>
+    </div>
+
+    <div class="pb-5">
+      <div class="w-100 animate__animated animate__fadeInRight" *ngIf="currentSection === 1">
+        <div class="mt-4">
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Product Name -->
+                  <p class="m-0 text-dark">Product Name</p>
+                  <ion-item lines="full">
+                    <ion-input [(ngModel)]="productInfo.name" type="text"
+                      placeholder="What is the name of your product?"></ion-input>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+
+                  <!-- Product Description -->
+                  <p class="m-0 mt-4 text-dark">Product Description</p>
+                  <ion-item lines="full">
+                    <ion-textarea [(ngModel)]="productInfo.description" name="productDescription"
+                      placeholder="What is this product about?" autoGrow="true"></ion-textarea>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Product Condition -->
+                  <p class="m-0 text-dark">Product Condition</p>
+                  <ion-item lines="full">
+                    <ion-select [(ngModel)]="productInfo.condition" placeholder="Select an option"
+                      interface="action-sheet">
+                      <ion-select-option value="brand new">
+                        Brand New
+                      </ion-select-option>
+                      <ion-select-option value="used"> Used </ion-select-option>
+                    </ion-select>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+
+                  <!-- Product Features -->
+                  <p class="mt-4 text-dark">
+                    Product Features
+                    <ion-badge color="success">Optional</ion-badge> <br />
+                    <small>(Please provide the key features and specifications of
+                      your product)</small>
+                  </p>
+                  <ion-item lines="full">
+                    <ion-input [(ngModel)]="newFeature" name="newFeature" placeholder="Add a new feature"></ion-input>
+                    <ion-button color="success" (click)="addFeature()">Add</ion-button>
+                    <ion-note slot="helper">Optional</ion-note>
+                  </ion-item>
+
+                  <div *ngIf="productInfo.features.length < 1" class="mt-3 text-center text-secondary">
+                    No Features added
+                  </div>
+
+                  <div *ngIf="productInfo.features.length > 0" class="d-flex justify-content-center mt-1"
+                    style="flex-wrap: wrap; gap: 5px">
+                    <span class="rounded bg-dark text-light d-inline-flex align-items-center p-2" *ngFor="
+        let feature of productInfo.features;
+        let i = index
+      ">
+                      {{ feature }}
+                      <ion-icon class="ms-2 text-primary" style="cursor: pointer" (click)="removeFeature(i)"
+                        name="close"></ion-icon>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-end mt-4">
+            <ion-button color="success" (click)="nextSection()">Next <ion-icon name="arrow-redo-outline"
+                class="ms-1"></ion-icon></ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100 animate__animated animate__fadeInRight" *ngIf="currentSection === 2">
+        <div class="mt-4">
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Product Price -->
+                  <p class="m-0 text-dark">Product Price (GH₵)</p>
+                  <ion-item lines="full">
+                    <ion-input name="productPrice" type="number" placeholder="0"
+                      [(ngModel)]="productInfo.price"></ion-input>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+
+                  <!-- Product Discount -->
+                  <p class="m-0 mt-4 text-dark">
+                    Discount Percentage (%)
+                    <ion-badge color="success">Optional</ion-badge>
+                  </p>
+                  <ion-item lines="full">
+                    <ion-input name="discount_percent" [(ngModel)]="productInfo.discount_percent" type="number"
+                      placeholder="0"></ion-input>
+                    <ion-note slot="helper">Optional</ion-note>
+                    <div slot="end">
+                      <i class="fa-solid fa-percent text-danger"></i>
+                    </div>
+                  </ion-item>
+
+                  <!-- Negotiable Price Option -->
+                  <ion-item class="mt-2" lines="none">
+                    <ion-label>Negotiable</ion-label>
+                    <ion-toggle [(ngModel)]="productInfo.negotiable" color="danger"></ion-toggle>
+                    <ion-note slot="helper" color="success">Is this price negotiable</ion-note>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+
+                  <!-- WhatsApp Contact Number -->
+                  <p class="m-0 mt-4 text-dark">WhatsApp Contact</p>
+                  <ion-item lines="full">
+                    <ion-input [(ngModel)]="productInfo.whatsappContact" name="whatsappContact" type="tel"
+                      placeholder="(e.g., +233244788934)"></ion-input>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+                  <ion-note color="medium">
+                    Some buyers woould like to contact you through WhatsApp.
+                  </ion-note>
+
+                  <!-- Contact Number -->
+                  <p class="m-0 mt-4 text-dark">Mobile Number</p>
+                  <ion-item lines="full">
+                    <ion-input [(ngModel)]="productInfo.sellerContact" name="sellerContact" type="tel"
+                      placeholder="Enter your phone number"
+                      ></ion-input>
+                    <ion-note slot="helper" color="danger">**This field is required</ion-note>
+                  </ion-item>
+                  <ion-note color="medium">
+                    Some buyers woould like to contact you through mobile or send an SMS.
+                  </ion-note>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <ion-button color="danger" (click)="prevSection()">
+              <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+              Previous
+            </ion-button>
+            <ion-button color="success" (click)="nextSection()">Next <ion-icon name="arrow-redo-outline"
+                class="ms-1"></ion-icon></ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100 animate__animated animate__fadeInRight" *ngIf="currentSection === 3">
+        <div class="mt-4">
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Product Category -->
+                  <p class="m-0 text-dark">Category</p>
+                  <ion-item (click)="toggleCategoryModal()" button detail="true" detail-icon="caret-forward-outline">
+                    <ion-label>
+                      <h3>Select Product Category</h3>
+                    </ion-label>
+                  </ion-item>
+                  <div *ngIf="!this.productInfo.subCategory_name" class="mt-3 text-center text-secondary">
+                    No Category selected
+                  </div>
+                  <div *ngIf="this.productInfo.subCategory_name" class="d-flex mt-3 align-items-center"
+                    style="flex-wrap: wrap; gap: 5px">
+                    <div
+                      class="bg-secondary rounded p-2 d-flex text-light align-items-center justify-content-center w-100">
+                      {{this.productInfo.subCategory_name}}
+                      <!-- <i
+                        (click)="removeCategoryItem(items.id)"
+                        class="fa-solid fa-circle-xmark ms-2 text-danger"
+                      ></i> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Product Location -->
+                  <p class="m-0 text-dark">Location</p>
+                  <ion-item id="select-location" (click)="toggleLocationModal()" button detail="true"
+                    detail-icon="caret-forward-outline">
+                    <ion-label>
+                      <h3>Select the location of the product</h3>
+                    </ion-label>
+                  </ion-item>
+                  <div *ngIf="!productInfo.location" class="mt-3 text-center text-secondary">
+                    No Location selected
+                  </div>
+                  <div *ngIf="productInfo.location" class="bg-dark mt-3 rounded p-2 text-light text-center">
+                    {{productInfo.location}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <ion-button color="danger" (click)="prevSection()">
+              <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+              Previous
+            </ion-button>
+            <ion-button color="success" (click)="nextSection()">Next <ion-icon name="arrow-redo-outline"
+                class="ms-1"></ion-icon></ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100 animate__animated animate__fadeInRight" *ngIf="currentSection === 4">
+        <div class="mt-4">
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Main Image -->
+                  <p class="m-0 text-dark">
+                    Product Main Image <br />
+                    <small>This image will be the first to be shown to customers.
+                      <label for="mainImage" *ngIf="this.productInfo.productMainImageURL" class="btn btn-success">
+                        <small class="d-inline-flex align-items-center justify-content-center"><i
+                            class="fa-solid me-2 fa-shuffle"></i> Change
+                          Image</small></label>
+                    </small>
+                  </p>
+                  <input (change)="fileChangeEvent($event,'mainImage')" type="file" id="mainImage" hidden />
+                  <div class="d-flex mt-1">
+                    <label *ngIf="!this.productInfo.productMainImageURL" for="mainImage"
+                      class="rounded me-2 text-dark d-flex flex-column justify-content-center align-items-center" style="
+                        height: 100px;
+                        width: 100px;
+                        border: 1px dotted black;
+                        cursor: pointer;
+                      ">
+                      <i class="fa-solid fa-circle-plus"></i>
+                      <small>Select Image</small>
+                    </label>
+
+                    <div *ngIf="this.productInfo.productMainImageURL"
+                      class="rounded text-dark d-flex flex-column justify-content-center align-items-center overflow-hidden"
+                      style="width: 100px">
+                      <img [src]="this.productInfo.productMainImageURL" alt="" class="w-100" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Additional Images -->
+                  <p class="m-0 text-dark">
+                    Additional Images <br />
+                    <small>Select a maximum of five (5) other images you want to
+                      show for this product.</small>
+                  </p>
+                  <input type="file" (change)="fileChangeEvent($event,'addtionalImages')" id="otherImages" hidden />
+                  <div class="d-flex pt-3 otherImagesDisplay" style="overflow-x: scroll">
+                    <label for="otherImages"
+                      class="rounded me-2 d-flex flex-column justify-content-center align-items-center text-dark" style="
+                        height: 100px;
+                        width: 100px;
+                        border: 1px dotted black;
+                        cursor: pointer;
+                      ">
+                      <i class="fa-solid fa-circle-plus"></i>
+                      <small>Select Image</small>
+                    </label>
+                    <ng-container *ngIf="this.productInfo.productOtherImages?.length > 0">
+                      <div *ngFor="let image of this.productInfo.productOtherImages; let i = index"
+                        class="rounded me-4 d-flex flex-column justify-content-center align-items-center"
+                        style="width: 100px; position: relative;">
+                        <i id="removeImgClose" (click)="removeOtherImages(i)"
+                          class="fa-solid fa-circle-xmark text-danger fa-2x"></i>
+                        <img [src]="image.url" class="w-100 rounded" alt="" />
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <ion-button color="danger" (click)="prevSection()">
+              <ion-icon name="arrow-undo-outline" class="me-1"></ion-icon>
+              Previous
+            </ion-button>
+          </div>
+
+          <!-- <div class="mt-2">
+            <ion-button expand="full" class="rounded" color="dark">
+              <ion-icon class="me-2" name="cloud-upload-outline"></ion-icon>
+              Upload Product
+            </ion-button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="currentSection == 4 && !editProduct" class="text-light animate__animated animate__fadeInBottom">
+  <div class="container my-2">
+    <button (click)="submitProductListing()"
+      class="btn text-light d-flex align-items-center justify-content-center w-100" style="background: #1a4640">
+      <ion-icon class="me-2" name="cloud-upload-outline"></ion-icon>
+      Upload Product
+    </button>
+  </div>
+</ion-footer>
+
+<ion-footer *ngIf="editProduct" class="text-light animate__animated animate__fadeInBottom">
+  <div class="container my-2">
+    <button (click)="submitEditProductListing()"
+      class="btn btn-warning d-flex align-items-center justify-content-center w-100">
+      <ion-icon class="me-2" name="cloud-upload-outline"></ion-icon>
+      Save Changes
+    </button>
+  </div>
+</ion-footer>
+
+<ion-modal [isOpen]="categoryModal" #categoryModalVariable>
+  <ng-template>
+    <app-selectcategory class="ion-page" [categories]="categories" (modalClose)="toggleCategoryModal()"
+      [selectedValues]="productInfo.productCategory" (confirmChanges)="categorySelection($event)"></app-selectcategory>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="locationModal" #locationModalVariable>
+  <ng-template>
+    <app-selectlocation class="ion-page" [regions]="regions" (modalClose)="toggleLocationModal()"
+      (confirmChanges)="receiveLocationData($event)"></app-selectlocation>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="cropImageModal">
+  <ng-template>
+    <app-crop-image class="ion-page" [imageChangedEvent]="imageChangedEvent" [loading]="imageLoading"
+      (modalClose)="closeCropImageModal()" (croppedImage)="croppedImageRes($event)"></app-crop-image>
+  </ng-template>
+</ion-modal>

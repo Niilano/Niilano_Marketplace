@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-transform: capitalize">{{
+      selectedCategory
+    }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-radio-group
+    *ngIf="selectedCategory === 'Select Category'"
+    [(ngModel)]="selectedCategory"
+  >
+    <ion-item lines="full">
+      <ion-icon class="text-dark" slot="start" name="home"></ion-icon>
+      <ion-label>Housing</ion-label>
+      <ion-radio value="housing"></ion-radio>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-icon class="text-dark" slot="start" name="car"></ion-icon>
+      <ion-label>Vehicles</ion-label>
+      <ion-radio value="vehicles"></ion-radio>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-icon class="text-dark" slot="start" name="hammer"></ion-icon>
+      <ion-label>Equipment/Machinery</ion-label>
+      <ion-radio value="equipment"></ion-radio>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-icon
+        class="text-dark"
+        slot="start"
+        name="balloon-outline"
+      ></ion-icon>
+      <ion-label>Events and Decor</ion-label>
+      <ion-radio value="events and decor"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+
+  <div *ngIf="selectedCategory === 'housing'" class="h-100">
+    <app-house-listing
+      [houseDetailsFormModal]="data"
+      [editingListing]="editingListing"
+    ></app-house-listing>
+  </div>
+
+  <div *ngIf="selectedCategory === 'vehicles'" class="h-100">
+    <app-vehicle-listing
+      [vehicleDetailsFormModal]="data"
+      [editingListing]="editingListing"
+    ></app-vehicle-listing>
+  </div>
+
+  <div *ngIf="selectedCategory === 'equipment'" class="h-100">
+    <!-- <h3 class="text-dark">Coming Up...</h3> -->
+    <app-equipments-rent-listing-form
+      [equipmentDetailsFormModal]="data"
+      [editingListing]="editingListing"
+    ></app-equipments-rent-listing-form>
+  </div>
+  <div *ngIf="selectedCategory === 'events and decor'" class="h-100">
+    <!-- <h3 class="text-dark">Coming Up...</h3> -->
+    <app-events-renting-listing-form
+      [eventDetailsFormModal]="data"
+      [editingListing]="editingListing"
+    ></app-events-renting-listing-form>
+  </div>
+</ion-content>

@@ -1,0 +1,101 @@
+<!-- Desktop Header -->
+<header class="px-5 d-none d-md-block py-2">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <img src="../../../assets/images/logo_n_large.png" style="width: 130px; height: auto;" />
+    </div>
+    <div style="width: 50%;">
+      <div class="d-flex justify-content-between gap-2 align-items-center">
+        <div class="d-flex gap-2 text-light align-items-center">
+          <i class="fa-solid fa-magnifying-glass-location"></i> 
+          <ion-select aria-label="Regions" value="all" placeholder="Select region">
+            <ion-select-option value="all">All regions</ion-select-option>
+            <ion-select-option value="ashanti">Ashanti</ion-select-option>
+            <ion-select-option value="accra">Greater Accra</ion-select-option>
+          </ion-select>
+        </div>
+        <button (click)="searchI()" style="font-size: .8em; height: max-content;" class="w-100 d-flex align-items-center gap-2 btn btn-light">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>
+            Search on niilano
+          </span>
+        </button>
+        <!-- <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon> -->
+      </div>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+      <button *ngIf="!isLoggedIn" (click)="toSignInPage()" style="font-size: .8em; height: max-content;" class="btn btn-light d-flex gap-2 justify-content-center align-items-center">
+        <i class="fa-regular fa-circle-user"></i>
+        Sign in / Register
+      </button>
+      
+      <span *ngIf="isLoggedIn" style="font-size: .8em; height: max-content;" class="bg-light rounded pe-2 overflow-hidden d-flex gap-2 justify-content-center align-items-center">
+        <img [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded border" />
+        <span>
+          {{userProfile.username ? userProfile.username : userProfile.first_name}}
+        </span>
+      </span>
+      <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+    </div>
+  </div>
+  <nav class="mt-4 text-light d-flex justify-content-between">
+  <div>
+    <button (click)="changePage('home')" style="font-size: .8em;" class="btn btn-light">
+      For You
+      </button>
+      <button (click)="changePage('products')" style="font-size: .8em;" class="btn text-light">
+        For Sale
+        </button>
+      <button (click)="changePage('rent')" style="font-size: .8em;" class="btn text-light">
+        For Rent
+        </button>
+        <button (click)="changePage('services')" style="font-size: .8em;" class="btn text-light">
+          Hire a service
+          </button>
+  </div>
+  
+  <div class="btn-group">
+    <button class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fa-solid fa-circle-plus me-1"></i>
+      Post Item
+    </button>
+    <ul class="dropdown-menu">
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentListProductModal()"><i class="fa-solid fa-cart-plus me-1"></i> Sell Your Products</span></li>
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentRentItemsModal()"><i class="fa-solid fa-key me-1"></i>Rent Your Items</span></li>
+      <li><span style="cursor: pointer;" class="dropdown-item" (click)="presentListServicesModal()"><i class="fa-solid fa-briefcase me-1"></i> Post Your Service</span></li>
+    </ul>
+  </div>
+  
+  </nav>
+  </header>
+
+  <!-- Mobile header -->
+  <header class="p-2 pt-2 pb-1 d-block d-md-none">
+    <div class="d-flex justify-content-between mb-2">
+  <img src="../../../assets/images/logo_n.png" width="35" height="35" />
+  <div class="d-flex w-100 align-items-center text-light justify-content-end">
+    <button *ngIf="!isLoggedIn" (click)="toSignInPage()" class="btn text-light border" style="font-size: .8em;">
+      Sign in / Register
+    </button>
+    <!-- <i *ngIf="isLoggedIn" class="fa-solid fa-circle-user fa-2x"></i> -->
+    <img *ngIf="isLoggedIn" [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded-circle border" />
+    <ion-menu-button size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
+  </div>
+    </div>
+    <div class="d-flex justify-content-between gap-2 align-items-center">
+    <button (click)="searchI()" class="w-100 d-flex align-items-center gap-2 btn btn-light">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>
+        Search on niilano
+      </span>
+    </button>
+    <ion-icon (click)="toProducts()" size="large" class="text-light" name="filter-circle-outline"></ion-icon>
+  </div>
+  <div class="mt-1 d-flex gap-2 text-light align-items-center">
+    <i class="fa-solid fa-magnifying-glass-location"></i> 
+    <ion-select interface="action-sheet" aria-label="Regions" value="all" placeholder="Select region">
+      <ion-select-option value="all">All regions</ion-select-option>
+      <ion-select-option *ngFor="let region of regions" [value]="region">{{region}} Region</ion-select-option>
+    </ion-select>
+  </div>
+  </header>

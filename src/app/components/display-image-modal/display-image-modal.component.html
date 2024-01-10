@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()"> <ion-icon name="close"></ion-icon> </ion-button>
+    </ion-buttons>
+    <ion-title>Profile Image</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background:transparent;">
+  
+  <div class="text-center h-100 d-none d-sm-block">
+    <img [src]="imageUrl" class="h-100" >
+  </div>
+
+  <div class="text-center d-flex justify-content-center align-items-center h-100 d-block d-sm-none">
+    <img [src]="imageUrl" class="w-100" >
+  </div>
+
+</ion-content>

@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Edit Product
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="editProductForm" (ngSubmit)="makeChanges()">
+    <ion-item>
+      <ion-label position="floating">Product Name <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('name')?.errors?.['required']"> **This field is required.
+        </small> </ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label position="floating">Description <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('description')?.errors?.['required']"> **This field is
+          required. </small></ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label position="floating">Price(GH₵) <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('price')?.errors?.['required']"> **This field is required.
+        </small> </ion-label>
+      <ion-input type="number" formControlName="price"></ion-input>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label>Has discount?</ion-label>
+      <ion-checkbox [(ngModel)]="hasDiscount" [ngModelOptions]="{standalone: true}" (ionChange)="setDiscount()" style="--background:white; border: 1px solid;"></ion-checkbox>
+    </ion-item>
+
+    <ion-item class="mt-2" *ngIf="hasDiscount">
+      <ion-label position="floating">Discount Percentage</ion-label>
+      <ion-input type="number" formControlName="discount_percent"></ion-input>
+    </ion-item>
+
+
+    <!-- <input type="file" ng2FileSelect [uploader]="uploader"/> -->
+
+    <div class="container mt-3 overflow-hidden ">
+      <h3 class="text-dark">Main Image:</h3>
+      <ion-img class="w-100" [src]="imagePreview"></ion-img>
+      <input type="file" #fileInput (change)="onChangeMainImage($event)" hidden id="mainImage" />
+      <label for="mainImage" class="btn btn-success d-flex justify-content-center align-items-center w-100 mt-2">
+        <ion-icon class="me-2" name="shuffle-outline" size="medium"></ion-icon> Click to Change Main Image
+      </label>
+    </div>
+
+    <div class="container mt-3 overflow-hidden ">
+      <h3 class="text-dark">Other images of product:</h3>
+      <ion-row class="otherimages">
+        <ion-col class="otherImagesPreview" size="6" *ngFor="let images of imagesPreviewArray; let i = index;">
+          <ion-img class="w-100" [src]="images.url"></ion-img>
+          <ion-icon size="large" (click)="removeOtherImage(i,images)" class="otherImagesPreviewIcon rounded-circle" name="close"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <input type="file" #fileInput (change)="onChangeOtherImage($event)" hidden id="otherImage" />
+      <label for="otherImage" class="btn btn-warning d-flex justify-content-center align-items-center w-100 mt-2">
+        <ion-icon class="me-2" name="add"
+          size="medium"></ion-icon> Click to upload another image
+      </label>
+    </div>
+
+
+    <ion-item class="mt-2">
+      <ion-label position="floating">Quantity available <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('quantity')?.errors?.['required']"> **This field is
+          required. </small></ion-label>
+      <ion-input type="number" formControlName="quantity"></ion-input>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label position="floating">Location of Product <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('location')?.errors?.['required']"> **This field is
+          required. </small></ion-label>
+      <ion-input type="text" formControlName="location"></ion-input>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label>Is the product in any campus?</ion-label>
+      <ion-checkbox [(ngModel)]="campus" [ngModelOptions]="{standalone: true}" style="--background:white; border: 1px solid;" (ionChange)="setCampus()"></ion-checkbox>
+    </ion-item>
+
+    <ion-item class="mt-2" *ngIf="campus">
+      <ion-label position="floating">Which Campus?</ion-label>
+      <ion-input type="text" formControlName="Campus"></ion-input>
+    </ion-item>
+
+    <ion-item class="mt-2">
+      <ion-label position="floating">Category <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('category_id')?.errors?.['required']"> **This field is
+          required. </small></ion-label>
+      <ion-select (ionChange)="selectSubCategory()" *ngIf="categoriesAndSubcategories && categoriesAndSubcategories.length" interface="action-sheet" placeholder="Select Category" formControlName="category_id">
+        <ion-select-option *ngFor="let category of categoriesAndSubcategories" [value]="category.id">{{category.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="mt-2" *ngIf="subCategory">
+      <ion-label position="floating">Subcategory <small class="text-danger fw-bold"
+          *ngIf="submitted && editProductForm.get('subcategory_id')?.errors?.['required']"> **This field is
+          required. </small></ion-label>
+      <ion-select *ngIf="subCategory && subCategory.length" interface="action-sheet" formControlName="subcategory_id">
+        <ion-select-option *ngFor="let sub of subCategory" [value]="sub.id" >{{sub.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+    <div class="container my-3">
+      
+    <button class="btn d-block w-100 py-3 text-light mt-2 d-flex align-items-center justify-content-center "
+      style="background:#1a4640;">
+      Save Changes
+    </button>
+
+    </div>
+
+  </form>
+</ion-content>

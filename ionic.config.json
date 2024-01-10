@@ -1,0 +1,8 @@
+{
+  "name": "Niilano",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}
