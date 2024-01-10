@@ -221,7 +221,7 @@ export class AuthPage {
       GoogleAuth.initialize();
     }
 
-    this.presentTermsAndConditionsAlert()
+    // this.presentTermsAndConditionsAlert()
   }
 
   // Process to signup using google
