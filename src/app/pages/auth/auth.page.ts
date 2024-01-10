@@ -139,13 +139,13 @@ export class AuthPage {
 
     if (this.registerForm.invalid) {
       // console.log('invalid');
-      return;
+      // return;
     }
 
     const alert = await this.alertController.create({
       header: 'Terms of Service',
       message:
-        'By registering you agree to our <a id="termsLink" class="terms-link" >terms of service</a>.',
+        'By registering you agree to our terms of service.',
       buttons: [
         {
           text: 'Decline',
@@ -220,6 +220,8 @@ export class AuthPage {
     if (!isPlatform('capacitor')) {
       GoogleAuth.initialize();
     }
+
+    this.presentTermsAndConditionsAlert()
   }
 
   // Process to signup using google

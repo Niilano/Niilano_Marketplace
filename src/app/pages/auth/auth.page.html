@@ -15,17 +15,16 @@
     <div
     id="login"
     *ngIf="selectedTab==='login'"
-    class="d-flex align-items-center flex-column mt-md-3"
+    class="d-flex justify-content-center align-items-center h-100"
   >
-    <div class="authCon shadow border rounded mx-auto py-4 pt-2 overflow-hidden">
+    <div class="authCon px-md-5 px-3 rounded py-4 bg-light shadow">
 
-      <h5 class="m-0 mt-3 text-dark text-center">Welcome back 🌟</h5>
+      <h5 class="m-0 text-dark font-bolder">Welcome back 🌟</h5>
 
-      <div class="container">
         <form
           [formGroup]="loginForm"
           (ngSubmit)="login()"
-          class="mt-4 text-dark"
+          class="mt--md-3 mt-4 text-dark"
         >
           <div class="mb-4">
             <label for="email" class="form-label"
@@ -109,7 +108,7 @@
             Login
           </button>
           </div>
-          <div class="my-3 m text-center">
+          <div class="my-4 m text-center">
             <p style="font-size: .8em;" class="text-danger m-0 fw-bold">
               Not registered yet?
               <button
@@ -133,7 +132,6 @@
             </button>
           </div>
         </form>
-      </div>
     </div>
   </div>
 
@@ -142,23 +140,19 @@
    <div
    id="register"
    *ngIf="selectedTab==='register'"
-   class="d-flex align-items-center flex-column py-3"
+   class="d-flex justify-content-center align-items-center"
  >
 
-   <div class="authCon bg-light shadow rounded mx-auto py-4 pt-3">
-     <h5 class="text-dark font-bold border-dark text-center border-bottom pb-2 m-0">Get Started for free</h5>
-     <div class="container">
+   <div class="authConRegister px-md-5 px-3 rounded py-4">
+     <h5 class="text-dark font-bold m-0">Register</h5>
        <form
          [formGroup]="registerForm"
          (ngSubmit)="presentTermsAndConditionsAlert()"
-         class="text-dark mt-4"
+         class="text-dark mt-3"
        >
-         <div
-           class="animate__animated animate__bounceInLeft"
-           *ngIf="currentRegSection == 1"
-         >
-           <div class="row mb-4">
-             <div class="col-md-12">
+         
+           <div class="row g-4">
+             <div class="col-md-6">
                <label for="firstName" class="form-label">First Name </label>
                <input
                  type="text"
@@ -168,13 +162,13 @@
                  formControlName="first_name"
                />
                <small
-                 class="text-danger fw-bolder p-2"
+                 class="text-danger"
                  *ngIf="registerForm.get('first_name')?.touched && registerForm.get('first_name')?.hasError('required')"
                >
                  **Please enter your first name
                </small>
              </div>
-             <div class="col-md-12 mt-3">
+             <div class="col-md-6">
                <label for="lastName" class="form-label">Last Name </label>
                <input
                  type="text"
@@ -190,172 +184,139 @@
                  **Please enter your last name
                </small>
              </div>
-           </div>
 
-           <div
-             class="container mt-3 d-flex align-items-center justify-content-end"
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email address </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter your email address"
+                  formControlName="email"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')"
+              >
+                **Please enter your email
+              </small>
+  
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')"
+              >
+                **The email entered is not valid
+              </small>
+            </div>
+  
+            <div class="col-md-6">
+              <label for="mobile" class="form-label">Mobile Number </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-mobile"></i>
+                </span>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="mobile"
+                  placeholder="Enter your mobile number"
+                  formControlName="mobile"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('mobile')?.touched && registerForm.get('mobile')?.hasError('required')"
+              >
+                **Enter your mobile number
+              </small>
+            </div>
+
+            <div class="col-md-6">
+              <label for="password" class="form-label">Password </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input
+                  type="{{ showPassword ? 'text' : 'password' }}"
+                  class="form-control"
+                  id="password"
+                  placeholder="Create your password"
+                  formControlName="password"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
+              >
+                **Please enter your password
+              </small>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')"
+              >
+                **Password Length must at least be eight(8)
+              </small>
+            </div>
+            <div class="col-md-6">
+              <label for="confirmPassword" class="form-label"
+                >Confirm Password</label
+              >
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input
+                  type="{{ showPassword ? 'text' : 'password' }}"
+                  class="form-control"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
+                  formControlName="confirmPassword"
+                />
+              </div>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
+              >
+                **Please confirm your password
+              </small>
+              <small
+                class="text-danger fw-bolder p-2"
+                *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('passwordMismatch')"
+              >
+                **Passwords do not match
+              </small>
+            </div>
+
+            <div class="col-md-6">
+              <input
+                type="checkbox"
+                (change)="showPassword = !showPassword"
+                class="form-check-input"
+                id="showPassword"
+              />
+              <label class="form-check-label ms-1" for="showPassword"
+                >Show Password</label
+              >
+            </div>
+
+            <div
+             class="col-md-6"
            >
-             <button (click)="nextRegSection()" class="btn btn-dark">
-               Continue <i class="fa-solid fa-arrow-right ms-2"></i>
-             </button>
-           </div>
-         </div>
-
-         <div
-           class="animate__animated animate__bounceInRight"
-           *ngIf="currentRegSection == 2"
-         >
-           <div class="col-md-12">
-             <label for="email" class="form-label">Email address </label>
-             <div class="input-group">
-               <span class="input-group-text">
-                 <i class="fas fa-envelope"></i>
-               </span>
-               <input
-                 type="email"
-                 class="form-control"
-                 id="email"
-                 placeholder="Enter your email address"
-                 formControlName="email"
-               />
-             </div>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')"
-             >
-               **Please enter your email
-             </small>
-
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')"
-             >
-               **The email entered is not valid
-             </small>
-           </div>
-
-           <div class="col-md-12 mt-3">
-             <label for="mobile" class="form-label">Mobile Number </label>
-             <div class="input-group">
-               <span class="input-group-text">
-                 <i class="fas fa-mobile"></i>
-               </span>
-               <input
-                 type="number"
-                 class="form-control"
-                 id="mobile"
-                 placeholder="Enter your mobile number"
-                 formControlName="mobile"
-               />
-             </div>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('mobile')?.touched && registerForm.get('mobile')?.hasError('required')"
-             >
-               **Enter your mobile number
-             </small>
-           </div>
-
-           <div
-             class="container mt-3 d-flex align-items-center justify-content-between"
-           >
-             <button (click)="prevRegSection()" class="btn btn-secondary">
-               <i class="fa-solid fa-arrow-left me-2"></i> Back
-             </button>
-             <button (click)="nextRegSection()" class="btn btn-dark">
-               Continue <i class="fa-solid fa-arrow-right ms-2"></i>
-             </button>
-           </div>
-         </div>
-
-         <div
-           class="animate__animated animate__bounceInRight"
-           *ngIf="currentRegSection == 3"
-         >
-           <div class="col-md-12">
-             <label for="password" class="form-label">Password </label>
-             <div class="input-group">
-               <span class="input-group-text">
-                 <i class="fas fa-lock"></i>
-               </span>
-               <input
-                 type="{{ showPassword ? 'text' : 'password' }}"
-                 class="form-control"
-                 id="password"
-                 placeholder="Create your password"
-                 formControlName="password"
-               />
-             </div>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
-             >
-               **Please enter your password
-             </small>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')"
-             >
-               **Password Length must at least be eight(8)
-             </small>
-           </div>
-           <div class="col-md-12 mt-3">
-             <label for="confirmPassword" class="form-label"
-               >Confirm Password</label
-             >
-             <div class="input-group">
-               <span class="input-group-text">
-                 <i class="fas fa-lock"></i>
-               </span>
-               <input
-                 type="{{ showPassword ? 'text' : 'password' }}"
-                 class="form-control"
-                 id="confirmPassword"
-                 placeholder="Confirm your password"
-                 formControlName="confirmPassword"
-               />
-             </div>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
-             >
-               **Please confirm your password
-             </small>
-             <small
-               class="text-danger fw-bolder p-2"
-               *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('passwordMismatch')"
-             >
-               **Passwords do not match
-             </small>
-           </div>
-
-           <div class="mt-1">
-             <input
-               type="checkbox"
-               (change)="showPassword = !showPassword"
-               class="form-check-input"
-               id="showPassword"
-             />
-             <label class="form-check-label ms-1" for="showPassword"
-               >Show Password</label
-             >
-           </div>
-
-           <div
-             class="container mt-3 d-flex align-items-center justify-content-between"
-           >
-             <button (click)="prevRegSection()" class="btn btn-secondary">
-               <i class="fa-solid fa-arrow-left me-2"></i> Back
-             </button>
              <button
                type="submit"
-               class="btn text-light shadow-lg"
+               class="btn text-light shadow-lg w-100"
                style="background-color: #1a4640"
              >
                Register
              </button>
            </div>
-         </div>
+           </div>
 
          <div class="mt-4 d-flex align-items-center justify-content-center">
            <p class="m-0 me-2 text-dark">Already a user?</p>
@@ -378,7 +339,6 @@
            </button>
          </div>
        </form>
-     </div>
    </div>
 
  </div>

@@ -3,39 +3,61 @@ ion-content {
   --background: #f2f2f2;
 }
 
+// *{
+//   font-family: 'Inter Tight', monospace;
+// }
+
 .authCon {
-  width: 30%;
+  width: 35%;
+}
+
+.authConRegister{
+  width: 60%;
 }
 
 #login,
 #register {
-  height: 100%;
   justify-content: center;
 }
 
 @media screen and (max-width:1140px) {
   .authCon {
-    width: 40%;
+    width: 45%;
+  }
+
+  .authConRegister{
+    width: 75%;
   }
 }
 
 
 @media screen and (max-width:850px) {
   .authCon {
-    width: 45%;
+    width: 55%;
+  }
+
+  .authConRegister{
+    width: 80%;
   }
 }
 
 @media screen and (max-width:700px) {
   .authCon {
-    width: 50%;
+    width: 65%;
+  }
+  .authConRegister{
+    width: 90%;
   }
 }
 
 @media(max-width:600px) {
 
   .authCon {
-    width: 70%;
+    width: 75%;
+  }
+
+  .authConRegister{
+    width: 95%;
   }
 
 }
@@ -56,17 +78,10 @@ ion-content {
     // background-repeat: no-repeat;
     // background-blend-mode: difference;
     align-items: flex-start !important;
-    height: 100% !important;
   }
 
   #login {
     background-color: #f2f2f2 !important;
-    // background: linear-gradient(45deg, #1a46404d, transparent);
-    // background-image: url(../../../assets/images/gradient.png);
-    // background-size: contain;
-    // background-position: bottom;
-    // background-repeat: no-repeat;
-    // background-blend-mode: difference;
     align-items: flex-start !important;
     height: 100% !important;
   }
@@ -74,9 +89,13 @@ ion-content {
   .authCon {
     width: 100%;
     background-color: transparent !important;
-    height: 100% !important;
+    // height: 100% !important;
     border: none !important;
     box-shadow: none !important;
+  }
+
+  .authConRegister{
+    width: 100%;
   }
 }
 
