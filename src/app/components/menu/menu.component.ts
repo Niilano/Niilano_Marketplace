@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { MenuController, ModalController, Platform } from '@ionic/angular';
+import { ActionSheetController, MenuController, ModalController, Platform } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { SaveditemsService } from 'src/app/services/saveditems.service';
 import { getUserProducts } from 'src/app/store/userProducts/userproducts.actions';
 import { AppState } from 'src/app/types/AppState';
 import { SupportComponent } from '../support/support.component';
 import { SettingsComponent } from '../settings/settings.component';
+import { startLoading } from 'src/app/store/loading/loading.action';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -17,7 +19,7 @@ export class MenuComponent implements OnInit {
 
   isIOS:boolean
 
-  constructor(private modalCtrl: ModalController,private router: Router, private menuController: MenuController, private store: Store<AppState>,private savedItemsService:SaveditemsService,private platform: Platform) { 
+  constructor(private modalCtrl: ModalController,private router: Router, private menuController: MenuController, private store: Store<AppState>,private savedItemsService:SaveditemsService,private platform: Platform,private actionSheetController:ActionSheetController,private authService:AuthService) { 
     this.isIOS = this.platform.is('ios');
   }
 
@@ -41,6 +43,35 @@ export class MenuComponent implements OnInit {
       showBackdrop: true,
     });
     return await modal.present();
+  }
+
+  async logout(){
+  
+
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Confirm Log out',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        icon: 'close',
+        handler: () => {
+          // do nothing
+        }
+      }, {
+        text: 'Confirm',
+        icon: 'log-out-outline',
+        role: 'destructive',
+        handler: () => {
+
+          this.store.dispatch(startLoading())
+
+          this.authService.logout()
+
+        }
+      }]
+    });
+    await actionSheet.present();
+
   }
 
   user: any

@@ -127,6 +127,24 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  modifyImageUrl(url: string): string {
+    // Transform the URL to HTTPS if it's a Cloudinary URL and not already HTTPS
+    if (url.startsWith('http:')) {
+     url = 'https://' + url.substr(7); // Replaces 'http://' with 'https://'
+   }
+
+   // Split the URL at 'upload/'
+   let parts = url.split('upload/');
+
+   if (parts.length === 2) {
+     // Add 'w_500' between the two parts and create the new URL
+     let newImageUrl = parts[0] + 'upload/w_500/' + parts[1];
+     return newImageUrl; // The modified URL with 'w_500'
+   }
+
+   return url;
+}
+
   constructor(
     private router: Router,
     private navCtrl: NavController,

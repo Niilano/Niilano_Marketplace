@@ -79,7 +79,7 @@
       Sign in / Register
     </button>
     <!-- <i *ngIf="isLoggedIn" class="fa-solid fa-circle-user fa-2x"></i> -->
-    <img (click)="redirect('profile')" *ngIf="isLoggedIn" [src]="userProfile?.user_profile?.url" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded-circle border" />
+    <img (click)="redirect('profile')" *ngIf="isLoggedIn" [src]="modifyImageUrl(userProfile?.user_profile?.url)" width="60" style="height: 40px; width: 40px; object-fit: cover; " class="rounded-circle border" />
     <ion-menu-button mode="md" size="medium" style="color: #f2f2f2;--padding-start:0;--padding-end:0;"></ion-menu-button>
   </div>
     </div>

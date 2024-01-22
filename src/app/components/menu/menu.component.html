@@ -81,5 +81,10 @@
       <ion-icon slot="start" name="help"></ion-icon>
       Support & help
     </ion-item>
+
+    <ion-item *ngIf="user" button (click)="logout()" lines="none">
+      <ion-icon slot="start" color="success" name="log-out-outline"></ion-icon>
+      <ion-label>Logout</ion-label>
+    </ion-item>
     
 </ion-content>
