@@ -6,13 +6,14 @@
     </div>
     <div style="width: 50%;">
       <div class="d-flex justify-content-between gap-2 align-items-center">
-        <div class="d-flex gap-2 text-light align-items-center">
-          <i class="fa-solid fa-magnifying-glass-location"></i> 
-          <ion-select aria-label="Regions" value="all" placeholder="Select region">
-            <ion-select-option value="all">All regions</ion-select-option>
-            <ion-select-option value="ashanti">Ashanti</ion-select-option>
-            <ion-select-option value="accra">Greater Accra</ion-select-option>
-          </ion-select>
+        <div class="btn-group">
+          <button class="btn text-light font-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-magnifying-glass-location me-1"></i>
+            All regions
+          </button>
+          <ul class="dropdown-menu">
+            <li *ngFor="let region of regions"><span style="cursor: pointer;" class="dropdown-item"> {{region}} region </span></li>
+          </ul>
         </div>
         <button (click)="searchI()" style="font-size: .8em; height: max-content;" class="w-100 d-flex align-items-center gap-2 btn btn-light">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -20,8 +21,8 @@
             Search on niilano
           </span>
         </button>
-        <!-- <ion-icon size="large" class="text-light" name="filter-circle-outline"></ion-icon> -->
       </div>
+
     </div>
     <div class="d-flex gap-2 align-items-center">
       <button *ngIf="!isLoggedIn" (click)="toSignInPage()" style="font-size: .8em; height: max-content;" class="btn btn-light d-flex gap-2 justify-content-center align-items-center">
@@ -92,10 +93,14 @@
     <ion-icon (click)="toProducts()" size="large" class="text-light" name="filter-circle-outline"></ion-icon>
   </div>
   <div class="mt-1 d-flex gap-2 text-light align-items-center">
-    <i class="fa-solid fa-magnifying-glass-location"></i> 
-    <ion-select interface="action-sheet" aria-label="Regions" value="all" placeholder="Select region">
-      <ion-select-option value="all">All regions</ion-select-option>
-      <ion-select-option *ngFor="let region of regions" [value]="region">{{region}} Region</ion-select-option>
-    </ion-select>
+    <div class="btn-group">
+      <button class="btn text-light font-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-magnifying-glass-location me-1"></i>
+        All regions
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let region of regions"><span style="cursor: pointer;" class="dropdown-item"> {{region}} region </span></li>
+      </ul>
+    </div>
   </div>
   </header>

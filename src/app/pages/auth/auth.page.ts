@@ -99,9 +99,9 @@ export class AuthPage {
 
   registerForm: FormGroup = new FormGroup({
     first_name: new FormControl('', [Validators.required]),
-    last_name: new FormControl('', [Validators.required]),
+    // last_name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    mobile: new FormControl('', [Validators.required]),
+    // mobile: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),

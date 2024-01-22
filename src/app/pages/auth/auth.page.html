@@ -140,15 +140,15 @@
    <div
    id="register"
    *ngIf="selectedTab==='register'"
-   class="d-flex justify-content-center align-items-center"
+   class="d-flex justify-content-center align-items-center h-100"
  >
 
-   <div class="authConRegister px-md-5 px-3 rounded py-4">
+   <div class="authConRegister bg-light shadow px-md-5 px-3 rounded py-4">
      <h3 class="text-dark font-bolder m-0">Register</h3>
        <form
          [formGroup]="registerForm"
          (ngSubmit)="presentTermsAndConditionsAlert()"
-         class="text-dark mt-3"
+         class="text-dark mt-4"
        >
          
            <div class="row g-4">
@@ -168,7 +168,7 @@
                  **Please enter your first name
                </small>
              </div>
-             <div class="col-md-6">
+             <!-- <div class="col-md-6">
                <label for="lastName" class="form-label">Last Name </label>
                <input
                  type="text"
@@ -183,7 +183,7 @@
                >
                  **Please enter your last name
                </small>
-             </div>
+             </div> -->
 
             <div class="col-md-6">
               <label for="email" class="form-label">Email address </label>
@@ -214,7 +214,7 @@
               </small>
             </div>
   
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <label for="mobile" class="form-label">Mobile Number </label>
               <div class="input-group">
                 <span class="input-group-text">
@@ -234,7 +234,7 @@
               >
                 **Enter your mobile number
               </small>
-            </div>
+            </div> -->
 
             <div class="col-md-6">
               <label for="password" class="form-label">Password </label>
