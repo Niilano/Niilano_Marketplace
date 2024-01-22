@@ -29,6 +29,8 @@ export class EditProfileComponent implements OnInit {
 
   save() {
 
+    this.dismissModal()
+
     this.store.dispatch(startLoading())
 
     // code to save the changes to the user object
@@ -89,7 +91,7 @@ export class EditProfileComponent implements OnInit {
   ngOnInit() {
     this.user = this.navParams.get('user')
 
-    this.username = this.user.username
+    this.username = this.user.username ? this.user.username : `user_0${this.user.id}`
     this.first_name = this.user.first_name
     this.last_name = this.user.last_name
     this.phone_number = this.user.phone_number

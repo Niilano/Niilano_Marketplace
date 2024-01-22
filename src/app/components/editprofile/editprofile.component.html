@@ -10,32 +10,31 @@
 
 <ion-content class="ion-padding">
 
-  <ion-item>
+  <ion-item counter="true">
     <ion-label position="floating">Username</ion-label>
-    <ion-input [(ngModel)]="username"></ion-input>
+    <ion-input [(ngModel)]="username" type="text" maxlength="15"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item counter="true">
     <ion-label position="floating">First Name</ion-label>
-    <ion-input [(ngModel)]="first_name"></ion-input>
+    <ion-input [(ngModel)]="first_name" type="text" maxlength="15"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item counter="true">
     <ion-label position="floating">Last Name</ion-label>
-    <ion-input [(ngModel)]="last_name"></ion-input>
+    <ion-input [(ngModel)]="last_name" type="text" maxlength="15"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item counter="true">
     <ion-label position="floating">Phone Number</ion-label>
-    <ion-input [(ngModel)]="phone_number"></ion-input>
+    <ion-input type="tel" [(ngModel)]="phone_number" maxlength="10"></ion-input>
   </ion-item>
 
-  <ion-item lines="none" class="mt-3 rounded w-100">
-    <ion-label position="floating">Bio (A brief intro about your brand)</ion-label>
-    <ion-textarea [autoGrow]="true" [(ngModel)]="bio" maxlength="300" placeholder="Tell your customers about your brand..." >
+  <ion-item counter="true" lines="none" class="mt-3 rounded w-100">
+    <ion-textarea label="Bio (A brief intro about your brand)" labelPlacement="stacked" [autoGrow]="true" [(ngModel)]="bio" maxlength="300" placeholder="Tell your customers about your brand..." >
     </ion-textarea>
   </ion-item>
 
-  <p class="text-end mt-2" style="color:#000;" > {{ bio.length }}/300 </p>
+  <!-- <p class="text-end mt-2" style="color:#000;" > {{ bio.length }}/300 </p> -->
 
 </ion-content>
