@@ -86,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   async setStatusBar() {
     await StatusBar.setBackgroundColor({ color: '#1A4640' });
     await StatusBar.setStyle({ style: Style.Dark });
-    await NavigationBar.setColor({ color: 'black', darkButtons: false });
+    await NavigationBar.setColor({ color: '#000000FF', darkButtons: false });
   }
 
   async presentWelcomeModal() {

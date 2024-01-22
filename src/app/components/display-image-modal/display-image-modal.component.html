@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()"> <ion-icon name="close"></ion-icon> </ion-button>
+      <ion-button (click)="dismiss()"> <ion-icon size="medium" name="close"></ion-icon> </ion-button>
     </ion-buttons>
-    <ion-title>Profile Image</ion-title>
+    <ion-title class="fs-6">Profile Image</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="--background:transparent;">
+<ion-content class="ion-padding" style="--background:#f2f2f2;">
   
   <div class="text-center h-100 d-none d-sm-block">
     <img [src]="imageUrl" class="h-100" >

@@ -252,7 +252,7 @@ export class ProfilePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: EditProfileComponent,
       showBackdrop: true,
-      initialBreakpoint: 0.72,
+      initialBreakpoint: 1,
       componentProps: { "user": this.user }
     });
     await modal.present();
