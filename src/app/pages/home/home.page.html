@@ -148,7 +148,7 @@
           loop="true"
           autoplay-delay="4000"
         >
-          <swiper-slide *ngFor="let cat of productCategories">
+          <swiper-slide *ngFor="let cat of productCategories" (click)="navigateProductsCategories(cat.id)">
             <div class="overflow-hidden h-100" style="position: relative">
               <div class="p-2" style="position: relative; z-index: 2">
                 <p style="font-size: 0.9em" class="font-bold">{{cat.name}}</p>
