@@ -7,6 +7,8 @@ import { take } from 'rxjs';
 import { BalanceComponent } from 'src/app/components/balance/balance.component';
 import { DisplayImageModalComponent } from 'src/app/components/display-image-modal/display-image-modal.component';
 import { EditProfileComponent } from 'src/app/components/editprofile/editprofile.component';
+import { SettingsComponent } from 'src/app/components/settings/settings.component';
+import { SupportComponent } from 'src/app/components/support/support.component';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserprofileService } from 'src/app/services/userprofile/userprofile.service';
 import { checkLogin } from 'src/app/store/checkLogin/checklogin.actions';
@@ -320,6 +322,24 @@ export class ProfilePage implements OnInit {
       }
     )
 
+  }
+
+  async openSettingsModal(){
+    
+    const modal = await this.modalCtrl.create({
+      component: SettingsComponent,
+      showBackdrop: true,
+    });
+    return await modal.present();
+  }
+
+  async openSupportModal(){
+    
+    const modal = await this.modalCtrl.create({
+      component: SupportComponent,
+      showBackdrop: true,
+    });
+    return await modal.present();
   }
 
   handleRefresh(event:any) {

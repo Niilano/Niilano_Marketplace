@@ -147,8 +147,9 @@
           space-between="5"
           loop="true"
           autoplay-delay="4000"
+          [pauseOnMouseEnter]="true"
         >
-          <swiper-slide *ngFor="let cat of productCategories" (click)="navigateProductsCategories(cat.id)">
+          <swiper-slide *ngFor="let cat of productCategories" (click)="navigateProductsCategories(cat.id)" lazy="true">
             <div class="overflow-hidden h-100" style="position: relative">
               <div class="p-2" style="position: relative; z-index: 2">
                 <p style="font-size: 0.9em" class="font-bold">{{cat.name}}</p>
@@ -185,6 +186,7 @@
                   z-index: 0;
                 "
                 [src]="modifyImageUrl(cat?.image?.url)"
+                loading="lazy"
               />
             </div>
           </swiper-slide>
@@ -262,12 +264,14 @@
               [routerLink]="['/product-details']"
               [queryParams]="{ product: product.id }"
               class="h-100 pb-2"
+              lazy="true"
             >
               <div class="rounded shadow overflow-hidden">
                 <div>
                   <img
                     class="pImages"
                     [src]="modifyImageUrl(product?.image?.url)"
+                    loading="lazy"
                   />
                 </div>
                 <div class="p-2">
@@ -370,6 +374,7 @@
               [routerLink]="['/product-details']"
               [queryParams]="{ product: product.id }"
               class="h-100 pb-2"
+              lazy="true"
             >
               <div class="rounded shadow overflow-hidden">
                 <div
@@ -379,6 +384,7 @@
                   <img
                     class="pImages"
                     [src]="modifyImageUrl(product?.image?.url)"
+                    loading="lazy"
                   />
                   <div
                     style="
@@ -626,12 +632,14 @@
               [routerLink]="['/rent-items-details']"
               [queryParams]="{ item: 'house', id: house.id }"
               class="h-100 pb-2"
+              lazy="true"
             >
               <div class="rounded shadow overflow-hidden">
                 <div>
                   <img
                     class="pImages"
                     [src]="modifyImageUrl(house.bedroomImage?.imageUrl)"
+                    loading="lazy"
                   />
                 </div>
                 <div class="p-2">
@@ -858,12 +866,14 @@
               [routerLink]="['/rent-items-details']"
               [queryParams]="{ item: 'vehicle', id: vehicle.id }"
               class="h-100 pb-2"
+              lazy="true"
             >
               <div class="rounded shadow overflow-hidden">
                 <div>
                   <img
                     class="pImages"
                     [src]="modifyImageUrl(vehicle.frontImage?.imageUrl)"
+                    loading="lazy"
                   />
                 </div>
                 <div class="p-2">

@@ -10,6 +10,8 @@ import { ProfilePage } from './profile.page';
 import { BalanceModule } from 'src/app/components/balance/balance.component.module';
 import { EditProfileModule } from 'src/app/components/editprofile/editprofile.component.module';
 import { DisplayImageModalModule } from 'src/app/components/display-image-modal/display-image.component.module';
+import { SettingsModule } from 'src/app/components/settings/settings.module';
+import { SupportModule } from 'src/app/components/support/support.module';
 
 @NgModule({
   imports: [
@@ -19,7 +21,9 @@ import { DisplayImageModalModule } from 'src/app/components/display-image-modal/
     ProfilePageRoutingModule,
     BalanceModule,
     EditProfileModule,
-    DisplayImageModalModule
+    DisplayImageModalModule,
+    SettingsModule,
+    SupportModule
   ],
   declarations: [ProfilePage]
 })

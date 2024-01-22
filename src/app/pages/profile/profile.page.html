@@ -19,43 +19,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
 
   <ion-refresher style="background: #f2f2f2; height: 70px; z-index: 99;" class="py-2" slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
 
-  <!-- <div class="cover-image">
-    <div class="h-100 overflow-hidden">
-      <img [src]="coverImageUrl" />
-
-      <ion-icon style="position: absolute; bottom: 10%; right: 5%; color: #000; " size="large" name="camera"></ion-icon>
-    </div>
-    <div class="profile-info">
-      <ion-avatar>
-        <img *ngIf="user" style="cursor:pointer;" (click)="onProfileImageClick()" [src]="modifyImageUrl(user.user_profile.url)" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" referrerpolicy="no-referrer" />
-        <ion-icon (click)="onProfileImageClick()" style="position: absolute; bottom: 10%; right: 2%; color: #f2f2f2; "
-          size="large" name="camera"></ion-icon>
-      </ion-avatar>
-    </div>
-
-    <ion-buttons class="rounded-circle" slot="start">
-      <ion-back-button mode="md" defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-
-  </div> -->
-
-  <!-- <div class="profile-info">
-    <ion-avatar>
-      <img *ngIf="user" style="cursor:pointer;" (click)="onProfileImageClick()" [src]="modifyImageUrl(user.user_profile.url)" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" referrerpolicy="no-referrer" />
-      <ion-icon (click)="onProfileImageClick()" style="position: absolute; bottom: 10%; right: 2%; color: #f2f2f2; "
-        size="large" name="camera"></ion-icon>
-    </ion-avatar>
-  </div> -->
-
   <input type="file" hidden id="changeProfileImage" (change)="onChangeProfileImage($event)">
 
-  <ion-row class="mt-4 px-2">
+  <ion-row class="mt-sm-4 mt-2 px-2">
 
     <ion-col size="12" class="ion-text-center mb-2" size-md="6">
 
@@ -63,7 +35,7 @@
         <div class="profile-pic-container">
           <ion-avatar style="position: relative;">
             <img *ngIf="user" style="cursor:pointer;" (click)="onProfileImageClick()" [src]="modifyImageUrl(user.user_profile.url)" onerror="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'" referrerpolicy="no-referrer" />
-            <ion-icon (click)="onProfileImageClick()" style="position: absolute; bottom: 0%; right: -10%; color: #cbffad; cursor: pointer; "
+            <ion-icon (click)="onProfileImageClick()" style="position: absolute; bottom: -13%; right: -18%; color: #059b00; cursor: pointer; "
               size="large" name="camera"></ion-icon>
           </ion-avatar>
         </div>
@@ -126,19 +98,24 @@
           <ion-label>Saved Items</ion-label>
         </ion-item>
 
-        <ion-item routerLink="/my-products" lines="full" button detail="true" detail-icon="caret-forward-outline">
+        <ion-item (click)="openSettingsModal()" lines="full" button detail="true" detail-icon="caret-forward-outline">
           <ion-icon slot="start" color="success" name="settings-outline"></ion-icon>
           <ion-label>Settings</ion-label>
         </ion-item>
 
-        <ion-item routerLink="/my-products" lines="full" button detail="true" detail-icon="caret-forward-outline">
+        <ion-item (click)="openSupportModal()" lines="full" button detail="true" detail-icon="caret-forward-outline">
           <ion-icon slot="start" color="success" name="help-circle-outline"></ion-icon>
           <ion-label>Support & help</ion-label>
         </ion-item>
 
-        <ion-item routerLink="/my-orders" lines="none" button detail="true" detail-icon="caret-forward-outline">
+        <ion-item routerLink="/my-orders" lines="full" button detail="true" detail-icon="caret-forward-outline">
           <ion-icon slot="start" color="success" name="notifications-circle-outline"></ion-icon>
           <ion-label>Notifications</ion-label>
+        </ion-item>
+
+        <ion-item (click)="logout()" button lines="none">
+          <ion-icon slot="start" color="success" name="log-out-outline"></ion-icon>
+          <ion-label>Logout</ion-label>
         </ion-item>
 
       <!-- <ion-list>
