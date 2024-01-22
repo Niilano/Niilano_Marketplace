@@ -136,7 +136,8 @@ export class AppComponent implements OnInit, OnDestroy {
           event['url'].startsWith('/service-detail') ||
           event['url'].startsWith('/list') ||
           event['url'] === '/my-products' ||
-          event['url'].startsWith('/profile')
+          event['url'].startsWith('/profile') ||
+          event['url'].startsWith('/@')
         ) {
           this.showTabs = false; // <-- hide tabs on specific pages
           // const element = this.myElement.nativeElement as HTMLElement;

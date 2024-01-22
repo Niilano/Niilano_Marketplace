@@ -372,12 +372,12 @@
                     style="font-size: 0.7em"
                     class="m-0 text-decoration-line-through"
                   >
-                    GH₵{{calculateDiscountedPrice(product.price,product.discount_percent).toLocaleString('en-US',
-                    { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                  GH₵{{product.price!.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
                   </p>
                   <p style="font-size: 0.8em" class="m-0">
-                    GH₵{{product.price!.toLocaleString('en-US', {
-                    minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                    GH₵{{calculateDiscountedPrice(product.price,product.discount_percent).toLocaleString('en-US',
+                    { minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
                   </p>
                   <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
                     <i class="fa-solid fa-location-dot me-1"></i>

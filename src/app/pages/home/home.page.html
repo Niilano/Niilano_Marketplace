@@ -149,7 +149,7 @@
           autoplay-delay="4000"
           [pauseOnMouseEnter]="true"
         >
-          <swiper-slide *ngFor="let cat of productCategories" (click)="navigateProductsCategories(cat.id)" lazy="true">
+          <swiper-slide *ngFor="let cat of productCategories" (click)="navigateProductsCategories(cat.id)">
             <div class="overflow-hidden h-100" style="position: relative">
               <div class="p-2" style="position: relative; z-index: 2">
                 <p style="font-size: 0.9em" class="font-bold">{{cat.name}}</p>
@@ -186,7 +186,6 @@
                   z-index: 0;
                 "
                 [src]="modifyImageUrl(cat?.image?.url)"
-                loading="lazy"
               />
             </div>
           </swiper-slide>

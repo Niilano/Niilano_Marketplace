@@ -19,7 +19,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="--padding-top: 0px">
+<ion-content>
   <ion-refresher
     style="background: #f2f2f2; height: 70px; z-index: 99"
     class="py-2"
@@ -54,7 +54,7 @@
   <ion-row class="m-0 p-0">
     <ion-col class="m-0 p-0" size="12" size-md="6">
       <ion-row class="m-0 p-0 overflow-hidden product-images">
-        <ion-col class="h-100 product-image-col" size="10">
+        <ion-col class="h-100 product-image-col ps-0 pt-0" size="10">
           <ion-img
             class="main h-100 rounded-5"
             [src]="modifyImageUrl(selectedMainImage)"
@@ -62,9 +62,9 @@
         </ion-col>
 
         <ion-col size="2" class="h-100 p-0" style="overflow: hidden">
-          <div class="h-100 products-thumb" style="overflow-y: scroll">
+          <div class="h-100 products-thumb d-flex flex-column gap-2" style="overflow-y: scroll">
             <ion-img
-              class="w-100 mt-2 rounded-3"
+              class="w-100 rounded-3"
               [src]="modifyImageUrl(image.url)"
               style="cursor: pointer"
               (click)="changeMainImage(image)"
@@ -78,7 +78,7 @@
     <ion-col
       size="12"
       size-md="6"
-      class="d-flex justify-content-between flex-column"
+      class="d-flex justify-content-between flex-column px-2"
     >
       <div>
         <ion-item class="ion-no-padding">
@@ -170,7 +170,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row>
+  <ion-row class="px-2">
     <ion-col size="12" size-md="6">
       <div class="call-buttons mb-3 row">
         <div class="col-md-6 mt-3">
@@ -209,8 +209,9 @@
         </div>
       </div>
     </ion-col>
-    <ion-col size="12" size-md="6">
-      <ion-item lines="none">
+
+    <ion-col size="12" class="p-0" size-md="6">
+      <ion-item class="ion-no-padding" lines="none">
         <ion-icon
           size="large"
           color="danger"
@@ -222,7 +223,7 @@
           <p>{{product.location}}</p>
         </ion-label>
       </ion-item>
-      <ion-item lines="none">
+      <ion-item class="ion-no-padding" lines="none">
         <ion-icon
           size="large"
           color="danger"
@@ -252,13 +253,13 @@
     </ion-col>
   </ion-row>
 
-  <div class="rounded mt-2">
+  <div class="rounded mt-2 px-2">
     <ion-row>
       <ion-col size="12" size-md="6">
         <h3 class="fw-bolder m-0 text-dark">Listed By:</h3>
         <ion-item detail="false" button lines="none" class="ion-no-padding m-0">
           <ion-avatar
-            [routerLink]="['/@', product.user?.username]"
+            [routerLink]="['/@', product.user?.username ? product.user?.username : 'user_0'+product.user?.id ]"
             slot="start"
           >
             <img
@@ -267,8 +268,8 @@
             />
           </ion-avatar>
 
-          <ion-label [routerLink]="['/@', product.user?.username]">
-            <h3>{{product.user?.username}}</h3>
+          <ion-label [routerLink]="['/@', product.user?.username ? product.user?.username : 'user_0'+product.user?.id ]">
+            <h3>{{product.user?.username ? product.user?.username : 'user_0'+product.user?.id}}</h3>
             <p>
               {{product.user?.following.length}} following |
               {{product.user?.followers.length}} followers
@@ -530,7 +531,7 @@
     class="my-3"
     *ngIf="relatedProducts.length > 0"
   >
-    <h5 class="text-dark border-bottom">
+    <h5 class="text-dark border-bottom ps-2">
       Other Products by this Seller
     </h5>
 
@@ -616,7 +617,7 @@
   </div>
 
   <div *ngIf="similarProducts.length > 0">
-    <h5 class="border-bottom text-dark">Similar Products</h5>
+    <h5 class="border-bottom text-dark ps-2">Similar Products</h5>
     <ion-row class="products">
       <!-- <app-loading></app-loading> -->
   

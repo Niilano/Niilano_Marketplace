@@ -32,6 +32,33 @@ export class UserPage implements OnInit {
 
   }
 
+  // Method to calculate the discounted price
+  calculateDiscountedPrice(price: string, discountPercentage: string): number {
+    const originalPrice = parseFloat(price);
+    const discount = parseFloat(discountPercentage);
+    const discountAmount = (discount / 100) * originalPrice;
+    const discountedPrice = originalPrice - discountAmount;
+    return discountedPrice;
+  }
+
+  modifyImageUrl(url: string): string {
+    // Transform the URL to HTTPS if it's a Cloudinary URL and not already HTTPS
+    if (url.startsWith('http:')) {
+     url = 'https://' + url.substr(7); // Replaces 'http://' with 'https://'
+   }
+
+   // Split the URL at 'upload/'
+   let parts = url.split('upload/');
+
+   if (parts.length === 2) {
+     // Add 'w_500' between the two parts and create the new URL
+     let newImageUrl = parts[0] + 'upload/w_500/' + parts[1];
+     return newImageUrl; // The modified URL with 'w_500'
+   }
+
+   return url;
+}
+
   viewedUserProfile(username:any){
     this.http.get(`${environment.server}/users/public_profile/${username}`)
     .pipe(take(1))
@@ -47,7 +74,7 @@ export class UserPage implements OnInit {
 
         this.titleService.setTitle(`${this.user.username} - ${this.user.first_name} ${this.user.last_name}`);
 
-        this.metaService.updateTag({ property: 'og:title', content: `${this.user.username} - ${this.user.first_name} ${this.user.last_name}` });
+        this.metaService.updateTag({ property: 'og:title', content: `${this.user.username ? this.user.username : 'user_0'+this.user.id} - ${this.user.first_name} ${this.user.last_name}` });
         this.metaService.updateTag({ name: 'twitter:title', content: `${this.user.sername} - ${this.user.first_name} ${this.user.last_name}` });
         this.metaService.updateTag({ property: 'og:description', content: this.user.bio });
         this.metaService.updateTag({ name: 'twitter:description', content: this.user.bio });
