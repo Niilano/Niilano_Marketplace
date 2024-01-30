@@ -587,6 +587,13 @@ export class ProductDetailsPage {
   chatSellerMessageContent: string = '';
 
   chatSeller() {
+
+    if (!this.currentUserId) {
+      this.presentLoginAlert();
+
+      return;
+    }
+
     if (!this.chatSellerMessageContent) {
       this.toastController
         .create({
@@ -652,8 +659,22 @@ export class ProductDetailsPage {
     const encodedMessage = `${productInfo} ${this.chatSellerMessageContent}`;
     const whatsappLink = `whatsapp://send?phone=${`${whatsappNumber}`}&text=${encodedMessage}`;
 
+    // log message
+    // get product id and user id
+    const messageDetails = {
+      productId: this.product.id,
+      sellerId: this.product.id,
+      to: this.product.id,
+      content : this.chatSellerMessageContent
+    };
+
+    this.http
+      .post(`${environment.server}/messaging/send`, messageDetails)
+      .subscribe((res) => {});
+
     // Open the link
     window.open(whatsappLink, '_blank');
+
   }
 
   ionViewDidEnter() {
