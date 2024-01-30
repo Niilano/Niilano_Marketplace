@@ -17,12 +17,16 @@ import { CommonModule } from '@angular/common';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { MenuModule } from './components/menu/menu.component.module';
 import { MenuController } from '@ionic/angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
-  declarations: [AppComponent,],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }), IonicModule.forRoot(), AppRoutingModule, CommonModule, ...AppStoreModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    IonicModule.forRoot({ innerHTMLTemplatesEnabled: true }),
+    AppRoutingModule,
+    CommonModule,
+    ...AppStoreModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -33,14 +37,18 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
     LoadingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MenuModule
+    MenuModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true
-  },MenuController],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+    MenuController,
+  ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}

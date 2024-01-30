@@ -144,7 +144,7 @@ export class AuthPage {
     const alert = await this.alertController.create({
       header: 'Terms of Service',
       message:
-        'By registering you agree to our terms of service.',
+        'By registering you agree to our <a id="termsLink" class="terms-link" >terms of service</a>.',
       buttons: [
         {
           text: 'Decline',
