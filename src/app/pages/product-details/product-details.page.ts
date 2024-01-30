@@ -72,7 +72,7 @@ export class ProductDetailsPage {
           handler: () => {
             this.router.navigateByUrl('auth?page=register');
           },
-        }
+        },
       ],
     });
 
@@ -80,16 +80,13 @@ export class ProductDetailsPage {
   }
 
   async handleCall(phoneNumber: any) {
-
     if (!this.currentUserId) {
-      
-      this.presentLoginAlert()
+      this.presentLoginAlert();
 
       return;
     }
 
     if (phoneNumber) {
-
       let phoneNumberStr = phoneNumber.toString().replace(/\D/g, ''); // Remove non-numeric characters
 
       if (phoneNumberStr.length === 9 && !phoneNumberStr.startsWith('0')) {
@@ -114,6 +111,16 @@ export class ProductDetailsPage {
             text: 'Call',
             handler: () => {
               window.location.href = `tel:${phoneNumberStr}`;
+              // log call
+              // get product id and user id
+              const callDetails = {
+                productId: this.product.id,
+                sellerId: this.product.id,
+              };
+
+              this.http
+                .post(`${environment.server}/callback/call`, callDetails)
+                .subscribe((res) => {});
             },
           },
         ],
@@ -123,7 +130,7 @@ export class ProductDetailsPage {
     } else {
       this.toastController
         .create({
-          message: "Sorry, seller contact not available",
+          message: 'Sorry, seller contact not available',
           duration: 1000,
           color: 'danger',
           position: 'top',
@@ -136,8 +143,7 @@ export class ProductDetailsPage {
 
   async handleRequestCallback() {
     if (!this.currentUserId) {
-      
-      this.presentLoginAlert()
+      this.presentLoginAlert();
 
       return;
     }
@@ -169,16 +175,15 @@ export class ProductDetailsPage {
 
             let requestData;
 
-
             requestData = {
               listingId: this.product.id,
               userRequestingName: data.name,
-              userRequestingPhone: data.phoneNumber
+              userRequestingPhone: data.phoneNumber,
             };
 
             this.http
               .post<{ msg: string }>(
-                `${environment.server}/products/requestCallback`,
+                `${environment.server}/callback/requestCallback`,
                 requestData
               )
               .subscribe(
@@ -233,11 +238,9 @@ export class ProductDetailsPage {
     // this.store.dispatch(startLoading());
 
     if (!this.isLiked) {
-      this.isLiked = true
-      this.likes = this.likes + 1
-      let likeEffect = document.getElementById(
-        'likeEffect'
-      ) as HTMLElement;
+      this.isLiked = true;
+      this.likes = this.likes + 1;
+      let likeEffect = document.getElementById('likeEffect') as HTMLElement;
 
       likeEffect.classList.remove('d-none');
       likeEffect.classList.add('d-flex');
@@ -247,8 +250,8 @@ export class ProductDetailsPage {
         likeEffect.classList.add('d-none');
       }, 1000);
     } else {
-      this.isLiked = false
-      this.likes = this.likes - 1
+      this.isLiked = false;
+      this.likes = this.likes - 1;
     }
 
     this.http
@@ -265,14 +268,11 @@ export class ProductDetailsPage {
             // let likeEffect = document.getElementById(
             //   'likeEffect'
             // ) as HTMLElement;
-
             // likeEffect.classList.remove('d-none');
             // likeEffect.classList.add('d-flex');
-
             // setTimeout(() => {
             //   likeEffect.classList.remove('d-flex');
             //   likeEffect.classList.add('d-none');
-
             //   this.toastController
             //     .create({
             //       message: res.message,
@@ -397,23 +397,26 @@ export class ProductDetailsPage {
     });
   }
 
-  relatedProducts: any = []
+  relatedProducts: any = [];
   productId: number | undefined;
-  similarProducts: any = []
+  similarProducts: any = [];
 
   getSimilarProducts() {
-    let subcategoryId = this.product.subcategory_id
-    let productId = this.product.id
-    this.http.get(`${environment.server}/products/similarProducts/${subcategoryId}/${productId}`)
-      .subscribe(
-        res => {
-          // console.log(res)
-          this.similarProducts = res
-        },
-        err => {
-          console.log(err)
-        }
+    let subcategoryId = this.product.subcategory_id;
+    let productId = this.product.id;
+    this.http
+      .get(
+        `${environment.server}/products/similarProducts/${subcategoryId}/${productId}`
       )
+      .subscribe(
+        (res) => {
+          // console.log(res)
+          this.similarProducts = res;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   modifyImageUrl(url: string): string {
@@ -431,11 +434,11 @@ export class ProductDetailsPage {
         let newImageUrl = parts[0] + 'upload/w_500/' + parts[1];
         return newImageUrl; // The modified URL with 'w_500'
       }
-
-
     }
 
-    return url ? url : 'https://ionicframework.com/docs/img/demos/thumbnail.svg';
+    return url
+      ? url
+      : 'https://ionicframework.com/docs/img/demos/thumbnail.svg';
   }
 
   // Smooth loading of products images
@@ -444,29 +447,28 @@ export class ProductDetailsPage {
     imgElement.classList.add('loaded');
   }
 
-  slidesPerView = 1.5
+  slidesPerView = 1.5;
 
   checkScreen() {
     let innerWidth = window.innerWidth;
     switch (true) {
       case 340 <= innerWidth && innerWidth <= 400:
-        this.slidesPerView = 1.5
+        this.slidesPerView = 1.5;
         break;
       case 401 <= innerWidth && innerWidth <= 700:
-        this.slidesPerView = 1.6
+        this.slidesPerView = 1.6;
         break;
       case 701 <= innerWidth && innerWidth <= 900:
-        this.slidesPerView = 3.2
+        this.slidesPerView = 3.2;
         break;
       case 901 <= innerWidth && innerWidth <= 1000:
-        this.slidesPerView = 4.5
+        this.slidesPerView = 4.5;
         break;
       case 1001 <= innerWidth:
-        this.slidesPerView = 5.5
+        this.slidesPerView = 5.5;
         break;
     }
   }
-
 
   @ViewChild(IonContent)
   content!: IonContent;
@@ -496,14 +498,17 @@ export class ProductDetailsPage {
     private platform: Platform,
     private dataSharingService: DataSharingService,
     private alertController: AlertController
-  ) { }
+  ) {}
 
   saveItemForLater() {
     let selectedItem: SaveItem = {
       id: this.product.id,
       name: this.product.name,
       price: this.product.discount_percent
-        ? this.calculateDiscountedPrice(this.product.price, this.product.discount_percent)
+        ? this.calculateDiscountedPrice(
+            this.product.price,
+            this.product.discount_percent
+          )
         : this.product.price,
       quantity: this.quantityCount,
       sellerId: this.product.user.id,
@@ -582,7 +587,6 @@ export class ProductDetailsPage {
   chatSellerMessageContent: string = '';
 
   chatSeller() {
-
     if (!this.chatSellerMessageContent) {
       this.toastController
         .create({
@@ -600,7 +604,11 @@ export class ProductDetailsPage {
 
     const link = `${window.location.href}`;
 
-    const productInfo = `*${this.product.name} - GH₵ ${this.product.price} ${this.product.discount_percent > 0 ? '- ' + this.product.discount_percent + '% discount' : ''} on niilano marketplace.*%0A${link}%0A%0A`;
+    const productInfo = `*${this.product.name} - GH₵ ${this.product.price} ${
+      this.product.discount_percent > 0
+        ? '- ' + this.product.discount_percent + '% discount'
+        : ''
+    } on niilano marketplace.*%0A${link}%0A%0A`;
 
     // Check if WhatsApp contact exists
     let whatsappNumber = this.product.whatsappContact;
@@ -632,83 +640,90 @@ export class ProductDetailsPage {
 
     if (whatsappNumber) {
       // Check if the number starts with "+233" or "233" already
-      if (!whatsappNumber.startsWith('+233') && !whatsappNumber.startsWith('233')) {
+      if (
+        !whatsappNumber.startsWith('+233') &&
+        !whatsappNumber.startsWith('233')
+      ) {
         // If it doesn't, add the country code
         whatsappNumber = `+233${whatsappNumber}`;
       }
     }
-
 
     const encodedMessage = `${productInfo} ${this.chatSellerMessageContent}`;
     const whatsappLink = `whatsapp://send?phone=${`${whatsappNumber}`}&text=${encodedMessage}`;
 
     // Open the link
     window.open(whatsappLink, '_blank');
-
   }
 
   ionViewDidEnter() {
-
     this.store.select('checkLogin').subscribe((res) => {
       this.isLoggedIn = res.loggedIn;
     });
 
     this.subscriptions.push(
-    this.activeRoute.queryParams.subscribe(async (params) => {
-      if (!params['product']) {
-        this.toastController
-          .create({
-            message: 'Your product does not have an id',
-            duration: 3000,
-            header: 'Product Error',
-            color: 'danger',
-            position: 'bottom',
-          })
-          .then((toast) => {
-            toast.present();
-            toast.onDidDismiss().then(() => {
-              this.router.navigate(['products']);
+      this.activeRoute.queryParams.subscribe(async (params) => {
+        if (!params['product']) {
+          this.toastController
+            .create({
+              message: 'Your product does not have an id',
+              duration: 3000,
+              header: 'Product Error',
+              color: 'danger',
+              position: 'bottom',
+            })
+            .then((toast) => {
+              toast.present();
+              toast.onDidDismiss().then(() => {
+                this.router.navigate(['products']);
+              });
             });
-          });
-      } else {
-        this.productId = params['product'];
-        this.store.dispatch(getProduct({ productID: Number(this.productId), details: "true" }));
-      }
-    }))
+        } else {
+          this.productId = params['product'];
+          this.store.dispatch(
+            getProduct({ productID: Number(this.productId), details: 'true' })
+          );
+        }
+      })
+    );
 
     this.subscriptions.push(
-    this.store.select('product').subscribe(async (prod) => {
-      if (prod.process) {
-        this.store.dispatch(startLoading());
-      }
-      if (prod.success) {
-        this.store.dispatch(endLoading());
-
-        this.scrollToTop()
-
-        this.product = JSON.parse(JSON.stringify(prod.product));
-
-        let viewEventData:any = {
-          product_id: '',
-          device: {},
-          location: {},
-          seller_id : '',
-          category_id : '',
-          subcategory_id : '',
+      this.store.select('product').subscribe(async (prod) => {
+        if (prod.process) {
+          this.store.dispatch(startLoading());
         }
+        if (prod.success) {
+          this.store.dispatch(endLoading());
 
-        viewEventData.product_id = this.productId
-        viewEventData.seller_id = this.product.user.id
-        viewEventData.category_id = this.product.category_id
-        viewEventData.subcategory_id = this.product.subcategory_id
+          this.scrollToTop();
 
-        try {
-          // console.log(viewEventData)
+          this.product = JSON.parse(JSON.stringify(prod.product));
+
+          let viewEventData: any = {
+            product_id: '',
+            device: {},
+            location: {},
+            seller_id: '',
+            category_id: '',
+            subcategory_id: '',
+          };
+
+          viewEventData.product_id = this.productId;
+          viewEventData.seller_id = this.product.user.id;
+          viewEventData.category_id = this.product.category_id;
+          viewEventData.subcategory_id = this.product.subcategory_id;
+
+          try {
+            // console.log(viewEventData)
             // Wait for viewEventActions to complete
             await this.viewEventActions(viewEventData);
 
             // Now the viewEventData has been initialized, and you can make the HTTP request
-            this.http.post(`${environment.server}/products/logClickEvent`, viewEventData)
+            this.http
+              .post(
+                `${environment.server}/products/logClickEvent`,
+                viewEventData
+              )
               .subscribe(
                 (res) => {
                   //  console.log(res);
@@ -717,101 +732,102 @@ export class ProductDetailsPage {
                   console.log(err);
                 }
               );
-        }
-        catch (error) {
-          console.error('Error:', error);
-        }
-
-        // Filter following and followers arrays to remove objects with status = 'inactive'
-        this.product.user.following = this.product.user.following.filter(
-          (obj: any) => obj.status !== 'inactive'
-        );
-        this.product.user.followers = this.product.user.followers.filter(
-          (obj: any) => obj.status !== 'inactive'
-        );
-
-        this.selectedMainImage = this.product.image.url;
-
-        this.otherImages = [this.product.image, ...this.product.images];
-
-        this.likes = this.product.Likes.length;
-
-        this.relatedProducts = this.product.user.products;
-
-        // console.log(this.product)
-        this.getSimilarProducts()
-
-        this.titleService.setTitle(
-          `${this.product.name} - GH₵${this.product.price}`
-        );
-
-        this.metaService.updateTag({
-          property: 'og:title',
-          content: `${this.product.name} - GH₵${this.product.price}`,
-        });
-        this.metaService.updateTag({
-          name: 'twitter:title',
-          content: `${this.product.name} - GH₵${this.product.price}`,
-        });
-        this.metaService.updateTag({
-          property: 'og:description',
-          content: this.product.description,
-        });
-        this.metaService.updateTag({
-          name: 'twitter:description',
-          content: this.product.description,
-        });
-        this.metaService.updateTag({
-          property: 'og:image',
-          content: this.product.image.url,
-        });
-        this.metaService.updateTag({
-          name: 'twitter:image',
-          content: this.product.image.url,
-        });
-
-        this.userProfile.myProfile().subscribe(
-          async (res) => {
-            this.currentUserId = await res.profile.id;
-            // console.log(this.currentUserId)
-            this.isLiked = this.product.Likes.some(
-              (like: { user_id: number }) => like.user_id === this.currentUserId
-            );
-            this.isFollowing = this.product.user.followers.some(
-              (follower: { followerId: number; status: string }) =>
-                follower.followerId === this.currentUserId &&
-                follower.status === 'active'
-            );
-            // console.log(this.isFollowing)
-          },
-          (err) => {
-            console.log(err);
+          } catch (error) {
+            console.error('Error:', error);
           }
-        );
-      }
-      if (prod.failure) {
-        this.store.dispatch(endLoading());
-        console.log(prod.message);
 
-        this.toastController
-          .create({
-            message: prod.message,
-            duration: 3000,
-            header: 'Product Error',
-            color: 'danger',
-            position: 'bottom',
-          })
-          .then((toast) => {
-            toast.present();
-            toast.onDidDismiss().then(() => {
-              this.router.navigate(['products']);
-            });
+          // Filter following and followers arrays to remove objects with status = 'inactive'
+          this.product.user.following = this.product.user.following.filter(
+            (obj: any) => obj.status !== 'inactive'
+          );
+          this.product.user.followers = this.product.user.followers.filter(
+            (obj: any) => obj.status !== 'inactive'
+          );
+
+          this.selectedMainImage = this.product.image.url;
+
+          this.otherImages = [this.product.image, ...this.product.images];
+
+          this.likes = this.product.Likes.length;
+
+          this.relatedProducts = this.product.user.products;
+
+          // console.log(this.product)
+          this.getSimilarProducts();
+
+          this.titleService.setTitle(
+            `${this.product.name} - GH₵${this.product.price}`
+          );
+
+          this.metaService.updateTag({
+            property: 'og:title',
+            content: `${this.product.name} - GH₵${this.product.price}`,
           });
-      }
-    }))
+          this.metaService.updateTag({
+            name: 'twitter:title',
+            content: `${this.product.name} - GH₵${this.product.price}`,
+          });
+          this.metaService.updateTag({
+            property: 'og:description',
+            content: this.product.description,
+          });
+          this.metaService.updateTag({
+            name: 'twitter:description',
+            content: this.product.description,
+          });
+          this.metaService.updateTag({
+            property: 'og:image',
+            content: this.product.image.url,
+          });
+          this.metaService.updateTag({
+            name: 'twitter:image',
+            content: this.product.image.url,
+          });
+
+          this.userProfile.myProfile().subscribe(
+            async (res) => {
+              this.currentUserId = await res.profile.id;
+              // console.log(this.currentUserId)
+              this.isLiked = this.product.Likes.some(
+                (like: { user_id: number }) =>
+                  like.user_id === this.currentUserId
+              );
+              this.isFollowing = this.product.user.followers.some(
+                (follower: { followerId: number; status: string }) =>
+                  follower.followerId === this.currentUserId &&
+                  follower.status === 'active'
+              );
+              // console.log(this.isFollowing)
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+        if (prod.failure) {
+          this.store.dispatch(endLoading());
+          console.log(prod.message);
+
+          this.toastController
+            .create({
+              message: prod.message,
+              duration: 3000,
+              header: 'Product Error',
+              color: 'danger',
+              position: 'bottom',
+            })
+            .then((toast) => {
+              toast.present();
+              toast.onDidDismiss().then(() => {
+                this.router.navigate(['products']);
+              });
+            });
+        }
+      })
+    );
 
     // console.log(this.productId)
-  
+
     setTimeout(() => {
       this.checkScreen();
     }, 500);
@@ -821,7 +837,6 @@ export class ProductDetailsPage {
         this.checkScreen();
       })
     );
-
   }
 
   ionViewDidLeave() {
@@ -833,11 +848,12 @@ export class ProductDetailsPage {
     });
   }
 
-
   async viewEventActions(viewEventData: any): Promise<void> {
     try {
       // Assuming that getUserLocation returns an observable
-      const location = await firstValueFrom(this.dataSharingService.getUserLocation());
+      const location = await firstValueFrom(
+        this.dataSharingService.getUserLocation()
+      );
       viewEventData.location = location;
 
       if (this.platform.is('cordova')) {
@@ -898,7 +914,8 @@ export class ProductDetailsPage {
     }
 
     function isMobile() {
-      const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const regex =
+        /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
       return regex.test(navigator.userAgent);
     }
   }
@@ -960,26 +977,33 @@ export class ProductDetailsPage {
 
     let shareUrl: any;
 
-    const message = `Hey, check out this product:%0A%0A${this.product.name
-      }%0A%0A*Description:* ${this.product.description}%0A%0A*Price:* ${this.product.discount_percent ? '~GH₵' + this.product.price + '~' : ''
-      } GH₵${!this.product.discount_percent
+    const message = `Hey, check out this product:%0A%0A${
+      this.product.name
+    }%0A%0A*Description:* ${this.product.description}%0A%0A*Price:* ${
+      this.product.discount_percent ? '~GH₵' + this.product.price + '~' : ''
+    } GH₵${
+      !this.product.discount_percent
         ? this.product.price
         : this.product.discount_price
-      }${this.product.discount_percent
+    }${
+      this.product.discount_percent
         ? '%0A%0A*Discount:* ' + this.product.discount_percent + '%'
         : ''
-      }%0A%0A%0A*Visit this link to order now:*%0A${link}`;
+    }%0A%0A%0A*Visit this link to order now:*%0A${link}`;
 
     // ${this.product.discount_percent ? 'GH₵' + this.product.price : ''}
 
-    const messageTweet = `%0A${link}%0A%0ACheck out this product:%0A${this.product.name
-      }%0APrice: GH₵${this.product.price}${this.product.discount_percent
+    const messageTweet = `%0A${link}%0A%0ACheck out this product:%0A${
+      this.product.name
+    }%0APrice: GH₵${this.product.price}${
+      this.product.discount_percent
         ? '%0ADiscount Price: GH₵' + this.product.discount_price
         : ''
-      }${this.product.discount_percent
+    }${
+      this.product.discount_percent
         ? '%0ADiscount: ' + this.product.discount_percent + '%25'
         : ''
-      }%0ADescription: ${this.product.description}`;
+    }%0ADescription: ${this.product.description}`;
 
     switch (platform) {
       case 'copy':
