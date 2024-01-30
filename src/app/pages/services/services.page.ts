@@ -49,11 +49,17 @@ export class ServicesPage implements OnInit {
       message: 'Please login/register to continue.',
       buttons: [
         {
-          text: 'OK',
+          text: 'Sign in',
           handler: () => {
             this.router.navigateByUrl('auth?page=login');
           },
         },
+        {
+          text: 'Register Now',
+          handler: () => {
+            this.router.navigateByUrl('auth?page=register');
+          },
+        }
       ],
     });
 

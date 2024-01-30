@@ -33,7 +33,7 @@ import { DataSharingService } from 'src/app/services/data-sharing/data-sharing.s
   templateUrl: './product-details.page.html',
   styleUrls: ['./product-details.page.scss'],
 })
-export class ProductDetailsPage implements OnInit {
+export class ProductDetailsPage {
   // Page Subscribtions
   private subscriptions: Subscription[] = [];
   isLoggedIn = false;
@@ -56,7 +56,38 @@ export class ProductDetailsPage implements OnInit {
     this.navCtrl.back();
   }
 
+  async presentLoginAlert() {
+    const alert = await this.alertController.create({
+      header: 'Login Required',
+      message: 'Please login/register to continue.',
+      buttons: [
+        {
+          text: 'Sign in',
+          handler: () => {
+            this.router.navigateByUrl('auth?page=login');
+          },
+        },
+        {
+          text: 'Register Now',
+          handler: () => {
+            this.router.navigateByUrl('auth?page=register');
+          },
+        }
+      ],
+    });
+
+    await alert.present();
+  }
+
   async handleCall(phoneNumber: any) {
+
+    if (!this.currentUserId) {
+      
+      this.presentLoginAlert()
+
+      return;
+    }
+
     if (phoneNumber) {
 
       let phoneNumberStr = phoneNumber.toString().replace(/\D/g, ''); // Remove non-numeric characters
@@ -66,9 +97,8 @@ export class ProductDetailsPage implements OnInit {
       }
 
       const alert = await this.alertCtrl.create({
-        header: 'Confirm Call',
-        message: `Seller Contact: ${phoneNumberStr} <br /> <br /> <b> Safety Guidelines </b> <br />
-        <ul>
+        header: 'Safety Guidelines',
+        message: `<ul>
         <li>Please be cautious and avoid making any upfront payments.</li>
         <li>Always arrange meetings with the seller in safe, public locations.</li>
         <li>Examine the items to ensure they meet your requirements.</li>
@@ -105,6 +135,12 @@ export class ProductDetailsPage implements OnInit {
   }
 
   async handleRequestCallback() {
+    if (!this.currentUserId) {
+      
+      this.presentLoginAlert()
+
+      return;
+    }
     const alert = await this.alertCtrl.create({
       header: 'Request Call Back',
       inputs: [
@@ -458,7 +494,8 @@ export class ProductDetailsPage implements OnInit {
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private platform: Platform,
-    private dataSharingService: DataSharingService
+    private dataSharingService: DataSharingService,
+    private alertController: AlertController
   ) { }
 
   saveItemForLater() {
@@ -611,99 +648,6 @@ export class ProductDetailsPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    setTimeout(() => {
-      this.checkScreen();
-    }, 500);
-
-    this.subscriptions.push(
-      this.platform.resize.subscribe(async () => {
-        this.checkScreen();
-      })
-    );
-  }
-
-  ionViewDidLeave() {
-    this.chatSellerMessageContent = '';
-  }
-
-
-  async viewEventActions(viewEventData: any): Promise<void> {
-    try {
-      // Assuming that getUserLocation returns an observable
-      const location = await firstValueFrom(this.dataSharingService.getUserLocation());
-      viewEventData.location = location;
-
-      if (this.platform.is('cordova')) {
-        // App
-        const ios = this.platform.is('ios');
-        if (ios) {
-          viewEventData.device = { type: 'iPhone', device: 'mobile' };
-        } else {
-          viewEventData.device = { type: 'Android', device: 'mobile' };
-        }
-      } else {
-        // Probably Browser
-        if (isMobile()) {
-          if (navigator.userAgent.includes('iPhone')) {
-            viewEventData.device = { type: 'iPhone', device: 'mobile' };
-          } else if (navigator.userAgent.includes('Android')) {
-            viewEventData.device = { type: 'Android', device: 'mobile' };
-          } else {
-            viewEventData.device = { type: 'Unknown', device: 'mobile' };
-          }
-        } else {
-          if (navigator.userAgent.includes('Windows')) {
-            viewEventData.device = { type: 'Windows', device: 'desktop' };
-          } else {
-            viewEventData.device = { type: 'Unknown', device: 'desktop' };
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error in viewEventActions:', error);
-      // throw error; // Rethrow the error to be caught by the caller
-      if (this.platform.is('cordova')) {
-        // App
-        const ios = this.platform.is('ios');
-        if (ios) {
-          viewEventData.device = { type: 'iPhone', device: 'mobile' };
-        } else {
-          viewEventData.device = { type: 'Android', device: 'mobile' };
-        }
-      } else {
-        // Probably Browser
-        if (isMobile()) {
-          if (navigator.userAgent.includes('iPhone')) {
-            viewEventData.device = { type: 'iPhone', device: 'mobile' };
-          } else if (navigator.userAgent.includes('Android')) {
-            viewEventData.device = { type: 'Android', device: 'mobile' };
-          } else {
-            viewEventData.device = { type: 'Unknown', device: 'mobile' };
-          }
-        } else {
-          if (navigator.userAgent.includes('Windows')) {
-            viewEventData.device = { type: 'Windows', device: 'desktop' };
-          } else {
-            viewEventData.device = { type: 'Unknown', device: 'desktop' };
-          }
-        }
-      }
-    }
-
-    function isMobile() {
-      const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-      return regex.test(navigator.userAgent);
-    }
-  }
-
-  ngOnDestroy(){
-     // Unsubscribe from subscriptions
-     this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
-  }
-
-  ngOnInit() {
 
     this.store.select('checkLogin').subscribe((res) => {
       this.isLoggedIn = res.loggedIn;
@@ -867,6 +811,96 @@ export class ProductDetailsPage implements OnInit {
     }))
 
     // console.log(this.productId)
+  
+    setTimeout(() => {
+      this.checkScreen();
+    }, 500);
+
+    this.subscriptions.push(
+      this.platform.resize.subscribe(async () => {
+        this.checkScreen();
+      })
+    );
+
+  }
+
+  ionViewDidLeave() {
+    this.chatSellerMessageContent = '';
+
+    // Unsubscribe from subscriptions
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
+
+  async viewEventActions(viewEventData: any): Promise<void> {
+    try {
+      // Assuming that getUserLocation returns an observable
+      const location = await firstValueFrom(this.dataSharingService.getUserLocation());
+      viewEventData.location = location;
+
+      if (this.platform.is('cordova')) {
+        // App
+        const ios = this.platform.is('ios');
+        if (ios) {
+          viewEventData.device = { type: 'iPhone', device: 'mobile' };
+        } else {
+          viewEventData.device = { type: 'Android', device: 'mobile' };
+        }
+      } else {
+        // Probably Browser
+        if (isMobile()) {
+          if (navigator.userAgent.includes('iPhone')) {
+            viewEventData.device = { type: 'iPhone', device: 'mobile' };
+          } else if (navigator.userAgent.includes('Android')) {
+            viewEventData.device = { type: 'Android', device: 'mobile' };
+          } else {
+            viewEventData.device = { type: 'Unknown', device: 'mobile' };
+          }
+        } else {
+          if (navigator.userAgent.includes('Windows')) {
+            viewEventData.device = { type: 'Windows', device: 'desktop' };
+          } else {
+            viewEventData.device = { type: 'Unknown', device: 'desktop' };
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in viewEventActions:', error);
+      // throw error; // Rethrow the error to be caught by the caller
+      if (this.platform.is('cordova')) {
+        // App
+        const ios = this.platform.is('ios');
+        if (ios) {
+          viewEventData.device = { type: 'iPhone', device: 'mobile' };
+        } else {
+          viewEventData.device = { type: 'Android', device: 'mobile' };
+        }
+      } else {
+        // Probably Browser
+        if (isMobile()) {
+          if (navigator.userAgent.includes('iPhone')) {
+            viewEventData.device = { type: 'iPhone', device: 'mobile' };
+          } else if (navigator.userAgent.includes('Android')) {
+            viewEventData.device = { type: 'Android', device: 'mobile' };
+          } else {
+            viewEventData.device = { type: 'Unknown', device: 'mobile' };
+          }
+        } else {
+          if (navigator.userAgent.includes('Windows')) {
+            viewEventData.device = { type: 'Windows', device: 'desktop' };
+          } else {
+            viewEventData.device = { type: 'Unknown', device: 'desktop' };
+          }
+        }
+      }
+    }
+
+    function isMobile() {
+      const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      return regex.test(navigator.userAgent);
+    }
   }
 
   async followUser() {
