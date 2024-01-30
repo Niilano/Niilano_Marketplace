@@ -214,6 +214,7 @@
           color="danger"
           name="location-outline"
           slot="start"
+          class="mr-2"
         ></ion-icon>
         <ion-label class="ion-text-nowrap">
           <h3>Product Location</h3>
@@ -226,6 +227,7 @@
           color="danger"
           name="information-circle-outline"
           slot="start"
+          class="mr-2"
         ></ion-icon>
         <ion-label class="ion-text-nowrap">
           <h3 class="text-dark">Product Condition</h3>
@@ -301,9 +303,9 @@
               ></ion-icon>
             </ion-button>
 
-            <br />
+            <!-- <br />
 
-            <span style="font-size: 0.8em"> Following </span>
+            <span style="font-size: 0.8em"> Following </span> -->
           </div>
         </ion-item>
 
@@ -323,6 +325,7 @@
           </ion-item>
   
           <ion-button
+          mode="md"
           color="success"
             (click)="chatSeller()"
             class="text-dark w-100 m-0 mt-2"
@@ -402,11 +405,11 @@
     </ion-row>
   </div>
 
-  <div
-    class="my-3"
+  <!-- <div
+    class="my-3 px-2"
     *ngIf="relatedProducts.length > 0"
   >
-    <h5 class="text-dark border-bottom ps-2">
+    <h5 class="text-dark border-bottom">
       Other Products by this Seller
     </h5>
 
@@ -489,10 +492,10 @@
     </swiper-container>
 
    
-  </div>
+  </div> -->
 
-  <div *ngIf="similarProducts.length > 0">
-    <h5 class="border-bottom text-dark ps-2">Similar Products</h5>
+  <div class="px-3 pt-2" *ngIf="similarProducts.length > 0">
+    <h5 class="border-bottom text-dark mb-3 pb-2">Similar Products</h5>
     <ion-row class="products">
       <!-- <app-loading></app-loading> -->
   
@@ -505,14 +508,14 @@
         size-lg="2"
         *ngFor="let product of similarProducts"
       >
-        <ion-card class="m-1 h-100" style="background: #ffffff">
+        <!-- <ion-card class="m-1 h-100" style="background: #ffffff">
           <div
             class="bg-dark image-wrapper"
             [ngStyle]="{'background-image': 'url(' + product.image?.url + ')'}"
           >
             <img
               [src]="modifyImageUrl(product.image?.url)"
-              class="image"
+              class="pImages"
               alt="{{ product.name }}"
               (load)="onImageLoad($event)"
             />
@@ -574,7 +577,33 @@
             </p>
   
           </ion-card-content>
-        </ion-card>
+        </ion-card> -->
+
+        <div style="cursor: pointer;" class="rounded shadow overflow-hidden">
+          <div>
+            <img
+              class="pImages"
+              [src]="modifyImageUrl(product?.image?.url)"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-2 text-dark">
+            <p
+              style="font-size: 0.9em; font-weight: bold"
+              class="m-0 font-bold single-line-ellipsis"
+            >
+              {{product.name}}
+            </p>
+            <p style="font-size: 0.8em" class="m-0">
+              GH₵{{product.price!.toLocaleString('en-US', {
+              minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+            </p>
+            <p style="font-size: 0.8em" class="m-0 single-line-ellipsis">
+              <i class="fa-solid fa-location-dot me-1"></i>
+              {{product.location}}
+            </p>
+          </div>
+        </div>
       </ion-col>
     </ion-row>
   

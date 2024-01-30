@@ -96,3 +96,13 @@ ion-img.main {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .pImages{
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .pImages:hover{
+      border: 1.5px solid red;
+    }
