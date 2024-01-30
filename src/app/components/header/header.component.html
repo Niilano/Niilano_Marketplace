@@ -93,14 +93,10 @@
     <ion-icon (click)="toProducts()" size="large" class="text-light" name="filter-circle-outline"></ion-icon>
   </div>
   <div class="mt-1 d-flex gap-2 text-light align-items-center">
-    <div class="btn-group">
-      <button class="btn text-light font-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa-solid fa-magnifying-glass-location me-1"></i>
-        All regions
-      </button>
-      <ul class="dropdown-menu">
-        <li *ngFor="let region of regions"><span style="cursor: pointer;" class="dropdown-item"> {{region}} region </span></li>
-      </ul>
-    </div>
+    <i class="fa-solid fa-magnifying-glass-location"></i> 
+    <ion-select aria-label="Regions" value="all" placeholder="Select region">
+      <ion-select-option value="all">All regions</ion-select-option>
+      <ion-select-option *ngFor="let region of regions" [value]="region">{{region}} Region</ion-select-option>
+    </ion-select>
   </div>
   </header>

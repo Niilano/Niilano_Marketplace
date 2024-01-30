@@ -90,3 +90,9 @@ ion-img.main {
     .image.loaded {
       filter: blur(0); /* Remove blur effect after image is loaded */
     }
+
+    .text-ellipsis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
