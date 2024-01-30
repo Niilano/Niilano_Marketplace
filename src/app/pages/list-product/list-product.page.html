@@ -85,10 +85,10 @@
                     <small>(Please provide the key features and specifications of
                       your product)</small>
                   </p>
-                  <ion-item lines="full">
-                    <ion-input [(ngModel)]="newFeature" name="newFeature" placeholder="Add a new feature"></ion-input>
-                    <ion-button color="success" (click)="addFeature()">Add</ion-button>
-                    <ion-note slot="helper">Optional</ion-note>
+                  <ion-item mode="ios" lines="full">
+                    <ion-input slot="start" [(ngModel)]="newFeature" name="newFeature" placeholder="Add a new feature"></ion-input>
+                    <ion-button slot="end" color="success" (click)="addFeature()">Add</ion-button>
+                    <!-- <ion-note slot="helper">Optional</ion-note> -->
                   </ion-item>
 
                   <div *ngIf="productInfo.features.length < 1" class="mt-3 text-center text-secondary">
@@ -140,10 +140,10 @@
                   <ion-item lines="full">
                     <ion-input name="discount_percent" [(ngModel)]="productInfo.discount_percent" type="number"
                       placeholder="0"></ion-input>
+                      <!-- <div slot="end">
+                        <i class="fa-solid fa-percent text-danger"></i>
+                      </div> -->
                     <ion-note slot="helper">Optional</ion-note>
-                    <div slot="end">
-                      <i class="fa-solid fa-percent text-danger"></i>
-                    </div>
                   </ion-item>
 
                   <!-- Negotiable Price Option -->
@@ -356,7 +356,7 @@
     </div>
   </div>
 </ion-content>
-<ion-footer *ngIf="currentSection == 4 && !editProduct" class="text-light animate__animated animate__fadeInBottom">
+<ion-footer *ngIf="currentSection == 4 && !editProduct" class="bg-light animate__animated animate__fadeInBottom">
   <div class="container my-2">
     <button (click)="submitProductListing()"
       class="btn text-light d-flex align-items-center justify-content-center w-100" style="background: #1a4640">
@@ -366,7 +366,7 @@
   </div>
 </ion-footer>
 
-<ion-footer *ngIf="editProduct" class="text-light animate__animated animate__fadeInBottom">
+<ion-footer *ngIf="editProduct" class="bg-light animate__animated animate__fadeInBottom">
   <div class="container my-2">
     <button (click)="submitEditProductListing()"
       class="btn btn-warning d-flex align-items-center justify-content-center w-100">
