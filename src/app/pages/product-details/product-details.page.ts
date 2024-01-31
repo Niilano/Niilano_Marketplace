@@ -998,19 +998,24 @@ export class ProductDetailsPage {
 
     let shareUrl: any;
 
+    const encodedDescription = encodeURIComponent(this.product.description)
+
     const message = `Hey, check out this product:%0A%0A${
       this.product.name
-    }%0A%0A*Description:* ${this.product.description}%0A%0A*Price:* ${
+    }%0A%0A*Description:* ${encodedDescription}%0A%0A*Price:* ${
       this.product.discount_percent ? '~GH₵' + this.product.price + '~' : ''
     } GH₵${
       !this.product.discount_percent
         ? this.product.price
-        : this.product.discount_price
+        : this.calculateDiscountedPrice(this.product.price,
+          this.product.discount_percent)
     }${
       this.product.discount_percent
         ? '%0A%0A*Discount:* ' + this.product.discount_percent + '%'
         : ''
     }%0A%0A%0A*Visit this link to order now:*%0A${link}`;
+
+    console.log(message)
 
     // ${this.product.discount_percent ? 'GH₵' + this.product.price : ''}
 
@@ -1018,13 +1023,14 @@ export class ProductDetailsPage {
       this.product.name
     }%0APrice: GH₵${this.product.price}${
       this.product.discount_percent
-        ? '%0ADiscount Price: GH₵' + this.product.discount_price
+        ? '%0ADiscount Price: GH₵' + this.calculateDiscountedPrice(this.product.price,
+          this.product.discount_percent)
         : ''
     }${
       this.product.discount_percent
         ? '%0ADiscount: ' + this.product.discount_percent + '%25'
         : ''
-    }%0ADescription: ${this.product.description}`;
+    }%0ADescription: ${encodedDescription}`;
 
     switch (platform) {
       case 'copy':

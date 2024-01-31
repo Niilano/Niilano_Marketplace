@@ -1,12 +1,21 @@
 <ion-header>
   <ion-toolbar>
-
-    <ion-button fill="clear" slot="start" (click)="navigateBack()"><ion-icon class="text-light" size="medium"
-        name="arrow-back-outline"></ion-icon></ion-button>
+    <ion-button fill="clear" slot="start" (click)="navigateBack()"
+      ><ion-icon
+        class="text-light"
+        size="medium"
+        name="arrow-back-outline"
+      ></ion-icon
+    ></ion-button>
 
     <ion-title class="fs-6"> My Listings </ion-title>
 
-    <ion-button id="share-popover1" slot="end" color="light" class="d-sm-block d-none">
+    <ion-button
+      id="share-popover1"
+      slot="end"
+      color="light"
+      class="d-sm-block d-none"
+    >
       <ion-icon class="me-2" name="share-social"></ion-icon> Share profile
     </ion-button>
 
@@ -18,13 +27,31 @@
             <ion-label>Copy Link</ion-label>
           </ion-item>
 
-          <ion-item button detail="false" lines="none" (click)="share('whatsapp')">
-            <ion-icon style="color: #25d366" class="me-2" name="logo-whatsapp"></ion-icon>
+          <ion-item
+            button
+            detail="false"
+            lines="none"
+            (click)="share('whatsapp')"
+          >
+            <ion-icon
+              style="color: #25d366"
+              class="me-2"
+              name="logo-whatsapp"
+            ></ion-icon>
             <ion-label>WhatsApp</ion-label>
           </ion-item>
 
-          <ion-item button detail="false" lines="none" (click)="share('twitter')">
-            <ion-icon style="color: #1da1f2" class="me-2" name="logo-twitter"></ion-icon>
+          <ion-item
+            button
+            detail="false"
+            lines="none"
+            (click)="share('twitter')"
+          >
+            <ion-icon
+              style="color: #1da1f2"
+              class="me-2"
+              name="logo-twitter"
+            ></ion-icon>
             <ion-label>Twitter</ion-label>
           </ion-item>
         </ion-content>
@@ -64,33 +91,99 @@
     </ion-list> -->
 
     <ion-row>
-      <ion-col size="12" size-md="6" *ngFor="let product of products">
-        <ion-item lines="none">
+      <ion-col
+        size="12"
+        size-md="6"
+        *ngFor="let product of products"
+        class="p-0"
+      >
+        <ion-item class="ion-no-padding" lines="none">
           <ion-thumbnail class="h-100" slot="start">
             <img [src]="modifyImageUrl(product.image.url)" />
           </ion-thumbnail>
-          <ion-label>
+          <ion-label class="ion-text-nowrap">
             <h2 class="text-dark">{{ product.name }}</h2>
             <p class="text-secondary">{{product.description}}</p>
             <p class="text-secondary" *ngIf="!product.discount_percent">
               {{ product.price | currency : 'GH₵' }}
             </p>
             <p class="text-secondary" *ngIf="product.discount_percent">
-              <span class="text-decoration-line-through me-2">{{ product.price | currency : 'GH₵' }}</span>
-              <span>{{
-                calculateDiscountedPrice(product.price,
-                product.discount_percent) | currency : 'GH₵' }}</span>
+              <span class="text-decoration-line-through me-2"
+                >{{ product.price | currency : 'GH₵' }}</span
+              >
+              <span
+                >{{ calculateDiscountedPrice(product.price,
+                product.discount_percent) | currency : 'GH₵' }}</span
+              >
             </p>
           </ion-label>
 
-          <ion-buttons slot="end">
+          <!-- <ion-buttons>
             <ion-button [routerLink]="['/list-product']" [queryParams]="{ product: product.id }">
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
             <ion-button (click)="presentDeleteProductActionSheet(product.id)">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
+          </ion-buttons> -->
+
+          <ion-buttons>
+            <ion-button
+              style="padding-left: 20%"
+              [id]="'product-click-trigger'+product.id"
+            >
+              <i
+                class="fa-solid fa-ellipsis-vertical text-danger rounded-circle"
+                style="font-size: 1.8em"
+              ></i>
+            </ion-button>
           </ion-buttons>
+          <ion-popover
+            [trigger]="'product-click-trigger'+product.id"
+            trigger-action="click"
+            style="--background: transparent"
+          >
+            <ng-template>
+              <ion-content class="ion-no-padding">
+
+                <ion-item
+                disabled="true"
+                  button="true"
+                  lines="none"
+                  [routerLink]="['/list-product']"
+                  [queryParams]="{ product: product.id }"
+                >
+                  <ion-icon class="fa-solid fa-money-bill-trend-up" color="success" slot="start"></ion-icon>
+                  <ion-label> <h2>Promote</h2> <p class="text-muted">Coming Soon...</p> </ion-label>
+                </ion-item>
+
+                <ion-item button="true" lines="none" [routerLink]="['/product-details']"
+                  [queryParams]="{ product: product.id }">
+                  <ion-icon color="secondary" slot="start" name="eye-outline"></ion-icon>
+                  <ion-label> View Product </ion-label>
+                </ion-item>
+
+                <ion-item
+                  button="true"
+                  lines="none"
+                  [routerLink]="['/list-product']"
+                  [queryParams]="{ product: product.id }"
+                >
+                  <ion-icon color="primary" name="create-outline" slot="start"></ion-icon>
+                  <ion-label> Edit Product </ion-label>
+                </ion-item>
+
+                <ion-item
+                  button="true"
+                  lines="none"
+                  (click)="presentDeleteProductActionSheet(product.id)"
+                >
+                  <ion-icon color="danger" name="trash" slot="start"></ion-icon>
+                  <ion-label> Delete Product </ion-label>
+                </ion-item>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -100,40 +193,66 @@
     <ng-container *ngIf="userRentItems.length>0">
       <ion-row>
         <ion-col size="12" size-md="6" *ngFor="let item of userRentItems">
-          <ion-item lines="full">
+          <ion-item class="ion-no-padding" lines="full">
             <!-- Display item details, e.g., item name, type, description, etc. -->
             <ng-container *ngIf="item.category=='Housing'">
               <ion-thumbnail class="h-100" slot="start">
                 <img [src]="modifyImageUrl(item.bedroomImage.imageUrl)" />
               </ion-thumbnail>
-              <ion-label class="text-dark">
+              <ion-label class="text-dark ion-text-nowrap">
                 <h2 class="text-dark">
-                  {{ item.houseRegionLocation }} Region, {{ item.houseLocation }}
+                  {{ item.houseRegionLocation }} Region, {{ item.houseLocation
+                  }}
                 </h2>
                 <p class="text-dark">{{ item.placeType }}</p>
                 <p class="text-dark">{{ item.houseDescription }}</p>
                 <!-- Add more item details as needed -->
               </ion-label>
-              <ion-icon style="cursor: pointer;" color="danger" [id]="'housing-click-trigger'+item.id"
-                name="ellipsis-vertical-circle-sharp"></ion-icon>
-              <ion-popover [trigger]="'housing-click-trigger'+item.id" trigger-action="click"
-                style="--background: transparent">
+              <ion-buttons>
+                <ion-button
+                  style="padding-left: 20%"
+                  [id]="'housing-click-trigger'+item.id"
+                >
+                  <i
+                    class="fa-solid fa-ellipsis-vertical text-danger rounded-circle"
+                    style="font-size: 1.8em"
+                  ></i>
+                </ion-button>
+              </ion-buttons>
+              <ion-popover
+                [trigger]="'housing-click-trigger'+item.id"
+                trigger-action="click"
+                style="--background: transparent"
+              >
                 <ng-template>
                   <ion-content class="ion-padding">
-                    <ion-item button="true" class="rounded" color="secondary" [routerLink]="['/rent-items-details']"
-                      [queryParams]="{ item: 'house', id: item.id }">
+                    <ion-item
+                      button="true"
+                      class="rounded"
+                      color="secondary"
+                      [routerLink]="['/rent-items-details']"
+                      [queryParams]="{ item: 'house', id: item.id }"
+                    >
                       <ion-icon class="me-1" name="eye-outline"></ion-icon>
                       <ion-label> View </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="primary"
-                      (click)="presentRentItemsModalToMakeChanges(item,'housing')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="primary"
+                      (click)="presentRentItemsModalToMakeChanges(item,'housing')"
+                    >
                       <ion-icon class="me-1" name="create-outline"></ion-icon>
                       <ion-label> Make Changes </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="danger"
-                      (click)="deleteRentingItem(item.id,'Housing')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="danger"
+                      (click)="deleteRentingItem(item.id,'Housing')"
+                    >
                       <ion-icon class="me-1" name="trash"></ion-icon>
                       <ion-label> Delete </ion-label>
                     </ion-item>
@@ -155,26 +274,46 @@
                 <!-- Add more item details as needed -->
               </ion-label>
 
-              <ion-icon style="cursor: pointer;" color="danger" [id]="'vehicle-click-trigger'+item.id"
-                name="ellipsis-vertical-circle-sharp"></ion-icon>
-              <ion-popover [trigger]="'vehicle-click-trigger'+item.id" trigger-action="click"
-                style="--background: transparent">
+              <ion-icon
+                style="cursor: pointer"
+                color="danger"
+                [id]="'vehicle-click-trigger'+item.id"
+                name="ellipsis-vertical-circle-sharp"
+              ></ion-icon>
+              <ion-popover
+                [trigger]="'vehicle-click-trigger'+item.id"
+                trigger-action="click"
+                style="--background: transparent"
+              >
                 <ng-template>
                   <ion-content class="ion-padding">
-                    <ion-item button="true" class="rounded" color="secondary" [routerLink]="['/rent-items-details']"
-                      [queryParams]="{ item: 'vehicle', id: item.id }">
+                    <ion-item
+                      button="true"
+                      class="rounded"
+                      color="secondary"
+                      [routerLink]="['/rent-items-details']"
+                      [queryParams]="{ item: 'vehicle', id: item.id }"
+                    >
                       <ion-icon class="me-1" name="eye-outline"></ion-icon>
                       <ion-label> View </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="primary"
-                      (click)="presentRentItemsModalToMakeChanges(item,'vehicles')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="primary"
+                      (click)="presentRentItemsModalToMakeChanges(item,'vehicles')"
+                    >
                       <ion-icon class="me-1" name="create-outline"></ion-icon>
                       <ion-label> Make Changes </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="danger"
-                      (click)="deleteRentingItem(item.id,'Vehicles')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="danger"
+                      (click)="deleteRentingItem(item.id,'Vehicles')"
+                    >
                       <ion-icon class="me-1" name="trash"></ion-icon>
                       <ion-label> Delete </ion-label>
                     </ion-item>
@@ -195,26 +334,46 @@
                 <p class="text-dark">{{ item.description }}</p>
               </ion-label>
 
-              <ion-icon style="cursor: pointer;" color="danger" [id]="'machinery-click-trigger'+item.id"
-                name="ellipsis-vertical-circle-sharp"></ion-icon>
-              <ion-popover [trigger]="'machinery-click-trigger'+item.id" trigger-action="click"
-                style="--background: transparent">
+              <ion-icon
+                style="cursor: pointer"
+                color="danger"
+                [id]="'machinery-click-trigger'+item.id"
+                name="ellipsis-vertical-circle-sharp"
+              ></ion-icon>
+              <ion-popover
+                [trigger]="'machinery-click-trigger'+item.id"
+                trigger-action="click"
+                style="--background: transparent"
+              >
                 <ng-template>
                   <ion-content class="ion-padding">
-                    <ion-item button="true" class="rounded" color="secondary" [routerLink]="['/rent-items-details']"
-                      [queryParams]="{ item: 'machinery', id: item.id }">
+                    <ion-item
+                      button="true"
+                      class="rounded"
+                      color="secondary"
+                      [routerLink]="['/rent-items-details']"
+                      [queryParams]="{ item: 'machinery', id: item.id }"
+                    >
                       <ion-icon class="me-1" name="create-outline"></ion-icon>
                       <ion-label> Edit </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="primary"
-                      (click)="presentRentItemsModalToMakeChanges(item,'equipment')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="primary"
+                      (click)="presentRentItemsModalToMakeChanges(item,'equipment')"
+                    >
                       <ion-icon class="me-1" name="create-outline"></ion-icon>
                       <ion-label> Make Changes </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="danger"
-                      (click)="deleteRentingItem(item.id,'Machinery')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="danger"
+                      (click)="deleteRentingItem(item.id,'Machinery')"
+                    >
                       <ion-icon class="me-1" name="trash"></ion-icon>
                       <ion-label> Delete </ion-label>
                     </ion-item>
@@ -235,26 +394,46 @@
                 <p class="text-dark">{{ item.description }}</p>
                 <!-- Add more item details as needed -->
               </ion-label>
-              <ion-icon style="cursor: pointer;" color="danger" [id]="'event-click-trigger'+item.id"
-                name="ellipsis-vertical-circle-sharp"></ion-icon>
-              <ion-popover [trigger]="'event-click-trigger'+item.id" trigger-action="click"
-                style="--background: transparent">
+              <ion-icon
+                style="cursor: pointer"
+                color="danger"
+                [id]="'event-click-trigger'+item.id"
+                name="ellipsis-vertical-circle-sharp"
+              ></ion-icon>
+              <ion-popover
+                [trigger]="'event-click-trigger'+item.id"
+                trigger-action="click"
+                style="--background: transparent"
+              >
                 <ng-template>
                   <ion-content class="ion-padding">
-                    <ion-item button="true" class="rounded" color="secondary" [routerLink]="['/rent-items-details']"
-                      [queryParams]="{ item: 'events', id: item.id }">
+                    <ion-item
+                      button="true"
+                      class="rounded"
+                      color="secondary"
+                      [routerLink]="['/rent-items-details']"
+                      [queryParams]="{ item: 'events', id: item.id }"
+                    >
                       <ion-icon class="me-1" name="eye-outline"></ion-icon>
                       <ion-label> View </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="primary"
-                      (click)="presentRentItemsModalToMakeChanges(item,'events and decor')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="primary"
+                      (click)="presentRentItemsModalToMakeChanges(item,'events and decor')"
+                    >
                       <ion-icon class="me-1" name="create-outline"></ion-icon>
                       <ion-label> Make Changes </ion-label>
                     </ion-item>
 
-                    <ion-item button="true" class="rounded mt-3" color="danger"
-                      (click)="deleteRentingItem(item.id,'Event Items')">
+                    <ion-item
+                      button="true"
+                      class="rounded mt-3"
+                      color="danger"
+                      (click)="deleteRentingItem(item.id,'Event Items')"
+                    >
                       <ion-icon class="me-1" name="trash"></ion-icon>
                       <ion-label> Delete </ion-label>
                     </ion-item>
@@ -280,10 +459,16 @@
   <div *ngIf="selectedCategory === 'services'">
     <ng-container *ngIf="userServicesListings.length>0">
       <ion-row>
-        <ion-col size="12" size-md="6" *ngFor="let item of userServicesListings">
+        <ion-col
+          size="12"
+          size-md="6"
+          *ngFor="let item of userServicesListings"
+        >
           <ion-item lines="full">
             <ion-thumbnail class="h-100" slot="start">
-              <img [src]="modifyImageUrl(item?.Portfolios[0]?.image.imageUrl)" />
+              <img
+                [src]="modifyImageUrl(item?.Portfolios[0]?.image.imageUrl)"
+              />
             </ion-thumbnail>
             <ion-label class="text-dark">
               <h2 class="text-dark">{{ item.serviceType }}</h2>
@@ -291,25 +476,47 @@
               <p class="text-dark">{{ item.description }}</p>
               <!-- Add more item details as needed -->
             </ion-label>
-            <ion-icon style="cursor: pointer;" color="danger" [id]="'services-click-trigger'+item.id"
-              name="ellipsis-vertical-circle-sharp"></ion-icon>
-            <ion-popover [trigger]="'services-click-trigger'+item.id" trigger-action="click"
-              style="--background: transparent">
+            <ion-icon
+              style="cursor: pointer"
+              color="danger"
+              [id]="'services-click-trigger'+item.id"
+              name="ellipsis-vertical-circle-sharp"
+            ></ion-icon>
+            <ion-popover
+              [trigger]="'services-click-trigger'+item.id"
+              trigger-action="click"
+              style="--background: transparent"
+            >
               <ng-template>
                 <ion-content class="ion-padding">
-                  <ion-item button="true" class="rounded" color="secondary" [routerLink]="['/service-detail']"
-                    [queryParams]="{ listingId: item.id }">
+                  <ion-item
+                    button="true"
+                    class="rounded"
+                    color="secondary"
+                    [routerLink]="['/service-detail']"
+                    [queryParams]="{ listingId: item.id }"
+                  >
                     <ion-icon class="me-1" name="eye-outline"></ion-icon>
                     <ion-label> View </ion-label>
                   </ion-item>
 
-                  <ion-item disabled button="true" class="rounded mt-3" color="primary"
-                    (click)="presentRentItemsModalToMakeChanges(item,'housing')">
+                  <ion-item
+                    disabled
+                    button="true"
+                    class="rounded mt-3"
+                    color="primary"
+                    (click)="presentRentItemsModalToMakeChanges(item,'housing')"
+                  >
                     <ion-icon class="me-1" name="create-outline"></ion-icon>
                     <ion-label> Make Changes </ion-label>
                   </ion-item>
 
-                  <ion-item button="true" class="rounded mt-3" color="danger" (click)="deleteServiceListing(item.id)">
+                  <ion-item
+                    button="true"
+                    class="rounded mt-3"
+                    color="danger"
+                    (click)="deleteServiceListing(item.id)"
+                  >
                     <ion-icon class="me-1" name="trash"></ion-icon>
                     <ion-label> Delete </ion-label>
                   </ion-item>
@@ -340,13 +547,25 @@
       <ion-icon class="text-light" name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button (click)="presentListServicesModal()" style="--background:#1A4640;" data-desc="Post A Service">
+      <ion-fab-button
+        (click)="presentListServicesModal()"
+        style="--background: #1a4640"
+        data-desc="Post A Service"
+      >
         <ion-icon class="text-light" name="briefcase"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="presentRentItemsModal()" style="--background: #1a4640" data-desc="Rent Your Items">
+      <ion-fab-button
+        (click)="presentRentItemsModal()"
+        style="--background: #1a4640"
+        data-desc="Rent Your Items"
+      >
         <ion-icon class="text-light" name="key"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="presentListProductModal()" style="--background: #1a4640" data-desc="Sell Your Stuff">
+      <ion-fab-button
+        (click)="presentListProductModal()"
+        style="--background: #1a4640"
+        data-desc="Sell Your Stuff"
+      >
         <ion-icon class="text-light" name="cash"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

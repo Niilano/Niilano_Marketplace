@@ -60,7 +60,7 @@ export class HouseListingComponent implements OnInit {
   async uploadCompoundImage(event: any) {
     const file = event.target.files[0];
     if (file) {
-      if (this.houseDetailsFormModal.compoundImage.imageUrl) {
+      if (this.houseDetailsFormModal.compoundImage?.imageUrl) {
         this.removedImages.push(
           this.houseDetailsFormModal.compoundImage.publicId
         );
@@ -82,7 +82,7 @@ export class HouseListingComponent implements OnInit {
     // Handle infront image upload and preview in a similar way
     const file = event.target.files[0];
     if (file) {
-      if (this.houseDetailsFormModal.infrontImage.imageUrl) {
+      if (this.houseDetailsFormModal.infrontImage?.imageUrl) {
         this.removedImages.push(
           this.houseDetailsFormModal.infrontImage.publicId
         );
@@ -103,7 +103,7 @@ export class HouseListingComponent implements OnInit {
     // Handle bedroom image upload and preview in a similar way
     const file = event.target.files[0];
     if (file) {
-      if (this.houseDetailsFormModal.bedroomImage.imageUrl) {
+      if (this.houseDetailsFormModal.bedroomImage?.imageUrl) {
         this.removedImages.push(
           this.houseDetailsFormModal.bedroomImage.publicId
         );
@@ -124,7 +124,7 @@ export class HouseListingComponent implements OnInit {
     // Handle bedroom image upload and preview in a similar way
     const file = event.target.files[0];
     if (file) {
-      if (this.houseDetailsFormModal.washroomImage.imageUrl) {
+      if (this.houseDetailsFormModal.washroomImage?.imageUrl) {
         this.removedImages.push(
           this.houseDetailsFormModal.washroomImage.publicId
         );
@@ -145,7 +145,7 @@ export class HouseListingComponent implements OnInit {
     // Handle bedroom image upload and preview in a similar way
     const file = event.target.files[0];
     if (file) {
-      if (this.houseDetailsFormModal.additionalImage.imageUrl) {
+      if (this.houseDetailsFormModal.additionalImage?.imageUrl) {
         this.removedImages.push(
           this.houseDetailsFormModal.additionalImage.publicId
         );
