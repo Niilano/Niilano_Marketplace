@@ -12,6 +12,7 @@ import {
   MenuController,
   ModalController,
   NavController,
+  Platform,
   ToastController,
   isPlatform,
 } from '@ionic/angular';
@@ -213,10 +214,13 @@ export class AuthPage {
     private modalController: ModalController,
     private http: HttpClient,
     private alertController: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private platform : Platform
   ) {
 
-    if (!isPlatform('capacitor')) {
+    const isWeb = !this.platform.is('android') &&    !this.platform.is('ios');
+
+    if (isWeb) {
       GoogleAuth.initialize();
     }
 
