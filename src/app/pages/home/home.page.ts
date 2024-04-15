@@ -47,7 +47,7 @@ export class HomePage {
 
   // Stores the user logged in status, by default it's false until checked
   isLoggedIn = false;
-  userProfile = {}
+  userProfile = {};
 
   // Determines whether to show a welcome message to a new user upon successful registration
   welcomeMessage = false;
@@ -105,7 +105,7 @@ export class HomePage {
           handler: () => {
             this.router.navigateByUrl('auth?page=register');
           },
-        }
+        },
       ],
     });
 
@@ -298,6 +298,8 @@ export class HomePage {
     return [...Array(n).keys()];
   }
 
+  err = '';
+
   ionViewWillEnter() {
     this.checkScreen();
 
@@ -311,11 +313,16 @@ export class HomePage {
       this.subscriptions.push(
         this.http
           .get(`${environment.server}/products/trendingProducts`)
-          .subscribe((res) => {
-            // console.log(res)
-            this.trendingProductsLoading = false;
-            this.trendingProducts = res;
-          })
+          .subscribe(
+            (res) => {
+              // console.log(res)
+              this.trendingProductsLoading = false;
+              this.trendingProducts = res;
+            },
+            (err) => {
+              this.err = JSON.stringify(err);
+            }
+          )
       );
 
     this.discountProducts.length < 1 &&
@@ -364,13 +371,13 @@ export class HomePage {
           })
       );
 
-      this.store.select('checkLogin')
+    this.store
+      .select('checkLogin')
       .pipe(take(1))
       .subscribe((res) => {
         this.isLoggedIn = res.loggedIn;
-        this.userProfile = res.profile
+        this.userProfile = res.profile;
       });
-
   }
 
   ionViewWillLeave() {
