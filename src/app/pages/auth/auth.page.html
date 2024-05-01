@@ -120,16 +120,18 @@
                 Register here
               </button>
             </p>
-            <p>or</p>
-            <button
-              type="button"
-              (click)="googleSignIn()"
-              class="btn m-btn w-100 d-flex justify-content-center align-items-center"
-              style="border: 2px solid #1a4640"
-            >
-              <i class="fab fa-google text-primary me-2"></i> Sign in with
-              Google
-            </button>
+            <ng-container *ngIf="showGoogleAuth">
+              <p>or</p>
+              <button
+                type="button"
+                (click)="googleSignIn()"
+                class="btn m-btn w-100 d-flex justify-content-center align-items-center"
+                style="border: 2px solid #1a4640"
+              >
+                <i class="fab fa-google text-primary me-2"></i> Sign in with
+                Google
+              </button>
+            </ng-container>
           </div>
         </form>
     </div>
@@ -325,7 +327,8 @@
            </button>
          </div>
 
-         <p class="text-center" style="font-family: cursive">OR</p>
+         <ng-container *ngIf="showGoogleAuth">
+          <p class="text-center" style="font-family: cursive">OR</p>
 
          <div class="text-center mt-3">
            <button
@@ -338,6 +341,7 @@
              Google
            </button>
          </div>
+        </ng-container>
        </form>
    </div>
 

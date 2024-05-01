@@ -4,4 +4,5 @@
     <string name="title_activity_main">NM</string>
     <string name="package_name">com.niilano.marketplace</string>
     <string name="custom_url_scheme">com.niilano.marketplace</string>
+  <string name="server_client_id">30578003989-fvauhmek8m2hp0gajaia6hqh3g9rohai.apps.googleusercontent.com</string>
 </resources>

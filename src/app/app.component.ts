@@ -17,7 +17,7 @@ import {
   DataSharingService,
   ScrollDirection,
 } from './services/data-sharing/data-sharing.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject, Subscription, filter, take, takeUntil } from 'rxjs';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
@@ -25,6 +25,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import Swiper from 'swiper';
 // import function to register Swiper custom elements
 import { register } from 'swiper/element/bundle';
+import { SupportComponent } from './components/support/support.component';
 // register Swiper custom elements
 register();
 
@@ -65,7 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private dataSharing: DataSharingService,
     private router: Router,
     private modalCtrl: ModalController,
-    private navCtrl:NavController
+    private navCtrl:NavController,
+    private route: ActivatedRoute,
   ) {
     if (localStorage.getItem('access_token')) {
       this.isLoggedIn = true;
@@ -108,7 +110,27 @@ export class AppComponent implements OnInit, OnDestroy {
   //   this.navCtrl.navigateRoot('/products')
   // }
 
-  ngOnInit() {
+  async openSupportModal(){
+    
+    const modal = await this.modalCtrl.create({
+      component: SupportComponent,
+      showBackdrop: true,
+    });
+    return await modal.present();
+  }
+
+  ngOnInit() { 
+
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['page'] == 'support') {
+          console.log("Support page served")
+          this.openSupportModal()
+        }
+      })
+
+    );
+
     // this.presentWelcomeModal()
 
     this.subscriptions.push(

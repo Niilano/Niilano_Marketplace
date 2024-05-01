@@ -24,7 +24,10 @@ import { checkLogin } from 'src/app/store/checkLogin/checklogin.actions';
 import { getUserMessages } from 'src/app/store/getUserMessages/userMessages.action';
 import { endLoading, startLoading } from 'src/app/store/loading/loading.action';
 import { login } from 'src/app/store/login/login.action';
-import { register, resetRegistrationStateValues } from 'src/app/store/register/register.action';
+import {
+  register,
+  resetRegistrationStateValues,
+} from 'src/app/store/register/register.action';
 import { getUserProducts } from 'src/app/store/userProducts/userproducts.actions';
 import { AppState } from 'src/app/types/AppState';
 import { environment } from 'src/environments/environment';
@@ -44,7 +47,7 @@ export class AuthPage {
   pageTitle = 'auth';
 
   // This stores the tab / section to show whether login / signup
-  selectedTab:any
+  selectedTab: any;
 
   // This stores the current registration section a user is currently on
   currentRegSection = 1;
@@ -55,7 +58,7 @@ export class AuthPage {
 
   prevRegSection() {
     this.currentRegSection--;
-  } 
+  }
 
   handleRefresh(event: any) {
     // do some work to refresh the content here
@@ -201,8 +204,10 @@ export class AuthPage {
   };
 
   toHome() {
-    this.router.navigate(['home'],this.navigationExtras);
+    this.router.navigate(['home'], this.navigationExtras);
   }
+
+  showGoogleAuth = false
 
   constructor(
     private store: Store<AppState>,
@@ -215,12 +220,12 @@ export class AuthPage {
     private http: HttpClient,
     private alertController: AlertController,
     private navCtrl: NavController,
-    private platform : Platform
+    private platform: Platform
   ) {
-
-    const isWeb = !this.platform.is('android') &&    !this.platform.is('ios');
+    const isWeb = !this.platform.is('android') && !this.platform.is('ios');
 
     if (isWeb) {
+      this.showGoogleAuth = true
       GoogleAuth.initialize();
     }
 
@@ -234,11 +239,15 @@ export class AuthPage {
   // googleRegistrationSubmit = false;
 
   async googleSignup() {
-    this.user = await GoogleAuth.signIn();
+    try {
+      this.user = await GoogleAuth.signIn();
 
-    if (this.user) {
-    //   this.googleSignUpRequireMobileNumberModalOpen = true;
-    this.googleRegistration()
+      if (this.user) {
+        //   this.googleSignUpRequireMobileNumberModalOpen = true;
+        this.googleRegistration();
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -266,6 +275,7 @@ export class AuthPage {
   }
 
   async googleSignIn() {
+   try{
     this.user = await GoogleAuth.signIn();
 
     if (this.user) {
@@ -276,6 +286,9 @@ export class AuthPage {
 
       this.login();
     }
+   } catch(err){
+    console.log(err)
+   }
   }
 
   async presentForgetPasswordModal(display: boolean, token?: string) {
@@ -340,17 +353,17 @@ export class AuthPage {
             if (this.currentRoute.includes('?')) {
               location.assign(this.currentRoute);
             } else {
-              this.router.navigate([this.currentRoute],this.navigationExtras);
+              this.router.navigate([this.currentRoute], this.navigationExtras);
             }
 
             localStorage.removeItem('currentroute');
 
-            this.store.dispatch(getProductsSummary())
+            this.store.dispatch(getProductsSummary());
 
             // localStorage.getItem('registered') &&
             //   localStorage.removeItem('registered');
 
-              this.loginForm.reset()
+            this.loginForm.reset();
           }
           if (loginState.isLogingInFailure) {
             this.store.dispatch(endLoading());
@@ -373,18 +386,18 @@ export class AuthPage {
     );
 
     this.subscriptions.push(
-    this.store.select('register').subscribe((registerState) => {
+      this.store.select('register').subscribe((registerState) => {
         if (registerState.registering) {
           this.store.dispatch(startLoading());
         }
 
         if (registerState.registered) {
-          console.log("Registration own still working...")
+          console.log('Registration own still working...');
           this.store.dispatch(endLoading());
 
           localStorage.setItem('registered', 'true');
 
-          this.store.dispatch(resetRegistrationStateValues())
+          this.store.dispatch(resetRegistrationStateValues());
 
           this.toastController
             .create({
@@ -420,16 +433,15 @@ export class AuthPage {
           // this.registerForm.reset()
         }
       })
-    )
+    );
   }
 
   ionViewDidLeave() {
     // Unsubscribe from all the subscriptions when the component is destroyed
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     // console.log('Destroyed');
   }
 }
