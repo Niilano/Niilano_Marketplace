@@ -6,7 +6,11 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import {
+  ActionSheetController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { AuthService } from './services/auth/auth.service';
 import { checkLogin } from './store/checkLogin/checklogin.actions';
@@ -66,8 +70,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private dataSharing: DataSharingService,
     private router: Router,
     private modalCtrl: ModalController,
-    private navCtrl:NavController,
-    private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private route: ActivatedRoute
   ) {
     if (localStorage.getItem('access_token')) {
       this.isLoggedIn = true;
@@ -102,16 +106,15 @@ export class AppComponent implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  clearNavStack(){
-    this.navCtrl.navigateRoot('/home')
+  clearNavStack() {
+    this.navCtrl.navigateRoot('/home');
   }
 
   // toProducts(){
   //   this.navCtrl.navigateRoot('/products')
   // }
 
-  async openSupportModal(){
-    
+  async openSupportModal() {
     const modal = await this.modalCtrl.create({
       component: SupportComponent,
       showBackdrop: true,
@@ -119,16 +122,14 @@ export class AppComponent implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  ngOnInit() { 
-
+  ngOnInit() {
     this.subscriptions.push(
       this.route.queryParams.subscribe((params) => {
         if (params['page'] == 'support') {
-          console.log("Support page served")
-          this.openSupportModal()
+          console.log('Support page served');
+          this.openSupportModal();
         }
       })
-
     );
 
     // this.presentWelcomeModal()
@@ -173,12 +174,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.dispatch(checkLogin());
     // this.store.dispatch(getUserMessages());
 
-    this.store.select('checkLogin')
-    .pipe(take(1))
-    .subscribe((res) => {
-      this.isLoggedIn = res.loggedIn;
-    });
-
+    this.store
+      .select('checkLogin')
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.isLoggedIn = res.loggedIn;
+      });
   }
 
   ngAfterViewInit() {
@@ -190,7 +191,6 @@ export class AppComponent implements OnInit, OnDestroy {
     //     // console.log('scrolling down');
     //   })
     // );
-
     // this.subscriptions.push(
     //   this.dataSharing.scrollStarted$.subscribe((direction) => {
     //     const element = this.tabBar.nativeElement as HTMLElement;
@@ -201,7 +201,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.closed$.next(1); // <-- close subscription when component is destroyed
   }
 
