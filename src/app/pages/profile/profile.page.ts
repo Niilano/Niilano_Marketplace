@@ -336,7 +336,7 @@ export class ProfilePage implements OnInit {
   async delAccount() {
     const actionSheet = await this.actionSheetController.create({
       header: `Are you sure you want to delete your niilano account.`,
-      subHeader : `Your account will be permanently deleted from Niilano, along with any associated data such as product listings. Please be aware that this action cannot be undone, and you will not be able to retrieve your account or its data in the future.
+      subHeader: `Your account will be permanently deleted from Niilano, along with any associated data such as product listings. Please be aware that this action cannot be undone, and you will not be able to retrieve your account or its data in the future.
 
       If you still wish to proceed with the deletion, please click Confirm.`,
       buttons: [
@@ -357,18 +357,18 @@ export class ProfilePage implements OnInit {
 
             this.authService.logout();
             this.toastController
-            .create({
-              header : "We're sorry to see you go!",
-              message: `Your account removal request has been sent, and you'll be removed from Niilano soon. While you might still be able to log in within a few hours, please note that this process typically takes 24 to 48 hours. Thank you for being with us.
+              .create({
+                header: "We're sorry to see you go!",
+                message: `Your account removal request has been sent, and you'll be removed from Niilano soon. While you might still be able to log in within a few hours, please note that this process typically takes 24 to 48 hours. Thank you for being with us.
 
               Additionally, we will be sending you an email to provide reasons for leaving. We would be very grateful if you could fill it out.`,
-              duration: 15000,
-              color: 'warning',
-              position: 'top',
-            })
-            .then((toast) => {
-              toast.present();
-            });
+                duration: 15000,
+                color: 'warning',
+                position: 'top',
+              })
+              .then((toast) => {
+                toast.present();
+              });
           },
         },
       ],
